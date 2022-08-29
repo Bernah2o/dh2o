@@ -1,29 +1,11 @@
-# README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+ # Grupo 6 - Aplicación Dh2oSofT #
+ 
+ Esta aplicación permite consultar,agregar cada uno de los servicios prestados a los clientes. 
+ 
+ # Integrantes #
+ Bernardino Antonio de Aguas Perez
+ Ruben Dario Peña Agudelo
+ Ana Isabel Barinas Silva
+ Arley Usma Gutierrez
+ Bryan Esteban Gómez Carrasquilla
+ 
