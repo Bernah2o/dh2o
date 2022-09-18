@@ -88,6 +88,19 @@ WSGI_APPLICATION = 'authProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+#configuracion bd postgres
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd65o5fkagtmgt8',
+        'USER': 'qpayfamhgrovfj',
+        'PASSWORD': '4dc72d86269a201cf186aec4a79cfa1954ac2c771f8fac38d65c62c810c1c3bc',
+        'HOST': 'ec2-3-223-242-224.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+}"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
