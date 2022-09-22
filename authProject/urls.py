@@ -18,6 +18,7 @@ from django.urls import path
 
 #creacion de API
 from authApp.views.clienteViewSet import ClienteViewSet
+from authApp.views.facturaViewSet import FacturaViewSet
 
 #ejemplo de banco
 
@@ -28,6 +29,7 @@ from authApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('person/list',ClienteViewSet.as_view({'get':'list'})),
+    path('factura/list',FacturaViewSet.as_view({'get':'list'})),
 
     path('login/', TokenObtainPairView.as_view()),
     path('refresh/', TokenRefreshView.as_view()),
