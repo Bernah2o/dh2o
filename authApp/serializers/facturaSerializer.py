@@ -1,7 +1,7 @@
 from authApp.models.factura import Factura
 from rest_framework import serializers 
 
-class facturaSerializer(serializers.ModelSerializer):
+class FacturaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Factura
         fields = [' numero_factura ','cliente','operador','servicios',

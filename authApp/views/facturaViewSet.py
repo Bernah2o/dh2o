@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions
 from authApp.models.factura import Factura
-from authApp.serializers.facturaSerializer import facturaSerializer
+from authApp.serializers.facturaSerializer import FacturaSerializer
 
-class ClienteViewSet(viewsets.ModelViewSet):
+class FacturaViewSet(viewsets.ModelViewSet):
     queryset = Factura.objects.all()
-    serializer_class = facturaSerializer
+    serializer_class = FacturaSerializer
     permission_classes = [permissions.AllowAny]
