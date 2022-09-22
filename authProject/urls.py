@@ -16,6 +16,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+#creacion de API
+from authApp.views.clienteViewSet import ClienteViewSet
+
+#ejemplo de banco
+
+from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
+from authApp import views
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('person/list',ClienteViewSet.as_view({'get':'list'})),
+
+    path('login/', TokenObtainPairView.as_view()),
+    path('refresh/', TokenRefreshView.as_view()),
+    path('user/', views.UserCreateView.as_view()),
+    path('user/<int:pk>/', views.UserDetailView.as_view()),
+    ]
+
+

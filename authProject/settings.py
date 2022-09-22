@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'authApp',
     
-
 ]
 
 MIDDLEWARE = [
@@ -53,16 +52,21 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+
+    
 ]
 
 REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-            'rest_framework.permission.AllowAny',
+        'rest_framework.permissions.AllowAny',
     )        
 }
+
+AUTH_USER_MODEL = 'authApp.User'
 
 ROOT_URLCONF = 'authProject.urls'
 
