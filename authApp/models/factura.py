@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from multiprocessing.connection import Client
 from django.db import models
 
@@ -19,3 +20,13 @@ class Factura(models.Model):
 
     def __str__(self) -> str:
         return self.numero_factura
+=======
+from django.db import models
+
+class Factura(models.Model):
+    id = models.IntegerField(primary_key=True)
+    cantidad = models.IntegerField()
+    modo_pago = models.CharField(max_length=45)
+    fecha = models.DateTimeField(max_length=100)
+    
+>>>>>>> 36107d8ab770179911347914ca535625d306f4d2
