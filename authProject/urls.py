@@ -28,12 +28,13 @@ from authApp import views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('person/list',ClienteViewSet.as_view({'get':'list'})),
-    path('factura/list',FacturaViewSet.as_view({'get':'list'})),
-    path('servicio/list',ServicioViewSet.as_view({'get':'list'})),
-    path('operador/list',OperadorViewSet.as_view({'get':'list'})),
-
+    
+    #path('admin/',admin.site.urls),
+    #path('person/list',ClienteViewSet.as_view({'get':'list'})),
+    #path('factura/list',FacturaViewSet.as_view({'get':'list'})),
+    #path('servicio/list',ServicioViewSet.as_view({'get':'list'})),
+    #path('operador/list',OperadorViewSet.as_view({'get':'list'})),
+    
     path('login/', TokenObtainPairView.as_view()),
     path('refresh/', TokenRefreshView.as_view()),
     path('user/', views.UserCreateView.as_view()),
