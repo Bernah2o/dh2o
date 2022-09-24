@@ -29,8 +29,7 @@ from authApp import views
 
 urlpatterns = [
     
-    path('admin/',admin.site.urls),
-    
+    #path('admin/',admin.site.urls),
     #path('person/list',ClienteViewSet.as_view({'get':'list'})),
     #path('factura/list',FacturaViewSet.as_view({'get':'list'})),
     #path('servicio/list',ServicioViewSet.as_view({'get':'list'})),
