@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-)tj_6i(unv+#mej2=%yv6um4lbluydkovfy6#_w14of!4#y92%
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -41,8 +42,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'authApp',
-    'corsheaders'
-    
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
@@ -53,10 +54,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
-    
+    'corsheaders.middleware.CorsMiddleware',
 
-    
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000",
 ]
 
 REST_FRAMEWORK = {
@@ -65,10 +71,10 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
-    )        
+    )
 }
 
-AUTH_USER_MODEL = 'authApp.User'
+
 
 ROOT_URLCONF = 'authProject.urls'
 
@@ -94,7 +100,7 @@ WSGI_APPLICATION = 'authProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-#configuracion bd postgres
+# configuracion bd postgres
 """
 DATABASES = {
     'default': {
@@ -124,7 +130,7 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
-    
+
 }
 
 

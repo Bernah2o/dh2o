@@ -10,4 +10,4 @@ class Cliente(models.Model):
     correo = models.EmailField(max_length=100)
     
     def __str__(self) -> str:
-        return self.nombre
+        return self .nombre        
