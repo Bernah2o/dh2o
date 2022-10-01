@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from datetime import timedelta
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,6 +34,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +48,23 @@ INSTALLED_APPS = [
 
 ]
 
+JAZZMIN_SETTINGS = {
+    'site_title': 'AppDh2oCol',
+    #site_logo': 'img/logo.png',
+    'site_header':'Dh2oCol',
+    'site_brand': "Dh2oColApp",
+    'welcome_sign': 'Inicio de Sesion',
+    'icons': {
+        'auth.user': 'fas fa-user',
+        'auth.Group': 'fas fa-users',
+        
+    }
+}
+
+STATICFILES_DIR = [os.path.join(BASE_DIR, 'static')]
+
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,13 +76,13 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 
 ]
-
+"""
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
     "https://sub.example.com",
     "http://localhost:8080",
     "http://127.0.0.1:9000",
-]
+] """
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -156,11 +175,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 
