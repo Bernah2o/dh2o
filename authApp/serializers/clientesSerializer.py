@@ -4,5 +4,6 @@ from rest_framework import serializers
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = ['cedula','nombre','apellido','Fecha_nacimiento','direccion','telefono','correo']
+        fields = ['cedula','nombre','apellido','Fecha_nacimiento',
+                'direccion','telefono','correo','creacion','descripcion']
         

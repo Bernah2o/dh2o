@@ -21,6 +21,7 @@ from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.facturaViewSet import FacturaViewSet
 from authApp.views.servicioViewSet import ServicioViewSet
 from authApp.views.operadorViewSet import OperadorViewSet
+from authApp.views.mpagoViewSet import MpagoViewSet
 #ejemplo de banco
 
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)

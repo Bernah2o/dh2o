@@ -6,5 +6,8 @@ class Operador(models.Model):
     apellido = models.CharField(max_length=100)
     telefono = models.IntegerField()
     
-    def __str__(self) -> str:
-        return self.nombre
+    def __str__(self):
+        texto = "{0} {1}"
+        return texto.format(self.nombre,self.apellido)
+
+    
