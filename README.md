@@ -6,12 +6,6 @@
  
  Bernardino Antonio de Aguas Perez
  
- Ruben Dario Peña Agudelo
  
- Ana Isabel Barinas Silva
- 
- Arley Usma Gutierrez
- 
- Bryan Esteban Gómez Carrasquilla
  
  

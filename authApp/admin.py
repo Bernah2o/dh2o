@@ -13,14 +13,19 @@ class ClienteResource(resources.ModelResource):
         model = Cliente
 
 class ClienteAdmin(ImportExportModelAdmin,admin.ModelAdmin):
-    readonly_fields = ("creacion", )
-    search_fields = ['cedula','nombre']
-    list_display = ('cedula','nombre','apellido','direccion','telefono','creacion')
-    resource_class = ClienteResource
+        readonly_fields = ("creacion", )
+        search_fields = ['cedula','nombre']
+        list_display = ('cedula','nombre','apellido','direccion','telefono','creacion')
+        list_display_links = ('cedula',)
+        list_filter = ('creacion',)
+        list_per_page = 10
+        resource_class = ClienteResource
+
 
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Factura)
 admin.site.register(Operador)
 admin.site.register(Servicio)
 admin.site.register(Mpago)
+
 

@@ -51,10 +51,30 @@ INSTALLED_APPS = [
 
 JAZZMIN_SETTINGS = {
     'site_title': 'AppDh2oCol',
-    #site_logo': 'img/logo.png',
+    #'site_logo': 'books/img/logo.png',
     'site_header':'Dh2oCol',
+    #'login_logo':'none',
     'site_brand': "Dh2oColApp",
     'welcome_sign': 'Inicio de Sesion',
+    "copyright": "Dh2oCol",
+    "search_model": "auth.User",
+    "show_sidebar": True,
+    # Links to put along the top menu
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "books"},
+    ],
+    
     'icons': {
         'auth.user': 'fas fa-user',
         'auth.Group': 'fas fa-users',
@@ -176,9 +196,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'es-pe'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 
