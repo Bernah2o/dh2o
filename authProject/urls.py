@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 
 
+
+
 #creacion de API
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.facturaViewSet import FacturaViewSet
@@ -33,6 +35,7 @@ from authApp import views
 urlpatterns = [
     
     path('admin/',admin.site.urls),
+    
         
     
     ]

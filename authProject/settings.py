@@ -46,14 +46,17 @@ INSTALLED_APPS = [
     'authApp',
     'corsheaders',
     'import_export',
+    
+    
 
 ]
 
+
+
 JAZZMIN_SETTINGS = {
     'site_title': 'AppDh2oCol',
-    #'site_logo': 'books/img/logo.png',
+    #'site_logo': 'img/logo.png',
     'site_header':'Dh2oCol',
-    #'login_logo':'none',
     'site_brand': "Dh2oColApp",
     'welcome_sign': 'Inicio de Sesion',
     "copyright": "Dh2oCol",
@@ -80,9 +83,15 @@ JAZZMIN_SETTINGS = {
         'auth.Group': 'fas fa-users',
         
     }
+    
 }
 
-STATICFILES_DIR = [os.path.join(BASE_DIR, 'static')]
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+    "dark_mode_theme": "slate",
+    }
+
+#STATICFILES_DIR = [os.path.join(BASE_DIR, 'static')]
 
 
 
@@ -95,6 +104,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    
+
 
 ]
 """
@@ -141,24 +152,24 @@ WSGI_APPLICATION = 'authProject.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # configuracion bd postgres
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd65o5fkagtmgt8',
-        'USER': 'qpayfamhgrovfj',
-        'PASSWORD': '4dc72d86269a201cf186aec4a79cfa1954ac2c771f8fac38d65c62c810c1c3bc',
-        'HOST': 'ec2-3-223-242-224.compute-1.amazonaws.com',
+        'NAME': 'dh2ocol',
+        'USER': 'postgres',
+        'PASSWORD': '15172967',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
-}"""
-
+}
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+}"""
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -216,3 +227,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
