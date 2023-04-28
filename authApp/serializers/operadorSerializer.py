@@ -4,4 +4,4 @@ from rest_framework import serializers
 class OperadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Operador
-        fields = [' cedula ','nombre','apellido','telefono']
+        fields = ['cedula', 'nombre', 'apellido', 'telefono']

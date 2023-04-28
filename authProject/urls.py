@@ -1,20 +1,7 @@
-"""authProject URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+
+from rest_framework import routers
 
 
 
@@ -25,19 +12,27 @@ from authApp.views.facturaViewSet import FacturaViewSet
 from authApp.views.servicioViewSet import ServicioViewSet
 from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
+from authApp.views.detalleFacturaViewSet import DetalleFacturaViewSet
 
-#ejemplo de banco
+
 
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
 from authApp import views
+from authApp.views.views import alerta_limpieza
 
+
+router = routers.DefaultRouter()
+router.register(r'clientes', ClienteViewSet)
+router.register(r'facturas', FacturaViewSet)
+router.register(r'servicios', ServicioViewSet)
+router.register(r'operadores', OperadorViewSet)
+router.register(r'mpagos', MpagoViewSet)
+router.register(r'detalles-factura', DetalleFacturaViewSet)
 
 urlpatterns = [
-    
-    path('admin/',admin.site.urls),
-    
-        
-    
-    ]
-
-
+    path('', include(router.urls)),
+    path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
