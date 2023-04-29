@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Detalle del reporte</h1>
+  <p>{{ reporte.titulo }}</p>
+  <p>{{ reporte.descripcion }}</p>
+  <a href="{% url 'reporte-imprimir' reporte.pk %}" class="btn btn-primary">Imprimir</a>
+{% endblock %}

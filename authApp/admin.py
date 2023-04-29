@@ -7,6 +7,10 @@ from .models.factura import Factura
 from .models.operador import Operador
 from .models.servicios import Servicio
 from .models.mpago import Mpago
+from .models.tanque import Tanque
+from .models.repuesto import Repuesto
+from .models.ordendetrabajo import OrdenDeTrabajo
+from .models.reporte import Reporte
 
 class ClienteResource(resources.ModelResource):
     class Meta:
@@ -22,10 +26,15 @@ class ClienteAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         resource_class = ClienteResource
 
 
+
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Factura)
 admin.site.register(Operador)
 admin.site.register(Servicio)
 admin.site.register(Mpago)
+admin.site.register(Tanque)
+admin.site.register(Repuesto)
+admin.site.register(OrdenDeTrabajo)
+admin.site.register(Reporte)
 
 

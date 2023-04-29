@@ -18,17 +18,16 @@ class Cliente(models.Model):
     servicios = models.ManyToManyField(Servicio)
     
     
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        self.apellido = self.apellido.upper()
+        self.direccion = self.direccion.upper()
+        super(Cliente, self).save(*args, **kwargs)
 
+    
     def __str__(self):
         texto = "{0} {1}"
         return texto.format(self.nombre,self.apellido)
 
-    def necesita_limpieza(self):
-        if not self.ultima_limpieza or (date.today() - self.ultima_limpieza).days >= 180:
-            return True
-        return False
-
-    necesita_limpieza.boolean = True
-    necesita_limpieza.short_description = 'Necesita limpieza próximamente?'
-
+    
 
