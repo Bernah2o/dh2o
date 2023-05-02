@@ -8,5 +8,4 @@ class FacturaSerializer(serializers.ModelSerializer):
         model = Factura
         fields = '__all__'
         
-    def get_servicios_realizados(self, obj):
-        return obj.get_servicios_realizados()
+   

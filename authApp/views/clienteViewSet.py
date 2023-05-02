@@ -1,7 +1,11 @@
+from datetime import timezone
+from django.shortcuts import render
+from requests import request
 from rest_framework import viewsets, permissions
 from authApp.models.clientes import Cliente
 from authApp.models.servicios import Servicio
 from authApp.serializers.clientesSerializer import ClienteSerializer
+
 
 
 class ClienteViewSet(viewsets.ModelViewSet):
@@ -16,4 +20,14 @@ class ClienteViewSet(viewsets.ModelViewSet):
         for servicio_id in servicios_data:
             servicio = Servicio.objects.get(id=servicio_id)
             cliente.servicios.add(servicio)
+            
+    def clientes_proximos(self, request):
+        clientes = Cliente.proximas_limpiezas()
+        context = {'clientes': clientes}
+        return render(request, 'authApp/clientes_proximos.html', context)
+    def panel_clientes(request):
+        clientes = ClienteViewSet.as_view({'get': 'clientes_proximos'})
+        return clientes(request)
+ 
+         
     
