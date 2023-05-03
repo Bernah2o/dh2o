@@ -46,17 +46,15 @@ INSTALLED_APPS = [
     'authApp',
     'corsheaders',
     'import_export',
-    
-    
+
 
 ]
 
 
-
 JAZZMIN_SETTINGS = {
     'site_title': 'AppDh2oCol',
-    #'site_logo': 'img/logo.png',
-    'site_header':'Dh2oCol',
+    # 'site_logo': 'img/logo.png',
+    'site_header': 'Dh2oCol',
     'site_brand': "Dh2oColApp",
     'welcome_sign': 'Inicio de Sesion',
     "copyright": "Dh2oCol",
@@ -66,10 +64,12 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
 
         # Url that gets reversed (Permissions can be added)
-        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Home",  "url": "admin:index",
+            "permissions": ["auth.view_user"]},
 
         # external url that opens in a new window (Permissions can be added)
-        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues",
+            "new_window": True},
 
         # model admin to link to (Permissions checked against model)
         {"model": "auth.User"},
@@ -77,23 +77,19 @@ JAZZMIN_SETTINGS = {
         # App with dropdown menu to all its models pages (Permissions checked against models)
         {"app": "books"},
     ],
-    
+
     'icons': {
         'auth.user': 'fas fa-user',
         'auth.Group': 'fas fa-users',
-        
+
     }
-    
+
 }
 
 JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
     "dark_mode_theme": "slate",
-    }
-
-#STATICFILES_DIR = [os.path.join(BASE_DIR, 'static')]
-
-
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -104,7 +100,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    
 
 
 ]
@@ -126,13 +121,12 @@ REST_FRAMEWORK = {
 }
 
 
-
 ROOT_URLCONF = 'authProject.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -235,7 +229,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Configuración de archivos multimedia
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-
-
-
-

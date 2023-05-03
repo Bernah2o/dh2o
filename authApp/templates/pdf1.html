@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte</title>
+    <style>
+        /* Estilos CSS para el PDF */
+        .header {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+        .image {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{% url "generar_reporte_pdf" reporte.id %}',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (data) {
+                    // Crear un objeto Blob con los datos recibidos
+                    var blob = new Blob([data], {type: 'application/pdf'});
+                    // Crear un objeto URL con el Blob recién creado
+                    var url = window.URL.createObjectURL(blob);
+                    // Abrir el PDF en una nueva pestaña del navegador
+                    window.open(url, '_blank');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al generar el reporte en PDF: ' + error);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>Reporte de orden de trabajo {{ reporte.orden_de_trabajo }}</h1>
+        <p>Fecha: {{ reporte.fecha }}</p>
+    </div>
+    <p>Descripción: {{ reporte.descripcion }}</p>
+    {% if reporte.imagen %}
+        <img class="image" src="{{ reporte.imagen.url }}">
+    {% endif %}
+</body>
+</html>
+
+
