@@ -4,7 +4,6 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -37,6 +36,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     # Especificamos los campos que se mostrarán en la lista de objetos del modelo
     list_display = ('cedula', 'nombre', 'apellido', 'direccion',
                     'telefono', 'ver_clientes_proximos')
+    
     # Especificamos los campos que tendrán un enlace en la lista de objetos del modelo
     list_display_links = ('cedula', 'ver_clientes_proximos')
     # Especificamos los campos por los que se puede filtrar en la lista de objetos del modelo
@@ -47,11 +47,12 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = ClienteResource
 
     # Especificamos la hoja de estilos personalizada que queremos utilizar en la página de administración del modelo
-
     class Media:
         css = {
             'all': ('css/admin.css',)
         }
+    
+    
     # Definimos una función que nos permitirá mostrar un botón verde o rojo dependiendo de si el cliente está próximo a vencerse o no
 
     def ver_clientes_proximos(self, obj):
@@ -71,10 +72,17 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
             return mark_safe(f'<button class="boton-rojo">Prox. a vencerse</button>')
         # Si la última limpieza fue hace menos de 150 días, devolvemos un botón verde
         else:
-            return mark_safe(f'<button class="boton-verde">Ok</button>')
+            return mark_safe(f'<button class="boton-verde">Vigente</button>')
+    
+    def ver_clientes_proximos_column_header(self):
+        return 'Estado'    
 
-    ver_clientes_proximos.short_description = 'Próx. a vencerse'
+    ver_clientes_proximos.short_description = 'Estado'
     ver_clientes_proximos.allow_tags = True
+    
+    
+
+
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
     list_display = ['orden_de_trabajo', 'fecha', 'descripcion', 'ver_pdf']
@@ -86,12 +94,26 @@ class ReporteAdmin(admin.ModelAdmin):
         # Retornar un enlace HTML con el botón de descarga del PDF
         return format_html('<a class="button" href="{}">PDF</a>', url)
 
-    ver_pdf.short_description = 'Descargar'  # Cambiar el título de la columna en la página de admin
+    # Cambiar el título de la columna en la página de admin
+    ver_pdf.short_description = 'Descargar'
 
+class FacturaAdmin(admin.ModelAdmin):
+    list_display = ['numero_factura', 'cliente', 'operador', 'mpago', 'fecha', 'descuento', 'total', 'ver_ventas_mensuales']
+    list_display_links = ['numero_factura']
+    # Otras configuraciones...
+
+    def ver_ventas_mensuales(self, obj):
+        url = reverse('ventas_mensuales')
+        return format_html(f'<a href="{url}">Ver ventas mensuales</a>')
+
+    ver_ventas_mensuales.short_description = 'Ventas mensuales'
+    #numero_factura.short_description = 'No'
+
+   
 
 
 admin.site.register(Cliente, ClienteAdmin)
-admin.site.register(Factura)
+admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Operador)
 admin.site.register(Servicio)
 admin.site.register(Mpago)
@@ -99,3 +121,4 @@ admin.site.register(Tanque)
 admin.site.register(Repuesto)
 admin.site.register(OrdenDeTrabajo)
 admin.site.register(Reporte, ReporteAdmin)
+

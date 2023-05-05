@@ -16,6 +16,8 @@ from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.tanqueViewSet import TanqueViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
+from authApp.views.facturaViewSet import ventas_mensuales
+
 # from authApp.views.reporteViewsSet import GeneratePdf
 
 
@@ -52,6 +54,12 @@ urlpatterns = [
          ClienteViewSet.as_view({'get': 'clientes_proximos'}), name='clientes_proximos'),
     # Agregamos la URL para el panel de clientes
     path('clientes/panel/', ClienteViewSet.panel_clientes, name='panel_clientes'),
+    
+    path('ventas-mensuales/', ventas_mensuales, name='ventas_mensuales'),
+    
+    
+
+
 
     # otras rutas ...
 

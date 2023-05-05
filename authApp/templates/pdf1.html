@@ -1,8 +1,11 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Reporte</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
         /* Estilos CSS para el PDF */
         .header {
@@ -27,41 +30,32 @@
             max-width: 100%;
             height: auto;
         }
+        .logo {
+            max-width: 100%;
+            height: auto;
+            float: left;
+        }
     </style>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $.ajax({
-                type: 'GET',
-                url: '{% url "generar_reporte_pdf" reporte.id %}',
-                xhrFields: {
-                    responseType: 'blob'
-                },
-                success: function (data) {
-                    // Crear un objeto Blob con los datos recibidos
-                    var blob = new Blob([data], {type: 'application/pdf'});
-                    // Crear un objeto URL con el Blob recién creado
-                    var url = window.URL.createObjectURL(blob);
-                    // Abrir el PDF en una nueva pestaña del navegador
-                    window.open(url, '_blank');
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error al generar el reporte en PDF: ' + error);
-                }
-            });
-        });
-    </script>
 </head>
 <body>
     <div class="header">
-        <h1>Reporte de orden de trabajo {{ reporte.orden_de_trabajo }}</h1>
-        <p>Fecha: {{ reporte.fecha }}</p>
+        <img class="logo" src="{% static 'img/logo.png' %}">
+        <h1>Informe Tecnico</h1>
     </div>
+    <p>Nombre del Cliente: {{ reporte.orden_de_trabajo.cliente.nombre }}{{ reporte.orden_de_trabajo.cliente.apellidos }}</p>
+    <p>Dirección: {{ reporte.orden_de_trabajo.cliente.direccion }}</p>
+    <p>Teléfono: {{ reporte.orden_de_trabajo.cliente.telefono }}</p>
+    <p>Fecha: {{ reporte.fecha }}</p>
+    <p>Operador: {{ reporte.orden_de_trabajo.operador }}</p>
     <p>Descripción: {{ reporte.descripcion }}</p>
+    
+    
     {% if reporte.imagen %}
-        <img class="image" src="{{ reporte.imagen.url }}">
+        <img class="image" src="{{ reporte.imagen.url }}" width="200">
     {% endif %}
+    <p>MINISTERIO DE LA PROTECCIÓN SOCIAL</p>
+    <p>DECRETO NÚMERO 1575 DE 2007 (Mayo 9)</p>
+    <p>CAPITULO III ARTÍCULO 10º.- RESPONSABILIDAD DE LOS USUARIOS.</p>
+    <p>Todo usuario es responsable de mantener en condiciones sanitarias adecuadas las instalaciones de distribución y almacenamiento de agua para consumo humano a nivel intradomiciliario.</p>
 </body>
 </html>
-
-

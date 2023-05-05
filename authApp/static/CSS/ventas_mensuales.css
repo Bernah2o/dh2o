@@ -1,0 +1,30 @@
+.logo-img {
+    display: block;
+    margin: 1 auto;
+  }
+  
+.border {
+   border: 1px solid black;
+   padding: 5px;
+  }
+  
+.card-header {
+  display: flex;
+  align-items: center;
+    justify-content: center;
+  }
+  
+.card-header h1 {
+  margin: 1 auto;
+  }
+  
+.ventas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  }
+  
+.ventas-container h2 {
+   margin-bottom: 30px;
+  }
+  

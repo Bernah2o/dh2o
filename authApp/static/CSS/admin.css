@@ -1,8 +1,14 @@
 /* Estilo del título de la columna "Próx. a vencerse" */
-th.column-ver_clientes_proximos {
+.th_ver_clientes_proximos {
   font-weight: bold;
   text-align: left;
-  color: #444;
+  color: #0056b3;
+}
+
+.th_ver_pdf {
+  font-weight: bold;
+  text-align: left;
+  color: #0056b3;
 }
 
 table td {
@@ -35,6 +41,14 @@ table td {
   margin: 2px;
   cursor: default;
 }
+.logo {
+  background-image: url('../images/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 100px;
+}
+
 
 
 
