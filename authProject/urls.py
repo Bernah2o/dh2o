@@ -18,6 +18,8 @@ from authApp.views.tanqueViewSet import TanqueViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.facturaViewSet import ventas_mensuales
 
+
+
 # from authApp.views.reporteViewsSet import GeneratePdf
 
 
@@ -34,6 +36,7 @@ router.register(r'ordenesdetrabajo', OrdenDeTrabajoViewSet)
 router.register(r'reportes', ReporteViewSet)
 
 
+
 # Configuramos las URLs
 urlpatterns = [
     # Agregamos las URLs del router
@@ -41,7 +44,7 @@ urlpatterns = [
     # Agregamos la URL del admin de Django
     path('admin/', admin.site.urls),
     # Agregamos la URL para la autenticación de la API
-    path('api-auth/', include('rest_framework.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # Agregamos la URL para obtener un token JWT
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # Agregamos la URL para refrescar un token JWT
@@ -58,11 +61,7 @@ urlpatterns = [
     path('ventas-mensuales/', ventas_mensuales, name='ventas_mensuales'),
     
     
-
-
-
     # otras rutas ...
-
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -12,9 +12,11 @@ class OrdenDeTrabajo(models.Model):
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
     tanque = models.ForeignKey(Tanque, on_delete=models.CASCADE)
     operador = models.ForeignKey(Operador, on_delete=models.CASCADE)
-    costo = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.TextField()
+    
 
     def __str__(self):
         return f"OrdenDeTrabajo {self.cliente}"
+    
+    
     

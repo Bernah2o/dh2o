@@ -150,13 +150,14 @@ WSGI_APPLICATION = 'authProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dh2ocol',
+        'NAME': 'bd_h2o',
         'USER': 'postgres',
         'PASSWORD': '15172967',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
+
 """
 DATABASES = {
     'default': {

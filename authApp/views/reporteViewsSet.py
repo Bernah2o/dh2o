@@ -1,3 +1,4 @@
+import cgi
 from rest_framework import viewsets
 from authApp.models.reporte import Reporte
 from authApp.serializers.reporteSerializers import ReporteSerializer

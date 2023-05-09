@@ -7,4 +7,4 @@ class Servicio(models.Model):
     precio = models.IntegerField()
 
     def __str__(self) -> str:
-        return self.nombre
+        return f"{self.nombre}"

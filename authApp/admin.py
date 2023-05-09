@@ -7,7 +7,6 @@ from django.utils.translation import gettext as _
 from django.urls import reverse
 from django.utils.html import format_html
 
-
 # Importamos los modelos que queremos registrar
 from .models.clientes import Cliente
 from .models.factura import Factura
@@ -19,14 +18,12 @@ from .models.repuesto import Repuesto
 from .models.ordendetrabajo import OrdenDeTrabajo
 from .models.reporte import Reporte
 
-
 # Definimos una clase que hereda de `resources.ModelResource` para especificar la configuración de importación/exportación
 class ClienteResource(resources.ModelResource):
     class Meta:
         model = Cliente
 
     # Definimos una clase que hereda de `ImportExportModelAdmin` y `admin.ModelAdmin` para personalizar el comportamiento del modelo en el sitio de administración
-
 
 class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     # Definimos que el campo `creacion` sea de solo lectura
@@ -66,10 +63,13 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
         # Calculamos la cantidad de días desde la última limpieza
         dias_desde_limpieza = (fecha_actual - ultima_limpieza).days
-
-        # Si la última limpieza fue hace más de 150 días, devolvemos un botón rojo
-        if dias_desde_limpieza > 150:
-            return mark_safe(f'<button class="boton-rojo">Prox. a vencerse</button>')
+        
+        # Si la última limpieza fue hace más de 180 días, devolvemos un botón naranja con el mensaje "Vencido"
+        if dias_desde_limpieza > 180:
+             return mark_safe(f'<button class="boton-naranja">Vencido</button>')
+        # Si la última limpieza fue hace más de 150 días pero menos de 180 días, devolvemos un botón rojo
+        elif dias_desde_limpieza > 150:
+            return mark_safe(f'<button class="boton-rojo">Llamar</button>')
         # Si la última limpieza fue hace menos de 150 días, devolvemos un botón verde
         else:
             return mark_safe(f'<button class="boton-verde">Vigente</button>')
@@ -80,9 +80,13 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     ver_clientes_proximos.short_description = 'Estado'
     ver_clientes_proximos.allow_tags = True
     
+    def ver_ventas_mensuales(self, obj):
+        url = reverse('ventas_mensuales')
+        return format_html(f'<a href="{url}">Ver ventas mensuales</a>')
+
+    ver_ventas_mensuales.short_description = 'Ventas mensuales'
     
-
-
+ 
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
     list_display = ['orden_de_trabajo', 'fecha', 'descripcion', 'ver_pdf']
@@ -96,29 +100,33 @@ class ReporteAdmin(admin.ModelAdmin):
 
     # Cambiar el título de la columna en la página de admin
     ver_pdf.short_description = 'Descargar'
-
+ 
 class FacturaAdmin(admin.ModelAdmin):
     list_display = ['numero_factura', 'cliente', 'operador', 'mpago', 'fecha', 'descuento', 'total', 'ver_ventas_mensuales']
-    list_display_links = ['numero_factura']
-    # Otras configuraciones...
+    list_display_links = ['numero_factura']    
 
-    def ver_ventas_mensuales(self, obj):
-        url = reverse('ventas_mensuales')
-        return format_html(f'<a href="{url}">Ver ventas mensuales</a>')
+class OrdenDeTrabajoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'cliente', 'servicio', 'precio')
+    readonly_fields = ('precio',) 
+      
+    def get_precio(self, obj):
+        return obj.servicio.precio if obj.servicio else None
 
-    ver_ventas_mensuales.short_description = 'Ventas mensuales'
-    #numero_factura.short_description = 'No'
-
-   
+    get_precio.short_description = 'Precio'
+    precio = property(get_precio) 
+    
+    def precio(self, obj):
+        return obj.servicio.precio if obj.servicio else None
 
 
 admin.site.register(Cliente, ClienteAdmin)
-admin.site.register(Factura, FacturaAdmin)
+admin.site.register(Factura)
 admin.site.register(Operador)
 admin.site.register(Servicio)
 admin.site.register(Mpago)
 admin.site.register(Tanque)
 admin.site.register(Repuesto)
-admin.site.register(OrdenDeTrabajo)
+admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)
+
 
