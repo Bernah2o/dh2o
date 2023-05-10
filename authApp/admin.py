@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.urls import reverse
 from django.utils.html import format_html
+from django import forms
 
 # Importamos los modelos que queremos registrar
 from .models.clientes import Cliente
@@ -80,13 +81,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     ver_clientes_proximos.short_description = 'Estado'
     ver_clientes_proximos.allow_tags = True
     
-    def ver_ventas_mensuales(self, obj):
-        url = reverse('ventas_mensuales')
-        return format_html(f'<a href="{url}">Ver ventas mensuales</a>')
-
-    ver_ventas_mensuales.short_description = 'Ventas mensuales'
-    
- 
+      
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
     list_display = ['orden_de_trabajo', 'fecha', 'descripcion', 'ver_pdf']
@@ -102,21 +97,30 @@ class ReporteAdmin(admin.ModelAdmin):
     ver_pdf.short_description = 'Descargar'
  
 class FacturaAdmin(admin.ModelAdmin):
-    list_display = ['numero_factura', 'cliente', 'operador', 'mpago', 'fecha', 'descuento', 'total', 'ver_ventas_mensuales']
-    list_display_links = ['numero_factura']    
+    readonly_fields = ("creacion","ver_ventas_mensuales")
+    search_fields = ['cliente__nombre', 'cliente__apellido', 'operador__nombre', 'operador__apellido', 'descripcion']
+    list_display = ['numero_factura', 'cliente', 'operador', 'mpago', 'fecha', 'descuento', 'total', 'ver_ventas_mensuales','creacion']
+      
+    def ver_ventas_mensuales(self, obj):
+        url = reverse('ventas_mensuales')
+        return format_html(f'<a href="{url}">Ver ventas mensuales</a>')
+
+    ver_ventas_mensuales.short_description = 'Ventas mensuales'
+class OrdenDeTrabajoForm(forms.ModelForm):
+    servicios = forms.ModelMultipleChoiceField(
+        queryset=Servicio.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
+
+    class Meta:
+        model = OrdenDeTrabajo
+        fields = '__all__'
 
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'cliente', 'servicio', 'precio')
-    readonly_fields = ('precio',) 
+    form = OrdenDeTrabajoForm    
       
-    def get_precio(self, obj):
-        return obj.servicio.precio if obj.servicio else None
 
-    get_precio.short_description = 'Precio'
-    precio = property(get_precio) 
-    
-    def precio(self, obj):
-        return obj.servicio.precio if obj.servicio else None
 
 
 admin.site.register(Cliente, ClienteAdmin)
@@ -126,7 +130,7 @@ admin.site.register(Servicio)
 admin.site.register(Mpago)
 admin.site.register(Tanque)
 admin.site.register(Repuesto)
-admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
+admin.site.register(OrdenDeTrabajo)
 admin.site.register(Reporte, ReporteAdmin)
 
 

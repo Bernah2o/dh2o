@@ -3,8 +3,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from django.conf.urls.static import static
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView, TokenRefreshView)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 from authApp.views.facturaViewSet import FacturaViewSet
@@ -59,6 +58,8 @@ urlpatterns = [
     path('clientes/panel/', ClienteViewSet.panel_clientes, name='panel_clientes'),
     
     path('ventas-mensuales/', ventas_mensuales, name='ventas_mensuales'),
+    
+    
     
     
     # otras rutas ...

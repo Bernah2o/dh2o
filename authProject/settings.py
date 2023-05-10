@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'authApp',
     'corsheaders',
     'import_export',
+    
 
 
 ]

@@ -1,6 +1,6 @@
 from django.db import models
-from datetime import date, timedelta, timezone
-from authApp.models.servicios import Servicio
+from datetime import timedelta
+from django.utils import timezone
 
 
 class Cliente(models.Model):
@@ -31,17 +31,22 @@ class Cliente(models.Model):
         self.nombre = self.nombre.upper() # Convertir el nombre a mayúsculas antes de guardar
         self.apellido = self.apellido.upper() # Convertir el apellido a mayúsculas antes de guardar
         self.direccion = self.direccion.upper() # Convertir la dirección a mayúsculas antes de guardar
+        
         if self.ultima_limpieza:
             # Calcular fecha de próxima limpieza
             frecuencia_meses = 6 # Frecuencia de limpieza en meses, cambiar según necesidades
             delta_meses = timedelta(days=30*int(frecuencia_meses)) # Duración en días de la frecuencia de limpieza
             self.proxima_limpieza = self.ultima_limpieza + delta_meses # Calcular la fecha de próxima limpieza
+            
         super().save(*args, **kwargs)
-
+        
     def __str__(self):
         texto = "{0} {1}"
         return texto.format(self.nombre,self.apellido)
     
+        
+        
+  
     
     
     

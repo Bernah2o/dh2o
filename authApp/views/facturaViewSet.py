@@ -13,3 +13,4 @@ class FacturaViewSet(viewsets.ModelViewSet):
 def ventas_mensuales(request):
     ventas_mensuales = Factura.objects.annotate(mes=TruncMonth('fecha')).values('mes').annotate(total_ventas=Sum('total')).order_by('-mes')
     return render(request, 'ventas_mensuales.html', {'ventas_mensuales': ventas_mensuales})
+
