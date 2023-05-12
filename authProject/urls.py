@@ -1,3 +1,4 @@
+# Importamos los módulos necesarios
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
@@ -6,21 +7,17 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
+# Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
 from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet
 from authApp.views.reporteViewsSet import ReporteViewSet
-from authApp.views.repuestoViewsSet import RepuestoViewSet
 from authApp.views.servicioViewSet import ServicioViewSet
 from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
-from authApp.views.tanqueViewSet import TanqueViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.facturaViewSet import ventas_mensuales
 
-
-
-# from authApp.views.reporteViewsSet import GeneratePdf
-
+from authApp.views.productoViewSet import ProductoViewSet
 
 # Definimos nuestro router para manejar todas las vistas de la API
 router = routers.DefaultRouter()
@@ -29,12 +26,10 @@ router.register(r'facturas', FacturaViewSet)
 router.register(r'servicios', ServicioViewSet)
 router.register(r'operadores', OperadorViewSet)
 router.register(r'mpagos', MpagoViewSet)
-router.register(r'tanques', TanqueViewSet)
-router.register(r'repuestos', RepuestoViewSet)
+
 router.register(r'ordenesdetrabajo', OrdenDeTrabajoViewSet)
 router.register(r'reportes', ReporteViewSet)
-
-
+router.register(r'producto', ProductoViewSet)
 
 # Configuramos las URLs
 urlpatterns = [
@@ -56,8 +51,12 @@ urlpatterns = [
          ClienteViewSet.as_view({'get': 'clientes_proximos'}), name='clientes_proximos'),
     # Agregamos la URL para el panel de clientes
     path('clientes/panel/', ClienteViewSet.panel_clientes, name='panel_clientes'),
-    
+    # Agregamos la URL para obtener las ventas mensuales
     path('ventas-mensuales/', ventas_mensuales, name='ventas_mensuales'),
+    # Agregamos la URL para enviar un mensaje de WhatsApp
+    path('clientes/<int:cliente_id>/enviar-whatsapp/', ClienteViewSet.as_view({'get': 'enviar_whatsapp'}), name='enviar_whatsapp'),
+
+    
     
     
     

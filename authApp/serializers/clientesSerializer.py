@@ -9,8 +9,6 @@ class ClienteSerializer(serializers.ModelSerializer):
     servicios = ServicioSerializer(many=True, read_only=True)
     proxima_limpieza = serializers.DateField(read_only=True)
     
-    
-
     class Meta:
         model = Cliente
         fields = ['cedula', 'nombre', 'apellido', 'Fecha_nacimiento', 'direccion', 'telefono', 'correo', 'creacion', 'descripcion', 'ultima_limpieza', 'proxima_limpieza', 'servicios']

@@ -1,0 +1,5 @@
+<!-- templates/clientes/detalles_cliente.html -->
+<h1>{{ cliente.nombre }}</h1>
+<p>Teléfono: {{ cliente.telefono }}</p>
+
+<a href="{% url 'enviar_whatsapp' cliente.id %}">Enviar mensaje de WhatsApp</a>
