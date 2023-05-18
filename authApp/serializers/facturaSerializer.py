@@ -5,6 +5,7 @@ from authApp.models.servicios import Servicio
 class FacturaSerializer(serializers.ModelSerializer):
     creacion = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     servicios = serializers.PrimaryKeyRelatedField(many=True, queryset=Servicio.objects.all())
+    
 
     class Meta:
         model = Factura

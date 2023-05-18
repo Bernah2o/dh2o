@@ -9,7 +9,7 @@ from authApp.serializers.clientesSerializer import ClienteSerializer
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
               
       
     def clientes_proximos(self, request):
@@ -26,3 +26,4 @@ class ClienteViewSet(viewsets.ModelViewSet):
         mensaje = 'Hola {} {}, este es un mensaje de prueba'.format(cliente.nombre, cliente.apellido)
         url = 'https://web.whatsapp.com/send?phone={}&text={}'.format(cliente.telefono, mensaje)
         return HttpResponseRedirect(url)
+    

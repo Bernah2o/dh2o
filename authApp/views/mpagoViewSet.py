@@ -5,4 +5,4 @@ from authApp.serializers.mpagoSerializer import MpagoSerializer
 class MpagoViewSet(viewsets.ModelViewSet):
     queryset = Mpago.objects.all()
     serializer_class = MpagoSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]

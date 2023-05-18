@@ -5,4 +5,4 @@ from authApp.serializers.operadorSerializer import OperadorSerializer
 class OperadorViewSet(viewsets.ModelViewSet):
     queryset = Operador.objects.all()
     serializer_class = OperadorSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]

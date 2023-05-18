@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 
 from authApp.models.ordendetrabajo import OrdenDeTrabajo
 from authApp.serializers.ordendetrabajoSerializers import OrdenDeTrabajoSerializer
@@ -6,6 +6,7 @@ from authApp.serializers.ordendetrabajoSerializers import OrdenDeTrabajoSerializ
 class OrdenDeTrabajoViewSet(viewsets.ModelViewSet):
     queryset = OrdenDeTrabajo.objects.all()
     serializer_class = OrdenDeTrabajoSerializer
+    permission_classes = [permissions.IsAuthenticated]
     
     def perform_create(self, serializer):
         servicios = self.request.data.pop('servicios', [])

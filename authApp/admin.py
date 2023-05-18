@@ -16,7 +16,7 @@ from .models.servicios import Servicio
 from .models.mpago import Mpago
 from .models.ordendetrabajo import OrdenDeTrabajo
 from .models.reporte import Reporte
-
+from .models.actividades import Actividad
 from .models.producto import Producto
 # Definimos una clase que hereda de `resources.ModelResource` para especificar la configuración de importación/exportación
 class ClienteResource(resources.ModelResource):
@@ -83,28 +83,23 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
       
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
-    list_display = ['orden_de_trabajo', 'fecha', 'descripcion', 'ver_pdf']
-
+    list_display = ['orden_de_trabajo','cliente','fecha','ver_pdf',]
+    search_fields = ('cliente__nombre',)
+    readonly_fields = ('creacion','proxima_limpieza',) # campo inmodificable
+    
+    
     def ver_pdf(self, obj):
         # Generar la URL para descargar el PDF del reporte
-        url = reverse('generar_reporte_pdf', args=[obj.id])
+        url = reverse('generar_reporte_pdf', args=[obj.id_reporte])
 
         # Retornar un enlace HTML con el botón de descarga del PDF
         return format_html('<a class="button" href="{}">PDF</a>', url)
 
     # Cambiar el título de la columna en la página de admin
     ver_pdf.short_description = 'Descargar'
- 
+    
 class FacturaAdmin(admin.ModelAdmin):
-    readonly_fields = ("creacion","ver_ventas_mensuales")
-    search_fields = ['cliente__nombre', 'cliente__apellido', 'operador__nombre', 'operador__apellido', 'descripcion']
-    list_display = ['numero_factura', 'cliente', 'operador', 'mpago', 'fecha', 'descuento', 'total', 'ver_ventas_mensuales','creacion']
-      
-    def ver_ventas_mensuales(self, obj):
-        url = reverse('ventas_mensuales')
-        return format_html(f'<a href="{url}">Ver ventas mensuales</a>')
-
-    ver_ventas_mensuales.short_description = 'Ventas mensuales'
+    readonly_fields = ('creacion',)
 class OrdenDeTrabajoForm(forms.ModelForm):
     servicios = forms.ModelMultipleChoiceField(
         queryset=Servicio.objects.all(),
@@ -117,18 +112,17 @@ class OrdenDeTrabajoForm(forms.ModelForm):
         fields = '__all__'
 
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
+    list_display = ('numero_orden', 'fecha', 'cliente', 'calcular_total')
     form = OrdenDeTrabajoForm    
-      
-
-
 
 admin.site.register(Cliente, ClienteAdmin)
-admin.site.register(Factura)
+admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Operador)
 admin.site.register(Servicio)
 admin.site.register(Mpago)
-admin.site.register(OrdenDeTrabajo)
+admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Producto)
+admin.site.register(Actividad)
 
 

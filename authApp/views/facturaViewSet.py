@@ -10,7 +10,7 @@ from authApp.serializers.facturaSerializer import FacturaSerializer
 class FacturaViewSet(viewsets.ModelViewSet):
     queryset = Factura.objects.all()
     serializer_class = FacturaSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

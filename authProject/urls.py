@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
+
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
 from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet
@@ -16,7 +17,7 @@ from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.facturaViewSet import ventas_mensuales
-
+from authApp.views.actividadViewSet import ActividadViewSet
 from authApp.views.productoViewSet import ProductoViewSet
 
 # Definimos nuestro router para manejar todas las vistas de la API
@@ -26,7 +27,7 @@ router.register(r'facturas', FacturaViewSet)
 router.register(r'servicios', ServicioViewSet)
 router.register(r'operadores', OperadorViewSet)
 router.register(r'mpagos', MpagoViewSet)
-
+router.register(r'actividades', ActividadViewSet)
 router.register(r'ordenesdetrabajo', OrdenDeTrabajoViewSet)
 router.register(r'reportes', ReporteViewSet)
 router.register(r'producto', ProductoViewSet)
@@ -56,11 +57,7 @@ urlpatterns = [
     # Agregamos la URL para enviar un mensaje de WhatsApp
     path('clientes/<int:cliente_id>/enviar-whatsapp/', ClienteViewSet.as_view({'get': 'enviar_whatsapp'}), name='enviar_whatsapp'),
 
-    
-    
-    
-    
-    
+       
     # otras rutas ...
 
 ]

@@ -5,12 +5,12 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.keys import Keys
 
+
 class Cliente(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     cedula = models.IntegerField(unique=True, null=True, blank=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField(null=True, blank=True)
     direccion = models.CharField(max_length=100)
     telefono = models.CharField(max_length=11)
     correo = models.EmailField(max_length=100, blank=True)
@@ -18,7 +18,8 @@ class Cliente(models.Model):
     descripcion = models.CharField(max_length=200, blank=True) 
     ultima_limpieza = models.DateField(null=True, blank=True) # Fecha de última limpieza
     proxima_limpieza = models.DateField(null=True, blank=True) # Fecha de próxima limpieza
-    
+      
+   
     def __str__(self):
         texto = "{0} {1}"
         return texto.format(self.nombre,self.apellido)    
@@ -79,9 +80,8 @@ def enviar_whatsapp(clientes, mensaje):
 
     # Cerrar el navegador
     driver.quit()
-
-
-
+    
+   
         
         
   
