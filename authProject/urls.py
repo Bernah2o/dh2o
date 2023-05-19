@@ -5,6 +5,7 @@ from django.urls import include, path
 from rest_framework import routers
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from authApp.admin import FacturaAdmin
 
 
 
@@ -16,7 +17,6 @@ from authApp.views.servicioViewSet import ServicioViewSet
 from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
-from authApp.views.facturaViewSet import ventas_mensuales
 from authApp.views.actividadViewSet import ActividadViewSet
 from authApp.views.productoViewSet import ProductoViewSet
 
@@ -52,8 +52,9 @@ urlpatterns = [
          ClienteViewSet.as_view({'get': 'clientes_proximos'}), name='clientes_proximos'),
     # Agregamos la URL para el panel de clientes
     path('clientes/panel/', ClienteViewSet.panel_clientes, name='panel_clientes'),
-    # Agregamos la URL para obtener las ventas mensuales
-    path('ventas-mensuales/', ventas_mensuales, name='ventas_mensuales'),
+    
+    path('ventas-mensuales/', FacturaAdmin.ventas_mensuales_action, name='ventas_mensuales'),
+        
     # Agregamos la URL para enviar un mensaje de WhatsApp
     path('clientes/<int:cliente_id>/enviar-whatsapp/', ClienteViewSet.as_view({'get': 'enviar_whatsapp'}), name='enviar_whatsapp'),
 

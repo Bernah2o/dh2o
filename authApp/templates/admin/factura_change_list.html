@@ -1,0 +1,51 @@
+{% extends "admin/change_list.html" %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ventas_mensuales.css' %}">
+{% endblock %}
+
+{% block result_list %}
+    {% if result_count %}
+        <table id="result_list">
+            <!-- Cabecera de la tabla -->
+            <thead>
+                <tr>
+                    <th scope="col" class="column-numero_factura">
+                        <!-- Código para el campo "Número de Factura" -->
+                        {{ factura_admin.numero_factura.short_description }}
+                    </th>
+                    <th scope="col" class="column-cliente">
+                        <!-- Código para el campo "Cliente" -->
+                        {{ factura_admin.cliente.short_description }}
+                    </th>
+                    <th scope="col" class="column-total">
+                        <!-- Código para el campo "Total" -->
+                        {{ factura_admin.total.short_description }}
+                    </th>
+                    <th scope="col" class="column-ventas_mensuales">
+                        {{ factura_admin.ventas_mensuales_column.short_description }}
+                    </th>
+                    <!-- Resto de las columnas -->
+                </tr>
+            </thead>
+            <!-- Cuerpo de la tabla -->
+            <tbody>
+                <!-- Código para los registros de las facturas -->
+                {% for factura in result_list %}
+                    <tr class="{% cycle 'row1' 'row2' %}">
+                        <td class="field-numero_factura">{{ factura.numero_factura }}</td>
+                        <td class="field-cliente">{{ factura.cliente }}</td>
+                        <td class="field-total">{{ factura.total }}</td>
+                        <td class="field-ventas_mensuales">
+                            <span>{{ factura|ventas_mensuales }}</span>
+                        </td>
+                        <!-- Resto de las columnas -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>{% trans 'No se encontraron resultados.' %}</p>
+    {% endif %}
+{% endblock %}

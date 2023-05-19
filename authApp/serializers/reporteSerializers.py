@@ -7,4 +7,4 @@ class ReporteSerializer(serializers.ModelSerializer):
     
     class Meta:
       model = Reporte
-      fields = ['id_reporte', 'orden_de_trabajo', 'cliente', 'fecha', 'descripcion', 'imagen','creacion','proxima_limpieza']
+      fields = '__all__'  # Incluye todos los campos del modelo, incluyendo 'creacion'

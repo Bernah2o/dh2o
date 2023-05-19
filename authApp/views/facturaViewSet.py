@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions
 from django.db.models.functions import TruncMonth
-from django.db.models import Sum, F
-from django.shortcuts import render
+from django.db.models import Sum
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from authApp.models.factura import Factura
 from authApp.serializers.facturaSerializer import FacturaSerializer
@@ -23,7 +23,7 @@ class FacturaViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save()
             
-def ventas_mensuales(request):
-    ventas_mensuales = Factura.objects.annotate(mes=TruncMonth('fecha')).values('mes').annotate(total_ventas=Sum('total')).order_by('-mes')
-    return render(request, 'ventas_mensuales.html', {'ventas_mensuales': ventas_mensuales})
-
+    @action(detail=False, methods=['get'])
+    def ventas_mensuales(self, request):
+        ventas_mensuales = Factura.objects.annotate(mes=TruncMonth('creacion')).values('mes').annotate(total_ventas=Sum('total')).order_by('-mes')
+        return Response(ventas_mensuales)
