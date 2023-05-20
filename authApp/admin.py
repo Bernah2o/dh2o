@@ -14,6 +14,7 @@ import locale
 from django.utils.timezone import localtime
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
+from django.contrib.admin.views.main import ChangeList
 
 
 
@@ -111,48 +112,24 @@ class ReporteAdmin(admin.ModelAdmin):
 class FacturaAdmin(admin.ModelAdmin):
     readonly_fields = ('creacion',)  # Establece campos de solo lectura
     actions = ['ventas_mensuales_action']  # Agrega una acción personalizada
-    list_display = ('numero_factura', 'cliente', 'total','ventas_mensuales')  # Campos a mostrar en la lista de objetos
+    list_display = ('numero_factura', 'cliente', 'total','ventas_mensuales_column')  # Campos a mostrar en la lista de objetos
     list_filter = (('creacion', admin.DateFieldListFilter),)  # Filtros por fecha de creación
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         queryset = queryset.annotate(mes=TruncMonth('creacion')).annotate(total_ventas=Sum('total')).order_by('-mes')
         return queryset
+    
+    def ventas_mensuales_column(self, obj):
+        # Crear el enlace para redirigir a ventas_mensuales.html
+        link = reverse('ventas_mensuales')
+        link_html = format_html('<a href="{}">Ver Ventas Mensuales</a>', link)
 
-    def ventas_mensuales(self, obj):
-        # Establecer la configuración regional a Colombia
-        locale.setlocale(locale.LC_ALL, 'es_CO.UTF-8')
+        return link_html
 
-        # Obtener las ventas mensuales acumuladas para el año del objeto 'obj'
-        ventas_mensuales_acumuladas = Factura.objects.filter(creacion__year=localtime(obj.creacion).year).values('creacion__month').annotate(total_ventas=Sum('total')).order_by('creacion__month')
+    ventas_mensuales_column.short_description = 'Ventas Mensuales'
 
-        # Crear una lista de las ventas mensuales acumuladas en un solo campo
-        ventas_mensuales_str = ' | '.join([f'<b>Mes:</b> {venta["creacion__month"]} <b>Total Ventas:</b> {locale.currency(venta["total_ventas"], grouping=True, symbol="COP")}' for venta in ventas_mensuales_acumuladas])
-
-        return mark_safe(ventas_mensuales_str)
-
-    ventas_mensuales.short_description = 'Ventas Mensuales'  # Define el nombre de la columna 'Ventas Mensuales'
-
-    def ventas_mensuales_action(self, request, queryset):
-        # Establecer la configuración regional a Colombia
-        locale.setlocale(locale.LC_ALL, 'es_CO.UTF-8')
-        
-        # Obtener el mes y año seleccionado para filtrar las facturas
-        selected_month = request.GET.get('creacion__month')
-        selected_year = request.GET.get('creacion__year')
-        
-        if selected_month and selected_year:
-
-            # Obtener las ventas mensuales acumuladas para el año de todas las facturas seleccionadas
-            ventas_mensuales_acumuladas = Factura.objects.filter(creacion__year=localtime(queryset.first().creacion).year).values('creacion__month').annotate(total_ventas=Sum('total')).order_by('creacion__month')
-
-            # Crear una lista de las ventas mensuales acumuladas en un solo campo
-            ventas_mensuales_str = ' | '.join([f'<b>Mes:</b> {venta["creacion__month"]} <b>Total Ventas:</b> {locale.currency(venta["total_ventas"], grouping=True, symbol="COP")}' for venta in ventas_mensuales_acumuladas])
-
-            # Mostrar el resultado en un mensaje
-            self.message_user(request, mark_safe(ventas_mensuales_str))
-
-    ventas_mensuales_action.short_description = 'Mostrar Ventas Mensuales'
+     
     
 class OrdenDeTrabajoForm(forms.ModelForm):
     servicios = forms.ModelMultipleChoiceField(
@@ -200,7 +177,7 @@ class ProductoAdmin(admin.ModelAdmin):
         if ordenes:
             links = []
             for orden in ordenes:
-                url = reverse("admin:authApp_ordendetrabajo_change", args=(orden.id,))
+                url = reverse("admin:authApp_ordendetrabajo_change", args=(orden.numero_orden,))
                 link = f'<a href="{url}">{orden.numero_orden}</a>'
                 links.append(link)
             return format_html(", ".join(links))

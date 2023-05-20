@@ -47,12 +47,4 @@ class OrdenDeTrabajo(models.Model):
         for producto, cantidad in cantidad_productos.items():
             total += precio_productos[producto] * cantidad
 
-        # Configurar la configuración regional para Colombia
-        locale.setlocale(locale.LC_ALL, 'es_CO.UTF-8')
-
-        # Formatear el total como pesos colombianos
-        total_formateado = locale.currency(total, grouping=True, symbol=True)
-
-        return total_formateado
-
-    calcular_total.short_description = 'Total'
+        return total

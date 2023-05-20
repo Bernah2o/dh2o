@@ -53,8 +53,7 @@ urlpatterns = [
     # Agregamos la URL para el panel de clientes
     path('clientes/panel/', ClienteViewSet.panel_clientes, name='panel_clientes'),
     
-    path('ventas-mensuales/', FacturaAdmin.ventas_mensuales_action, name='ventas_mensuales'),
-        
+    path('ventas-mensuales/', FacturaViewSet.as_view({'get': 'ventas_mensuales'}), name='ventas_mensuales'),
     # Agregamos la URL para enviar un mensaje de WhatsApp
     path('clientes/<int:cliente_id>/enviar-whatsapp/', ClienteViewSet.as_view({'get': 'enviar_whatsapp'}), name='enviar_whatsapp'),
 

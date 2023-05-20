@@ -3,6 +3,7 @@ from django.db.models.functions import TruncMonth
 from django.db.models import Sum
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from django.shortcuts import render
 
 from authApp.models.factura import Factura
 from authApp.serializers.facturaSerializer import FacturaSerializer
@@ -10,7 +11,7 @@ from authApp.serializers.facturaSerializer import FacturaSerializer
 class FacturaViewSet(viewsets.ModelViewSet):
     queryset = Factura.objects.all()
     serializer_class = FacturaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [] # Permite el acceso sin autenticación
     
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -26,4 +27,7 @@ class FacturaViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def ventas_mensuales(self, request):
         ventas_mensuales = Factura.objects.annotate(mes=TruncMonth('creacion')).values('mes').annotate(total_ventas=Sum('total')).order_by('-mes')
-        return Response(ventas_mensuales)
+        return render(request, 'ventas_mensuales.html', {'ventas_mensuales': ventas_mensuales})
+
+    
+   

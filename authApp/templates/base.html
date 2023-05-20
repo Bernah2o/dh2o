@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Título de tu sitio web</title>
+    <!-- Aquí puedes agregar tus archivos CSS o scripts -->
+</head>
+<body>
+    <!-- Contenido de tu página -->
+    <div class="container">
+        <header>
+            <!-- Encabezado de tu página -->
+            <h1>Título de tu sitio web</h1>
+            <nav>
+                <!-- Menú de navegación -->
+                <ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/ventas-mensuales/" onclick="window.open(this.href, '_blank'); return false;">Ventas Mensuales</a></li>
+                    <!-- Agrega más enlaces según tus necesidades -->
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <!-- Contenido principal de tu página -->
+            {% block content %}
+            {% endblock %}
+        </main>
+        
+        <footer>
+            <!-- Pie de página -->
+            <p>Derechos reservados &copy; 2023</p>
+        </footer>
+    </div>
+</body>
+</html>
