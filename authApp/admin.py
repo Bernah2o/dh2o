@@ -112,7 +112,7 @@ class ReporteAdmin(admin.ModelAdmin):
 class FacturaAdmin(admin.ModelAdmin):
     readonly_fields = ('creacion',)  # Establece campos de solo lectura
     actions = ['ventas_mensuales_action']  # Agrega una acción personalizada
-    list_display = ('numero_factura', 'cliente', 'total','ventas_mensuales_column')  # Campos a mostrar en la lista de objetos
+    list_display = ('numero_factura', 'cliente', 'formatted_total','ventas_mensuales_column')  # Campos a mostrar en la lista de objetos
     list_filter = (('creacion', admin.DateFieldListFilter),)  # Filtros por fecha de creación
 
     def get_queryset(self, request):
@@ -123,13 +123,32 @@ class FacturaAdmin(admin.ModelAdmin):
     def ventas_mensuales_column(self, obj):
         # Crear el enlace para redirigir a ventas_mensuales.html
         link = reverse('ventas_mensuales')
-        link_html = format_html('<a href="{}">Ver Ventas Mensuales</a>', link)
-
+        link_html = format_html('<a href="{}" target="_blank">Ver Ventas Mensuales</a>', link)
+        
         return link_html
 
     ventas_mensuales_column.short_description = 'Ventas Mensuales'
+    
+    def formatted_total(self, obj):
+        total_formatted = f"{obj.total:,.2f}".rstrip('0').rstrip('.')
+        return format_html(f"${total_formatted} COP")
 
-     
+
+    formatted_total.short_description = 'Total'
+
+    def save_model(self, request, obj, form, change):
+        # Verificar si es una nueva factura sin número asignado
+        if not obj.numero_factura:
+            # Obtener el último número de factura existente
+            ultimo_numero_factura = Factura.objects.order_by('-numero_factura').first()
+
+            # Establecer el nuevo número de factura
+            if ultimo_numero_factura:
+                obj.numero_factura = ultimo_numero_factura.numero_factura + 1
+            else:
+                obj.numero_factura = 1
+
+        super().save_model(request, obj, form, change) 
     
 class OrdenDeTrabajoForm(forms.ModelForm):
     servicios = forms.ModelMultipleChoiceField(
@@ -143,21 +162,26 @@ class OrdenDeTrabajoForm(forms.ModelForm):
         fields = '__all__'
 
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
-    list_display = ('numero_orden', 'fecha', 'cliente', 'calcular_total')
+    list_display = ('numero_orden', 'fecha', 'cliente', 'formatted_total')
     form = OrdenDeTrabajoForm  
     
-   
+    def formatted_total(self, obj):
+        total = obj.calcular_total()
+        total_formatted = f"{total:,.2f}".rstrip('0').rstrip('.')
+        return format_html(f"${total_formatted} COP")
+
+    formatted_total.short_description = 'Total'
     
+  
 class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre','formatted_precio','cantidad','link_orden')
     
     def formatted_precio(self, obj):
-        locale.setlocale(locale.LC_ALL, 'es_CO.UTF-8')
-        rounded = Decimal(obj.precio).quantize(Decimal('0'))
-        formatted = f"{rounded:n}"
-        return f"${formatted}"
-    
+        precio_formatted = f"{obj.precio:,.2f}".rstrip('0').rstrip('.')
+        return format_html(f"${precio_formatted} COP")
+
     formatted_precio.short_description = 'Precio'
+
     
     @receiver(m2m_changed, sender=OrdenDeTrabajo.productos.through)
     def actualizar_inventario(sender, instance, action, **kwargs):
@@ -183,14 +207,25 @@ class ProductoAdmin(admin.ModelAdmin):
             return format_html(", ".join(links))
         return "-"
 
-    link_orden.short_description = 'Número de Orden'            
+    link_orden.short_description = 'Número de Orden'     
+    
+class ServicioAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'formatted_precio')   
+    
+    def formatted_precio(self, obj):
+        locale.setlocale(locale.LC_ALL, 'es_CO.UTF-8')
+        formatted = locale.format_string('%d', obj.precio, grouping=True)
+        formatted = formatted[:]  # Eliminar los dos ceros adicionales al final
+        return f'${formatted}' 
+    
+    formatted_precio.short_description = 'Precio'  
 
     
 
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Operador)
-admin.site.register(Servicio)
+admin.site.register(Servicio, ServicioAdmin)
 admin.site.register(Mpago)
 admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)

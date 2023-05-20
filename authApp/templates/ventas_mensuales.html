@@ -25,7 +25,7 @@
                   {% for venta in ventas_mensuales %}
                     <tr>
                       <td class="border">{{ venta.mes|date:'F Y' }}</td>
-                      <td class="border">${{ venta.total_ventas }}</td>
+                      <td class="border">${{ venta.total_ventas|floatformat:"-2" }}</td>
                     </tr>
                   {% empty %}
                     <tr>
@@ -43,5 +43,6 @@
 
   <!-- Carga de archivos CSS -->
   <link rel="stylesheet" href="{% static 'css/ventas_mensuales.css' %}">
+  
 
 {% endblock %}

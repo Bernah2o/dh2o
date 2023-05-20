@@ -1,6 +1,43 @@
 /* Estilo para la columna "Ventas Mensuales" */
-.column-ventas_mensuales {
-  font-weight: bold;
-  color: #007bff; /* Color azul utilizado por Django para los campos */
+.container {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px;
 }
+
+h1, h2 {
+  text-align: center;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.logo-img {
+  display: block;
+  margin: 0 auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+
+.table td {
+  text-align: center;
+}
+
+
+
 
