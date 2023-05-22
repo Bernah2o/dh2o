@@ -44,5 +44,11 @@
   <!-- Carga de archivos CSS -->
   <link rel="stylesheet" href="{% static 'css/ventas_mensuales.css' %}">
   
+  <script>
+    function cerrarVentana() {
+      window.close();
+    }
+  </script>
 
+  <button class="close-button" onclick="cerrarVentana()">Cerrar</button>
 {% endblock %}

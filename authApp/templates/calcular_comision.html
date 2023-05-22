@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>www.dh2o.com</title>
+  <style>
+    /* Estilos CSS */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .logo {
+      max-width: 200px;
+      margin: 0 auto;
+    }
+
+    .content {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .table-container {
+      margin: 20px auto;
+      width: 80%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    .close-button {
+      margin-top: 20px;
+    }
+  </style>
+  <script>
+    function cerrarVentana() {
+      window.close();
+    }
+  </script>
+</head>
+<body>
+  {% load static %}  <!-- Carga la biblioteca static -->
+
+  <div class="header">
+    <img src="{% static 'img/logo.png' %}" alt="Logo" width="200" class="logo-img">
+    <h1>DH2O S.A.S</h1>
+  </div>
+  <div class="content">
+    <h2>Informe de Comisiones</h2>
+    <p>Contenido de la página...</p>
+
+    <div class="table-container">
+      <!-- Agrega la tabla de la comisión calculada aquí -->
+      <table>
+        <thead>
+          <tr>
+            <th>Número de Orden</th>
+            <th>Operador</th>
+            <th>Cliente</th>
+            <th>Comisión</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ orden_de_trabajo.numero_orden }}</td>
+            <td>{{ orden_de_trabajo.operador }}</td>
+            <td>{{ orden_de_trabajo.cliente }}</td>
+            <td>${{ comision|floatformat:"-2" }}</td>
+            <td>{{ orden_de_trabajo.fecha }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="close-button" onclick="cerrarVentana()">Cerrar</button>
+  </div>
+</body>
+</html>

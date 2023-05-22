@@ -5,13 +5,12 @@ from django.urls import include, path
 from rest_framework import routers
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from authApp.admin import FacturaAdmin
 
 
 
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
-from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet
+from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet, CalcularComisionView
 from authApp.views.reporteViewsSet import ReporteViewSet
 from authApp.views.servicioViewSet import ServicioViewSet
 from authApp.views.operadorViewSet import OperadorViewSet
@@ -52,11 +51,13 @@ urlpatterns = [
          ClienteViewSet.as_view({'get': 'clientes_proximos'}), name='clientes_proximos'),
     # Agregamos la URL para el panel de clientes
     path('clientes/panel/', ClienteViewSet.panel_clientes, name='panel_clientes'),
-    
+    # Agregamos la URL para ventas mensuales
     path('ventas-mensuales/', FacturaViewSet.as_view({'get': 'ventas_mensuales'}), name='ventas_mensuales'),
     # Agregamos la URL para enviar un mensaje de WhatsApp
     path('clientes/<int:cliente_id>/enviar-whatsapp/', ClienteViewSet.as_view({'get': 'enviar_whatsapp'}), name='enviar_whatsapp'),
-
+    # Agregamos la URL para comisiones
+    #path('comisiones/<int:pk>/', OrdenDeTrabajoViewSet.as_view({'get': 'calcular_comision'}), name='authApp_ordendetrabajo_comisiones'),
+    path('comisiones/<int:pk>/', CalcularComisionView.as_view(), name='authApp_ordendetrabajo_comisiones'), 
        
     # otras rutas ...
 

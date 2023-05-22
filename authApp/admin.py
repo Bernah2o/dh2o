@@ -162,7 +162,7 @@ class OrdenDeTrabajoForm(forms.ModelForm):
         fields = '__all__'
 
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
-    list_display = ('numero_orden', 'fecha', 'cliente', 'formatted_total')
+    list_display = ('numero_orden', 'fecha', 'cliente', 'formatted_total','enlace_comisiones')
     form = OrdenDeTrabajoForm  
     
     def formatted_total(self, obj):
@@ -172,6 +172,11 @@ class OrdenDeTrabajoAdmin(admin.ModelAdmin):
 
     formatted_total.short_description = 'Total'
     
+    def enlace_comisiones(self, obj):
+        enlace = reverse('authApp_ordendetrabajo_comisiones', args=[obj.pk])
+        return mark_safe(f'<a href="{enlace}" target="_blank">Ver Comisiones</a>')
+
+    enlace_comisiones.short_description = 'Comisiones'
   
 class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre','formatted_precio','cantidad','link_orden')

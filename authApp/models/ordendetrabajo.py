@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -30,6 +31,14 @@ class OrdenDeTrabajo(models.Model):
             existing_facturas = Factura.objects.filter(orden_de_trabajo=self)
             if existing_facturas.exists():
                 raise ValidationError('Esta orden de trabajo ya tiene una factura asociada.')
+            
+    def calcular_comision(self):
+        comision = 0
+        for servicio in self.servicios.all():
+            comision += servicio.precio * Decimal(0.1)  # Calcula el 10% del precio del servicio y lo suma a la comisión
+
+        self.operador.comisiones += comision
+        self.operador.save()        
     
     def calcular_total(self):
         # Utilizar diccionarios para realizar el seguimiento de la cantidad y el precio de cada servicio y producto
