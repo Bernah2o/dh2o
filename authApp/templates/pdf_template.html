@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Orden de Trabajo</title>
+    <!-- Carga de archivos CSS -->
+    <link rel="stylesheet" href="{% static 'css/reporte.css' %}">
+</head>
+<body>
+    <div class="page-container">
+        <div class="header">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" width="200" class="logo-img">
+            <h1>Reporte de Orden de Trabajo</h1>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">Información General</h2>
+                <div class="section-content">
+                    <p><strong>Número de Orden:</strong> {{ reporte.orden_de_trabajo.numero_orden }}</p>
+                    <p><strong>Fecha:</strong> {{ reporte.fecha }}</p>
+                    <p><strong>Cliente:</strong> {{ reporte.cliente }}</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Actividades Realizadas</h2>
+                <div class="section-content">
+                    <div class="activity-container">
+                        <ul class="activity-list">
+                            {% for actividad in reporte.actividades_desarrolladas %}
+                                <li>{{ actividad }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            {% if reporte.imagen_antes_lavado %}
+                <div class="section">
+                    <h2 class="section-title">Imagen Antes del Lavado</h2>
+                    <div class="section-content">
+                        <img src="{{ MEDIA_URL }}{{ reporte.imagen_antes_lavado.url }}" alt="Imagen antes del lavado" class="imagen-antes">
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if reporte.imagen_despues_lavado %}
+                <div class="section">
+                    <h2 class="section-title">Imagen Después del Lavado</h2>
+                    <div class="section-content">
+                        <img src="{{ MEDIA_URL }}{{ reporte.imagen_despues_lavado.url }}" alt="Imagen después del lavado" class="imagen-despues">
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="footer">
+            <p>Próxima Limpieza: {{ reporte.proxima_limpieza }}</p>
+            <p>Generado el {{ reporte.creacion }}</p>
+            <p>MINISTERIO DE LA PROTECCION SOCIAL DECRETO NÚMERO 1575 DE 2007 (Mayo 9) CAPITULO III ARTÍCULO 10º.- RESPONSABILIDAD DE LOS USUARIOS. Todo usuario es responsable de mantener en condiciones sanitarias adecuadas las instalaciones de distribución y almacenamiento de agua para consumo humano a nivel intradomiciliario</p>
+        </div>
+    </div>
+</body>
+</html>

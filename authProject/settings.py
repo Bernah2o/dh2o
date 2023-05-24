@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'authApp',
     'corsheaders',
     'import_export',
+    'multiselectfield',
 ]
 
 
@@ -226,5 +227,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configuración de archivos multimedia
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/' # Define la URL base para acceder a los archivos multimedia
+MEDIA_ROOT = os.path.join(BASE_DIR, 'authApp/media') # Define la ruta donde se guardarán los archivos multimedia cargados por los usuarios

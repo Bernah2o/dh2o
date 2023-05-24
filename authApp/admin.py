@@ -1,6 +1,5 @@
 from datetime import date
 from django.contrib import admin
-from django.shortcuts import render
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from django.utils.safestring import mark_safe
@@ -11,10 +10,8 @@ from django import forms
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 import locale
-from django.utils.timezone import localtime
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
-from django.contrib.admin.views.main import ChangeList
 
 
 
@@ -26,9 +23,7 @@ from .models.servicios import Servicio
 from .models.mpago import Mpago
 from .models.ordendetrabajo import OrdenDeTrabajo
 from .models.reporte import Reporte
-from .models.actividades import Actividad
 from .models.producto import Producto
-from decimal import Decimal
 # Definimos una clase que hereda de `resources.ModelResource` para especificar la configuración de importación/exportación
 class ClienteResource(resources.ModelResource):
     class Meta:
@@ -235,6 +230,6 @@ admin.site.register(Mpago)
 admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Producto,ProductoAdmin)
-admin.site.register(Actividad)
+
 
 

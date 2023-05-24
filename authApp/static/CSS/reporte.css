@@ -1,0 +1,78 @@
+/* Estilos CSS para el reporte */
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.page-container {
+    width: 800px;
+    padding: 20px;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    background-color: #fff;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    margin-top: 20px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.section-content {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.activity-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.activity-list li {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid black;
+    margin-bottom: 5px;
+}
+
+.imagen-antes,
+.imagen-despues {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
+.footer {
+    margin-top: 30px;
+    text-align: center;
+}
+
+

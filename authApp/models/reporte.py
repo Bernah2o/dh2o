@@ -2,19 +2,31 @@ from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-
+from multiselectfield import MultiSelectField
 
 from authApp.models.ordendetrabajo import OrdenDeTrabajo
 from authApp.models.clientes import Cliente
-
-
 class Reporte(models.Model):
     id_reporte = models.AutoField(primary_key=True)
     orden_de_trabajo = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fecha = models.DateField()
-    descripcion = models.TextField()
-    imagen = models.ImageField(upload_to='reportes/', blank=True, null=True)  
+    ACTIVIDADES_CHOICES = [
+        ('Act1', 'Inspección y riesgos: Identificar peligros y riesgos en el área.'),
+        ('Act2', 'Cierre de entrada y salida: Verificar cierre para evitar ingreso de agua.'),
+        ('Act3', 'Equipos de protección personal (EPP): Asegurar EPP necesarios.'),
+        ('Act4', 'Bombeo y aspirado: Retirar agua del tanque con equipo.'),
+        ('Act5', 'Limpieza del fondo: Remover sedimentos y residuos del fondo.'),
+        ('Act6', 'Limpieza a presión: Limpiar paredes y techos con alta presión.'),
+        ('Act7', 'Aspirado de residuos: Retirar agua sucia y residuos del tanque.'),
+        ('Act8', 'Inspección final: Verificar limpieza y preparación para desinfección.'),
+        # Agrega aquí más opciones de actividades según tus necesidades
+    ]
+    actividades_desarrolladas = MultiSelectField(choices=ACTIVIDADES_CHOICES, max_length=50,max_choices=8, default = None)
+    imagen_antes_lavado_1 = models.ImageField(upload_to='reportes/', null=True)
+    imagen_antes_lavado_2 = models.ImageField(upload_to='reportes/', null=True)
+    imagen_despues_lavado_1 = models.ImageField(upload_to='reportes/', null=True)
+    imagen_despues_lavado_2 = models.ImageField(upload_to='reportes/', null=True)
     proxima_limpieza = models.DateField(blank=True, null=True) 
     creacion = models.DateTimeField(auto_now_add=True)
     
