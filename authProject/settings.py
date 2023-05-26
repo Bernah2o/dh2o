@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'import_export',
     'multiselectfield',
+    'https://dh2ocol-production.up.railway.app/',
 ]
 
 
