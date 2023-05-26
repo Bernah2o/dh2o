@@ -89,9 +89,9 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
       
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
-    list_display = ['orden_de_trabajo','cliente','fecha','ver_pdf',]
+    list_display = ['orden_de_trabajo','cliente','fecha','ver_pdf']
     search_fields = ('cliente__nombre',)
-    readonly_fields = ('creacion','proxima_limpieza',) # campo inmodificable
+    readonly_fields = ('creacion','proxima_limpieza') # campo inmodificable
     
     
     def ver_pdf(self, obj):

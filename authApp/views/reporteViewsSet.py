@@ -13,6 +13,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import cm
+from authApp.forms import ReporteForm
 
 from authApp.models.reporte import Reporte
 from authApp.serializers.reporteSerializers import ReporteSerializer
@@ -21,7 +22,7 @@ class ReporteViewSet(viewsets.ModelViewSet):
     queryset = Reporte.objects.all()
     serializer_class = ReporteSerializer
     permission_classes = [] # Permite el acceso sin autenticación
-        
+              
     @action(detail=True, methods=['get'])
     def generar_reporte_pdf(self, request, reporte_id=None):
         # Obtener los datos del reporte

@@ -23,19 +23,7 @@ class Factura(models.Model):
         super().save(*args, **kwargs)
         
         
-    """def clean(self):
-        super().clean()
-        if self.pk is None:
-            # Validar solo al crear una nueva instancia de Factura
-            ultima_factura = Factura.objects.order_by('-numero_factura').first()
-            if ultima_factura is not None:
-                siguiente_numero = ultima_factura.numero_factura + 1
-                if siguiente_numero != 1:
-                    raise ValidationError('El número de factura no es consecutivo.')
-            else:
-                if self.numero_factura != 1:
-                    raise ValidationError('El número de factura debe ser 1 para la primera factura.') """   
-    
+   
     
 
 

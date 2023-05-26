@@ -75,4 +75,5 @@ class OrdenDeTrabajo(models.Model):
 
         return total
     
+   
     

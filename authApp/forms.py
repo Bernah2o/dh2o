@@ -15,8 +15,11 @@ class ReporteForm(forms.ModelForm):
         required=False,
         widget=forms.FileInput(attrs={'class': 'form-control-file'})
     )
+    
+    total_factura = forms.DecimalField(disabled=True)
 
     class Meta:
         model = Reporte
         fields = '__all__'
-
+       
+    
