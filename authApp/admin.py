@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
@@ -28,9 +28,22 @@ from .models.producto import Producto
 class ClienteResource(resources.ModelResource):
     class Meta:
         model = Cliente
+# Para filtrar los clientes que tengan mas 180 dias        
+class EstadoProximaLimpiezaFilter(admin.SimpleListFilter):
+    title = 'Estado de Próxima Limpieza'
+    parameter_name = 'estado'
 
-    # Definimos una clase que hereda de `ImportExportModelAdmin` y `admin.ModelAdmin` para personalizar el comportamiento del modelo en el sitio de administración
+    def lookups(self, request, model_admin):
+        return (
+            ('vencido', 'Vencido'),
+        )
 
+    def queryset(self, request, queryset):
+        if self.value() == 'vencido':
+            return queryset.filter(ultima_limpieza__lte=date.today() - timedelta(days=180))
+       
+# Definimos una clase que hereda de `ImportExpodmin` y `admin.ModelAdmin` para personalizar el comportamiento del modelo en el sitio de administraciónrtModelA
+ 
 class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     # Definimos que el campo `creacion` sea de solo lectura
     readonly_fields = ("creacion", )
@@ -38,12 +51,11 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ['cedula', 'nombre']
     # Especificamos los campos que se mostrarán en la lista de objetos del modelo
     list_display = ('cedula', 'nombre', 'apellido', 'direccion',
-                    'telefono', 'ver_clientes_proximos')
-    
+                    'telefono', 'ver_clientes_proximos',)  
     # Especificamos los campos que tendrán un enlace en la lista de objetos del modelo
     list_display_links = ('cedula', 'ver_clientes_proximos')
     # Especificamos los campos por los que se puede filtrar en la lista de objetos del modelo
-    list_filter = ('creacion',)
+    list_filter = (EstadoProximaLimpiezaFilter,)
     # Especificamos la cantidad de objetos que se mostrarán por página en la lista de objetos del modelo
     list_per_page = 10
     # Especificamos la configuración de importación/exportación del modelo
@@ -72,20 +84,19 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         
         # Si la última limpieza fue hace más de 180 días, devolvemos un botón naranja con el mensaje "Vencido"
         if dias_desde_limpieza > 180:
-             return mark_safe(f'<button class="boton-naranja">Vencido</button>')
+             return mark_safe(f'<button class="boton-rojo">Vencido</button>')
         # Si la última limpieza fue hace más de 150 días pero menos de 180 días, devolvemos un botón rojo
         elif dias_desde_limpieza > 150:
-            return mark_safe(f'<button class="boton-rojo">Llamar</button>')
+            return mark_safe(f'<button class="boton-verde">Llamar</button>')
         # Si la última limpieza fue hace menos de 150 días, devolvemos un botón verde
         else:
-            return mark_safe(f'<button class="boton-verde">Vigente</button>')
+            return mark_safe(f'<button class="boton-azul">Vigente</button>')
     
     def ver_clientes_proximos_column_header(self):
         return 'Estado'    
 
     ver_clientes_proximos.short_description = 'Estado'
     ver_clientes_proximos.allow_tags = True
-    
       
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF

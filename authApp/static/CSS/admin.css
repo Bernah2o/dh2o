@@ -16,7 +16,7 @@ table td {
   border-bottom: 1px solid #ddd;
 }
 
-.boton-verde {
+.boton-azul {
   background-color: #33DAFF;
   border: none;
   color: white;
@@ -29,7 +29,7 @@ table td {
   cursor: default;
 }
 
-.boton-rojo {
+.boton-verde {
   background-color: #33FF35;
   border: none;
   color: white;
@@ -43,7 +43,7 @@ table td {
 }
 
 
-.boton-naranja {
+.boton-rojo {
   background-color: #FF333F;
   border: none;
   color: white;
