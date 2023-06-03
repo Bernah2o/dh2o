@@ -34,7 +34,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    #'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'authProject.wsgi.application'
 #    }
 #}
 
-# configuracion bd postgres
+# configuracion bd postgres para desarrollo
 
 DATABASES = {
     'default': {
@@ -105,6 +105,18 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+# MySQL para produccion
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'db_dh2ocol',
+#        'USER': 'berna2023',
+#        'PASSWORD': 'Mateo2023$',
+#        'HOST': 'berna2023.mysql.pythonanywhere-services.com',
+#        'PORT': '3306',
+#   }
+#}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
