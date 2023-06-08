@@ -13,8 +13,6 @@ import locale
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 
-
-
 # Importamos los modelos que queremos registrar
 from .models.clientes import Cliente
 from .models.factura import Factura
@@ -229,10 +227,8 @@ class ServicioAdmin(admin.ModelAdmin):
         formatted = formatted[:]  # Eliminar los dos ceros adicionales al final
         return f'${formatted}' 
     
-    formatted_precio.short_description = 'Precio'  
-
+    formatted_precio.short_description = 'Precio' 
     
-
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Operador)
@@ -241,6 +237,9 @@ admin.site.register(Mpago)
 admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Producto,ProductoAdmin)
+
+
+
 
 
 

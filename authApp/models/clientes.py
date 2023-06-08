@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.common.keys import Keys
 
 
+
 class Cliente(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     cedula = models.IntegerField(unique=True, null=True, blank=True)
@@ -49,7 +50,9 @@ class Cliente(models.Model):
         super().save(*args, **kwargs)
         
         
-    # en tu views.py
+        
+        
+"""    
 def enviar_whatsapp(clientes, mensaje):
     # Inicializar el navegador Google Chrome con el controlador de selenium
     driver = webdriver.Chrome('D:\MINTIC\PROGRAMACION\CICLO 3\BACKEND\driver\chromedriver.exe')
@@ -80,6 +83,7 @@ def enviar_whatsapp(clientes, mensaje):
 
     # Cerrar el navegador
     driver.quit()
+    """
     
    
         

@@ -1,0 +1,4 @@
+# Configuración de la protección CSRF
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True

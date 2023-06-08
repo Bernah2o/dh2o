@@ -1,0 +1,91 @@
+body {
+  font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+  background-image: url('/static/img/fondo.png'); /* Ruta a tu imagen de fondo */
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-container img {
+  max-width: 150px;
+  height: auto;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+.errornote {
+  color: #ba2121;
+  font-weight: bold;
+}
+
+.form-row {
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  display: block;
+  font-weight: bold;
+  color: #fff; /* Cambio de color a blanco */
+}
+
+.form-row input[type="text"],
+.form-row input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submit-row {
+  text-align: center;
+}
+
+.submit-row input[type="submit"] {
+  background-color: #008037;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-row input[type="submit"]:hover {
+  background-color: #1986c8;
+}
+
+.reset_password-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.reset_password-link a {
+  color: #447e9b;
+  text-decoration: underline;
+  color: #fff; /* Cambio de color a blanco */
+}
+
+.reset_password-link a:hover {
+  color: #fff;
+}

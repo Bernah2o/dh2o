@@ -1,6 +1,7 @@
 from django import forms
 from authApp.models.reporte import Reporte
 
+
 class ReporteForm(forms.ModelForm):
     actividades_desarrolladas = forms.MultipleChoiceField(
         choices=Reporte.ACTIVIDADES_CHOICES,
@@ -21,5 +22,8 @@ class ReporteForm(forms.ModelForm):
     class Meta:
         model = Reporte
         fields = '__all__'
-       
-    
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Nombre de usuario')
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)

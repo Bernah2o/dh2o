@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-)tj_6i(unv+#mej2=%yv6um4lbluydkovfy6#_w14of!4#y92%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 CORS_ALLOW_ALL_ORIGINS = True
 
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'import_export',
     'multiselectfield',
+    
     
 ]
 
@@ -222,6 +223,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     )
+    
+    
 }
 
 SIMPLE_JWT = {
@@ -236,8 +239,24 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 
 }
-
-
 # Configuración de archivos multimedia
 MEDIA_URL = '/media/' # Define la URL base para acceder a los archivos multimedia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'authApp/media') # Define la ruta donde se guardarán los archivos multimedia cargados por los usuarios
+
+# Configuración de correo electrónico
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Ejemplo: 'smtp.gmail.com'
+EMAIL_PORT = 587  # Ejemplo: 587
+EMAIL_USE_TLS = True  # O False si no se requiere TLS
+EMAIL_HOST_USER = 'dh2ovpar@gmail.com'
+EMAIL_HOST_PASSWORD = 'tu_contraseña_de_correo_electronico'
+DEFAULT_FROM_EMAIL = 'dh2ovpar@gmail.com'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+
+
+
+
+

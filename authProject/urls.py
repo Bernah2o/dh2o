@@ -6,8 +6,14 @@ from rest_framework import routers
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from django.contrib.auth import views as auth_views
+from authApp.views.loginViewSet import LoginView
+
+
+
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
+
 from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet, CalcularComisionView
 from authApp.views.reporteViewsSet import ReporteViewSet
 from authApp.views.servicioViewSet import ServicioViewSet
@@ -15,6 +21,7 @@ from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.productoViewSet import ProductoViewSet
+
 
 # Definimos nuestro router para manejar todas las vistas de la API
 router = routers.DefaultRouter()
@@ -26,6 +33,11 @@ router.register(r'mpagos', MpagoViewSet)
 router.register(r'ordenesdetrabajo', OrdenDeTrabajoViewSet)
 router.register(r'reportes', ReporteViewSet)
 router.register(r'producto', ProductoViewSet)
+
+# Personalizacion del panel de admin
+admin.site.site_header = 'Login AppDh2o'
+admin.site.site_title = 'www.dh2o.com'
+admin.site.index_title = 'Bienvenido a Dh2o'
 
 # Configuramos las URLs
 urlpatterns = [
@@ -54,7 +66,22 @@ urlpatterns = [
     # Agregamos la URL para comisiones
     #path('comisiones/<int:pk>/', OrdenDeTrabajoViewSet.as_view({'get': 'calcular_comision'}), name='authApp_ordendetrabajo_comisiones'),
     path('comisiones/<int:pk>/', CalcularComisionView.as_view(), name='authApp_ordendetrabajo_comisiones'), 
-       
+          
+    # URL para solicitar la recuperación de contraseña
+    path('reset_password/', auth_views.PasswordResetView.as_view(), name='reset_password'),
+
+    # URL para mostrar el mensaje de éxito después de enviar la solicitud de recuperación de contraseña
+    path('reset_password_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+
+    # URL para confirmar el restablecimiento de contraseña
+    path('reset_password_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+    # URL para mostrar el mensaje de éxito después de restablecer la contraseña
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+     
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LoginView.as_view(), name='logout'),
+          
     # otras rutas ...
 
 ]
