@@ -32,7 +32,7 @@ form {
 }
 
 .errornote {
-  color: #ba2121;
+  color: #ffff;
   font-weight: bold;
 }
 
@@ -43,7 +43,10 @@ form {
 .form-row label {
   display: block;
   font-weight: bold;
-  color: #fff; /* Cambio de color a blanco */
+  font-family: "Arial", Arial, Helvetica, sans-serif; /* Cambia la fuente según tus preferencias */
+  font-size: 12px; /* Cambia el tamaño de fuente según tus preferencias */
+  color: #ffff; /* Cambia el color de fuente según tus preferencias */
+  
 }
 
 .form-row input[type="text"],
@@ -51,7 +54,7 @@ form {
   width: 100%;
   padding: 10px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #008037;
   border-radius: 4px;
 }
 
@@ -89,3 +92,15 @@ form {
 .reset_password-link a:hover {
   color: #fff;
 }
+
+footer {
+  background-color: transparent;
+  padding: 20px;
+  text-align: center;
+}
+
+footer p {
+  font-size: 12px; /* Ajusta el tamaño de fuente según tus preferencias */
+  color: #fff;
+}
+
