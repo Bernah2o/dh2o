@@ -34,7 +34,7 @@ router.register(r'reportes', ReporteViewSet)
 router.register(r'producto', ProductoViewSet)
 
 # Personalizacion del panel de admin
-admin.site.site_header = 'Bienvenido a Dh2oCol'
+admin.site.site_header = 'Bienvenido'
 admin.site.site_title = 'www.dh2o.com'
 admin.site.index_title = 'Bienvenido a Dh2o'
 
