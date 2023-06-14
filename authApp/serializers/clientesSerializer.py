@@ -11,8 +11,7 @@ class ClienteSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Cliente
-        fields = ['cedula', 'nombre', 'apellido', 'Fecha_nacimiento', 'direccion', 'telefono', 'correo', 'creacion', 'descripcion', 'ultima_limpieza', 'proxima_limpieza', 'servicios', 'actividades']
-          
+        fields = '__all__' 
    
     def update(self, instance, validated_data):
         ultima_limpieza = validated_data.get('ultima_limpieza')

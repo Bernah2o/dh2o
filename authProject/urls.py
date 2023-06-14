@@ -2,15 +2,11 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework import routers
+from rest_framework import routers, permissions
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
 from django.contrib.auth import views as auth_views
 from authApp.views.loginViewSet import LoginView
-
-
-
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
 from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet, CalcularComisionView
@@ -20,6 +16,10 @@ from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.productoViewSet import ProductoViewSet
+#Importaciones para swagger
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 
 
 # Definimos nuestro router para manejar todas las vistas de la API
@@ -37,6 +37,20 @@ router.register(r'producto', ProductoViewSet)
 admin.site.site_header = 'Bienvenido a Dh2oCol'
 admin.site.site_title = 'www.dh2o.com'
 admin.site.index_title = 'Bienvenido a Dh2o'
+
+#Configuracion Swagger
+schema_view = get_schema_view(
+   openapi.Info(
+      title="API Dh2oCol",
+      default_version='v1',
+      description="Test description",
+      terms_of_service="https://dh2ocol.my.canva.site",
+      contact=openapi.Contact(email="dh2ovpar@gmail.com"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=[permissions.AllowAny],
+)
 
 # Configuramos las URLs
 urlpatterns = [
@@ -80,6 +94,9 @@ urlpatterns = [
      
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LoginView.as_view(), name='logout'),
+    #Api para Swagger
+    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redocs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     
      
           

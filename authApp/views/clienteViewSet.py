@@ -9,7 +9,7 @@ from authApp.serializers.clientesSerializer import ClienteSerializer
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
               
       
     def clientes_proximos(self, request):

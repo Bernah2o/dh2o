@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from rest_framework.decorators import action
 
 from reportlab.lib.pagesizes import inch
+#from reportlab.lib.units import inch
+
 from reportlab.platypus import Image
 from reportlab.lib import utils
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
