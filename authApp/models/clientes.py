@@ -8,8 +8,14 @@ from selenium.webdriver.common.keys import Keys
 
 
 class Cliente(models.Model):
+    TIPO_DOCUMENTO_CHOICES = [
+        ('CC', 'Cédula de Ciudadanía'),
+        ('CE', 'Cédula de Extranjería'),
+        ('NIT', 'Número de Identificación Tributaria'),
+    ]
     id_cliente = models.AutoField(primary_key=True)
-    cedula = models.IntegerField(unique=True, null=True, blank=True)
+    tipo_documento = models.CharField(max_length=3, choices=TIPO_DOCUMENTO_CHOICES, default='CC')
+    numero_documento = models.CharField(max_length=20, unique=True, null=True, blank=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)

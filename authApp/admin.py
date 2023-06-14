@@ -46,12 +46,12 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     # Definimos que el campo `creacion` sea de solo lectura
     readonly_fields = ("creacion", )
     # Especificamos los campos por los que se puede realizar una búsqueda
-    search_fields = ['cedula', 'nombre']
+    search_fields = ['numero_documento', 'nombre']
     # Especificamos los campos que se mostrarán en la lista de objetos del modelo
-    list_display = ('cedula', 'nombre', 'apellido', 'direccion',
+    list_display = ('numero_documento', 'nombre', 'apellido', 'direccion',
                     'telefono', 'ver_clientes_proximos',)  
     # Especificamos los campos que tendrán un enlace en la lista de objetos del modelo
-    list_display_links = ('cedula', 'ver_clientes_proximos')
+    list_display_links = ('numero_documento', 'ver_clientes_proximos')
     # Especificamos los campos por los que se puede filtrar en la lista de objetos del modelo
     list_filter = (EstadoProximaLimpiezaFilter,)
     # Especificamos la cantidad de objetos que se mostrarán por página en la lista de objetos del modelo
