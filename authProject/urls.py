@@ -13,7 +13,6 @@ from authApp.views.loginViewSet import LoginView
 
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
-
 from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet, CalcularComisionView
 from authApp.views.reporteViewsSet import ReporteViewSet
 from authApp.views.servicioViewSet import ServicioViewSet
@@ -35,7 +34,7 @@ router.register(r'reportes', ReporteViewSet)
 router.register(r'producto', ProductoViewSet)
 
 # Personalizacion del panel de admin
-admin.site.site_header = 'Login AppDh2o'
+admin.site.site_header = 'Bienvenido a Dh2oCol'
 admin.site.site_title = 'www.dh2o.com'
 admin.site.index_title = 'Bienvenido a Dh2o'
 
@@ -81,6 +80,8 @@ urlpatterns = [
      
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LoginView.as_view(), name='logout'),
+    
+     
           
     # otras rutas ...
 

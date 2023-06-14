@@ -184,6 +184,8 @@ class OrdenDeTrabajoAdmin(admin.ModelAdmin):
   
 class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre','formatted_precio','cantidad','link_orden')
+    readonly_fields = ('imagen_tag',)
+
     
     def formatted_precio(self, obj):
         precio_formatted = f"{obj.precio:,.2f}".rstrip('0').rstrip('.')
@@ -216,7 +218,17 @@ class ProductoAdmin(admin.ModelAdmin):
             return format_html(", ".join(links))
         return "-"
 
-    link_orden.short_description = 'Número de Orden'     
+    link_orden.short_description = 'Número de Orden'  
+      
+    # Funcion para mostrar la imagen del producto en el panel
+    def imagen_tag(self, obj):
+        if obj.imagen:
+            return format_html('<img src="{}" alt="{}" style="max-width: 200px; max-height: 200px;" />', obj.imagen.url, obj.nombre)
+        else:
+            return '(No hay imagen)'
+
+    imagen_tag.short_description = 'Imagen'
+    imagen_tag.allow_tags = True 
     
 class ServicioAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'formatted_precio')   

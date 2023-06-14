@@ -13,7 +13,7 @@ class Cliente(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=11)
+    telefono = models.CharField(max_length=11, unique=True)
     correo = models.EmailField(max_length=100, blank=True)
     creacion = models.DateTimeField(auto_now_add=True)
     descripcion = models.CharField(max_length=200, blank=True) 
