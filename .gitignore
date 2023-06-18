@@ -8,10 +8,11 @@ node_modules/
 dist/
 env/
 *.sqlite3
-<<<<<<< HEAD
 
-=======
->>>>>>> 36107d8ab770179911347914ca535625d306f4d2
+#para que no suba al repo
+settings.py
+
+
 # Compiled Java class files
 *.class
 
