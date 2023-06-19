@@ -32,20 +32,19 @@ class CalcularComisionView(APIView):
     def get(self, request, pk):
         orden_de_trabajo = OrdenDeTrabajo.objects.get(pk=pk)
         comision = Decimal(0)
+        
         for servicio in orden_de_trabajo.servicios.all():
-            precio = servicio.precio
-            comision += precio * Decimal('0.1')
+            if servicio.precio > Decimal('120000'):
+                comision += servicio.precio * Decimal('0.1')
 
         orden_de_trabajo.operador.comisiones += comision
         orden_de_trabajo.operador.save()
 
-        # Convertir el objeto OrdenDeTrabajo a un diccionario
         orden_de_trabajo_dict = {
             'numero_orden': orden_de_trabajo.numero_orden,
-            'operador': orden_de_trabajo.operador,
-            'cliente': orden_de_trabajo.cliente,
+            'operador': orden_de_trabajo.operador.nombre,  # Reemplaza "nombre" con el campo correcto del operador
+            'cliente': f"{orden_de_trabajo.cliente.nombre} {orden_de_trabajo.cliente.apellido}",  # Incluye el campo "apellido" del cliente
             'fecha': orden_de_trabajo.fecha,
-            # Agrega los campos adicionales que deseas incluir
         }
 
         context = {
@@ -54,4 +53,3 @@ class CalcularComisionView(APIView):
         }
 
         return render(request, 'calcular_comision.html', context)
-

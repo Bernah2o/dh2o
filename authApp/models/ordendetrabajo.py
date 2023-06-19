@@ -33,17 +33,22 @@ class OrdenDeTrabajo(models.Model):
                 raise ValidationError('Esta orden de trabajo ya tiene una factura asociada.')
             
     def calcular_comision(self):
-        total_servicios = sum(servicio.precio for servicio in self.servicios.all() if servicio.precio > Decimal('120000'))
-        comision = total_servicios * Decimal(0.1)
+        total_servicios = sum(
+            servicio.precio for servicio in self.servicios.all() if servicio.precio > 120000
+        )
+        comision = total_servicios * 0.1
 
-        self.operador.comisiones += comision
-        self.operador.save()  
-        
+        if comision > 0:
+            self.operador.comisiones += comision
+            self.operador.save()
+
         # Verificar si la comisión es cero y aplicar lógica adicional si es necesario
         if comision == 0:
             # Lógica adicional cuando la comisión es cero
             # Puedes agregar aquí tu código personalizado
-            pass      
+            pass
+
+        return comision
     
     def calcular_total(self):
         # Utilizar diccionarios para realizar el seguimiento de la cantidad y el precio de cada servicio y producto
