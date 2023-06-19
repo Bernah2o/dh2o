@@ -1,9 +1,7 @@
-from django.template import Context
 from rest_framework import viewsets
 from decimal import Decimal
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.response import Response
 
 
 
@@ -56,3 +54,4 @@ class CalcularComisionView(APIView):
         }
 
         return render(request, 'calcular_comision.html', context)
+

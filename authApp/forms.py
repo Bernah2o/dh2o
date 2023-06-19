@@ -1,4 +1,5 @@
 from django import forms
+from authApp.models.factura import Factura
 from authApp.models.reporte import Reporte
 
 
@@ -27,3 +28,6 @@ class ReporteForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label='Nombre de usuario')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    
+
+

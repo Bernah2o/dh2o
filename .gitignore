@@ -9,8 +9,6 @@ dist/
 env/
 *.sqlite3
 
-#para que no suba al repo
-settings.py
 
 
 # Compiled Java class files

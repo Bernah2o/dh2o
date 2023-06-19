@@ -95,12 +95,14 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     ver_clientes_proximos.short_description = 'Estado'
     ver_clientes_proximos.allow_tags = True
-      
+
+
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
     list_display = ['orden_de_trabajo','cliente','fecha','ver_pdf']
     search_fields = ('cliente__nombre',)
     readonly_fields = ('creacion','proxima_limpieza') # campo inmodificable
+    
     
     
     def ver_pdf(self, obj):
@@ -113,12 +115,42 @@ class ReporteAdmin(admin.ModelAdmin):
     # Cambiar el título de la columna en la página de admin
     ver_pdf.short_description = 'Descargar'
     
-class FacturaAdmin(admin.ModelAdmin):
-    readonly_fields = ('creacion',)  # Establece campos de solo lectura
-    actions = ['ventas_mensuales_action']  # Agrega una acción personalizada
-    list_display = ('numero_factura', 'cliente', 'formatted_total','ventas_mensuales_column')  # Campos a mostrar en la lista de objetos
-    list_filter = (('creacion', admin.DateFieldListFilter),)  # Filtros por fecha de creación
 
+        
+class FacturaAdmin(admin.ModelAdmin):
+    readonly_fields = ('creacion',)
+    actions = ['ventas_mensuales_action']
+    list_display = ('numero_factura', 'cliente', 'formatted_total', 'ventas_mensuales_column')
+    list_filter = (('creacion', admin.DateFieldListFilter),)
+    
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "orden_de_trabajo":
+            kwargs["queryset"] = OrdenDeTrabajo.objects.filter(factura__isnull=True)
+        elif db_field.name == "cliente":
+            if "orden_de_trabajo" in request.GET:
+                orden_de_trabajo_id = request.GET["orden_de_trabajo"]
+                try:
+                    orden_de_trabajo = OrdenDeTrabajo.objects.get(pk=orden_de_trabajo_id)
+                    kwargs["queryset"] = Cliente.objects.filter(pk=orden_de_trabajo.cliente.pk)
+                except OrdenDeTrabajo.DoesNotExist:
+                    pass
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not obj.numero_factura:
+            ultimo_numero_factura = Factura.objects.order_by('-numero_factura').first()
+            if ultimo_numero_factura:
+                obj.numero_factura = ultimo_numero_factura.numero_factura + 1
+            else:
+                obj.numero_factura = 1
+
+        obj.total = obj.orden_de_trabajo.calcular_total() - obj.descuento
+        super().save_model(request, obj, form, change)
+    class Media:
+        js = ('js/factura_form.js',)  # Ruta al archivo JavaScript        
+    
+            
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         queryset = queryset.annotate(mes=TruncMonth('creacion')).annotate(total_ventas=Sum('total')).order_by('-mes')
@@ -168,6 +200,8 @@ class OrdenDeTrabajoForm(forms.ModelForm):
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
     list_display = ('numero_orden', 'fecha', 'cliente', 'formatted_total','enlace_comisiones')
     form = OrdenDeTrabajoForm  
+    search_fields = ['cliente__nombre']  # Agrega los campos relevantes para la búsqueda
+    ordering = ['numero_orden']  # Agrega el ordenamiento por número de orden
     
     def formatted_total(self, obj):
         total = obj.calcular_total()

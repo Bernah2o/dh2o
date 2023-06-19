@@ -3,32 +3,30 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# Mantén la clave secreta usada en producción en secreto.
-SECRET_KEY = 'ad008af5f3de0b60b5a2b4bd09b120f19bd788fc3534a9ed792212866e93105d5d7d8bb6547f154115055cab7a5a9d4844a5'
-
-# Desactiva el modo de depuración en producción.
-DEBUG = False
-# Lista de nombres de host permitidos para tu aplicación.
-ALLOWED_HOSTS = ['berna2023.pythonanywhere.com']
 
 CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
 
-INSTALLED_APPS = [
+BASE_APPS = [
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+]
+
+LOCAL_APPS = [
+    #'jazzmin',
     'rest_framework_simplejwt',
     'rest_framework',
     'drf_yasg',
@@ -36,10 +34,18 @@ INSTALLED_APPS = [
     'corsheaders',
     'import_export',
     'multiselectfield',
-
+    
 ]
 
-MIDDLEWARE = [
+THIRD_APPS = [
+    
+]
+
+INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
+
+
+BASE_MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -47,10 +53,22 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-
-
+    
 ]
+
+LOCAL_MIDDLEWARE = [
+    
+    'corsheaders.middleware.CorsMiddleware',
+    
+    
+]
+
+THIRD_MIDDLEWARE = [
+    
+]
+
+MIDDLEWARE = BASE_MIDDLEWARE + LOCAL_MIDDLEWARE + THIRD_MIDDLEWARE
+
 
 ROOT_URLCONF = 'authProject.urls'
 
@@ -73,21 +91,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'authProject.wsgi.application'
 
 
-# configuracion bd MySQL
+# MySQL para produccion
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'db_dh2ocol',
+#        'USER': 'berna2023',
+#        'PASSWORD': 'Mateo2023$',
+#        'HOST': 'berna2023.mysql.pythonanywhere-services.com',
+#        'PORT': '3306',
+#   }
+#}
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'berna2023$db_dh2ocol',
-        'USER': 'berna2023',
-        'PASSWORD': 'Preciosa1481$',
-        'HOST': 'berna2023.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
-        'OPTIONS': {
-            'sql_mode': 'STRICT_ALL_TABLES',
-        },
-   }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -126,8 +141,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'authApp/static')
+]
 
 
 # Default primary key field type
@@ -138,6 +154,53 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #################CONFIGURACIONES HECHAS POR MI #################################################
 
 
+JAZZMIN_SETTINGS = {
+    'site_title': 'AppDh2oCol',
+    'site_logo': 'img/logo v2.png',
+    'site_header': 'Dh2oCol',
+    'site_brand': "Dh2oColApp",
+    'welcome_sign': 'Inicio de Sesion',
+    "copyright": "Dh2oCol",
+    "search_model": "auth.User",
+    "show_sidebar": True,
+    # Links to put along the top menu
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home",  "url": "admin:index",
+            "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues",
+            "new_window": True},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "books"},
+    ],
+
+    'icons': {
+        'auth.user': 'fas fa-user',
+        'auth.Group': 'fas fa-users',
+
+    }
+
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+    "dark_mode_theme": "slate",
+}
+
+#CORS_ALLOWED_ORIGINS = [
+#    "https://example.com",
+#    "https://sub.example.com",
+#    "http://localhost:8080",
+#    "http://127.0.0.1:9000",
+#] 
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -145,6 +208,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     )
+    
+    
 }
 
 SIMPLE_JWT = {
@@ -159,8 +224,6 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 
 }
-
-
 # Configuración de archivos multimedia
 MEDIA_URL = '/media/' # Define la URL base para acceder a los archivos multimedia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'authApp/media') # Define la ruta donde se guardarán los archivos multimedia cargados por los usuarios
@@ -178,17 +241,7 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
-# Security settings
-# Establece el tiempo de vida de la cookie de sesión en un valor seguro.
-SESSION_COOKIE_SECURE = True
-# Establece el tiempo de vida de la cookie CSRF en un valor seguro.
-CSRF_COOKIE_SECURE = True
-# Establece el tiempo de duración de HSTS (HTTP Strict Transport Security) en segundos.
-SECURE_HSTS_SECONDS = 3600  # Set an appropriate value for HSTS
-# Redirige todas las solicitudes HTTP a HTTPS.
-SECURE_SSL_REDIRECT = True
-# Define si se deben incluir todos los subdominios en la configuración de HSTS.
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# Define si tu sitio debe ser pre-cargado en la lista de pre-carga del navegador.
-SECURE_HSTS_PRELOAD = True
+
+
+
 
