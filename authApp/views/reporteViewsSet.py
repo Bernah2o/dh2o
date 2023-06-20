@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404
+import textwrap
+from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from django.http import HttpResponse
 from rest_framework.decorators import action
@@ -9,13 +10,13 @@ from reportlab.lib.pagesizes import inch
 from reportlab.platypus import Image
 from reportlab.lib import utils
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_LEFT
+from reportlab.lib.enums import TA_LEFT, TA_JUSTIFY
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import cm
-from authApp.forms import ReporteForm
+import re
 
 from authApp.models.reporte import Reporte
 from authApp.serializers.reporteSerializers import ReporteSerializer
@@ -143,41 +144,37 @@ class ReporteViewSet(viewsets.ModelViewSet):
             
         # Obtener los estilos de muestra
         styles = getSampleStyleSheet()
+
         # Crear un estilo personalizado para justificar el texto
-        estilo_izquierda2 = ParagraphStyle(
+        estilo_justificado = ParagraphStyle(
             "estilo_justificado",
             parent=styles["Normal"],
-            alignment=TA_LEFT
+            alignment=TA_JUSTIFY if hasattr(TA_JUSTIFY, 'name') else 4,  # Using 4 for JUSTIFY if TA_JUSTIFY is not available
+            leftIndent=1,  # Ajustar el valor según sea necesario
+            rightIndent=1,  # Ajustar el valor según sea necesario
+            spaceBefore=0,  # Ajustar el valor según sea necesario
+            spaceAfter=0,   # Ajustar el valor según sea necesario
+            fontName="Helvetica",  # Ajustar la fuente según sea necesario
+            fontSize=10,  # Ajustar el tamaño de fuente según sea necesario
+                
         )
-        
-          
-        # Agregar el texto de observación en la columna 0, fila 12
-        observacion_text2 = "Nota: Estos tanques deben lavarse y desinfectarse mínimo cada seis meses, todo esto regido bajo los parámetros del Decreto 1575 del 9 de Mayo de 2007."
 
-        # Crear el párrafo de observación con el estilo de tabla
-        observacion = Paragraph(observacion_text2, estilo_izquierda2)
-
-        # Agregar la observación a la tabla de datos en la posición correcta
-        tabla_datos[15][0] = observacion
-                        
-        # Obtener los estilos de muestra
-        styles = getSampleStyleSheet()
-        # Crear un estilo personalizado para justificar el texto
-        estilo_izquierda = ParagraphStyle(
-            "estilo_justificado",
-            parent=styles["Normal"],
-            alignment=TA_LEFT
-        )
-                         
         # Agregar el texto de observación en la columna 0, fila 12
+        observacion_text2 = "Nota: Estos tanques deben lavarse y desinfectarse mínimo cada seis meses,todo esto regido bajo los parámetros del Decreto 1575 de l9 de Mayo de 2007."
         observacion_text = "Importante: El agua almacenada puede verse afectada por condiciones ambientales y de temperatura, lo que podría comprometer su calidad y seguridad para el consumo humano. Es crucial asegurarse de que el agua que consumimos esté libre de contaminantes para prevenir enfermedades como el cólera, la tifoidea y la hepatitis A, entre otras."
-
+        
+        # Envolver el texto en párrafos y aplicar ajustes
+        observacion_text2 = "\n".join(textwrap.wrap(observacion_text2, width=80))
+        observacion_text = "\n".join(textwrap.wrap(observacion_text, width=80))
         # Crear el párrafo de observación con el estilo de tabla
-        observacion = Paragraph(observacion_text, estilo_izquierda)
-
+        observacion2 = Paragraph(observacion_text2, estilo_justificado)
+        observacion = Paragraph(observacion_text, estilo_justificado)
+        
         # Agregar la observación a la tabla de datos en la posición correcta
+        tabla_datos[15][0] = observacion2
         tabla_datos[13][0] = observacion
-
+        
+       
         # Crear la tabla con los datos del reporte
         tabla = Table(tabla_datos, colWidths=[2 * inch, 5 * inch])
         
@@ -241,10 +238,10 @@ class ReporteViewSet(viewsets.ModelViewSet):
 
         # Crear el texto con los hipervínculos y los logos
         # Crear el texto con los hipervínculos y los logos
-        agradecimiento = 'Gracias por utilizar nuestro servicio. ' \
-                 f'{crear_hipervinculo_con_logo("https://www.instagram.com/dh2ocol/", "dh2ocol", logo_instagram)} - ' \
-                 f'{crear_hipervinculo_con_logo("https://wa.me/3157484662",  "3157484662", logo_whatsapp)} - ' \
-                 f'{crear_hipervinculo_con_logo("https://www.facebook.com/dh2ocol/", "Dh2ocol", logo_facebook)}'
+        agradecimiento = 'Siguenos en nuestras redes sociales ' \
+                 f'{crear_hipervinculo_con_logo("https://www.instagram.com/dh2ocol/", "Instagram", logo_instagram)}\n\n' \
+                 f'{crear_hipervinculo_con_logo("https://wa.me/3157484662",  "WhatsApp", logo_whatsapp)}\n\n' \
+                 f'{crear_hipervinculo_con_logo("https://www.facebook.com/dh2ocol/", "Facebook", logo_facebook)}' 
 
         # Crear el párrafo con el texto y el estilo
         texto_agradecimiento = Paragraph(agradecimiento, estilo_parrafo)
@@ -256,6 +253,18 @@ class ReporteViewSet(viewsets.ModelViewSet):
         
 
         return response
+    
+    def obtener_cliente(request, reporte_id):
+        # Obtén una instancia de Reporte
+        reporte = Reporte.objects.get(id_reporte=reporte_id)
+
+        # Accede al cliente asociado a través de la propiedad cliente
+        cliente_asociado = reporte.cliente
+
+        # Realiza alguna operación con el cliente asociado
+        # ...
+
+        return render(request, 'tu_template.html', {'cliente': cliente_asociado})
 
   
    

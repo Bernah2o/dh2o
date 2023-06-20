@@ -17,7 +17,7 @@ table td {
 }
 
 .boton-azul {
-  background-color: #33DAFF;
+  background-color: #33daff;
   border: none;
   color: white;
   padding: 6px 12px;
@@ -30,7 +30,7 @@ table td {
 }
 
 .boton-verde {
-  background-color: #33FF35;
+  background-color: #33ff35;
   border: none;
   color: white;
   padding: 6px 12px;
@@ -42,9 +42,8 @@ table td {
   cursor: pointer; /* Usamos el cursor pointer para indicar que es un botón clickeable */
 }
 
-
 .boton-rojo {
-  background-color: #FF333F;
+  background-color: #ff333f;
   border: none;
   color: white;
   padding: 6px 12px;
@@ -53,20 +52,12 @@ table td {
   display: inline-block;
   font-size: 14px;
   margin: 2px;
-  cursor: default;  
+  cursor: default;
 }
 .logo {
-  background-image: url('../images/logo.png');
+  background-image: url("../images/logo.png");
   background-size: contain;
   background-repeat: no-repeat;
   width: 200px;
   height: 100px;
 }
-
-
-
-
-
-
-
-  

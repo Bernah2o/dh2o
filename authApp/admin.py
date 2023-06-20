@@ -13,6 +13,8 @@ import locale
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 
+from authApp.forms import ReporteForm
+
 # Importamos los modelos que queremos registrar
 from .models.clientes import Cliente
 from .models.factura import Factura
@@ -95,16 +97,13 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     ver_clientes_proximos.short_description = 'Estado'
     ver_clientes_proximos.allow_tags = True
-
-
+    
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
-    list_display = ['orden_de_trabajo','cliente','fecha','ver_pdf']
+    list_display = ['orden_de_trabajo','obtener_cliente','fecha','ver_pdf']
     search_fields = ('cliente__nombre',)
     readonly_fields = ('creacion','proxima_limpieza') # campo inmodificable
-    
-    
-    
+       
     def ver_pdf(self, obj):
         # Generar la URL para descargar el PDF del reporte
         url = reverse('generar_reporte_pdf', args=[obj.id_reporte])
@@ -115,6 +114,36 @@ class ReporteAdmin(admin.ModelAdmin):
     # Cambiar el título de la columna en la página de admin
     ver_pdf.short_description = 'Descargar'
     
+    form = ReporteForm
+
+    def obtener_cliente(self, obj):
+        if obj.orden_de_trabajo:
+            return obj.orden_de_trabajo.cliente
+        return None
+
+    obtener_cliente.short_description = 'Cliente asociado'
+    
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+
+        if obj and obj.orden_de_trabajo:
+            form.base_fields['cliente'].disabled = True
+            form.base_fields['cliente'].widget.attrs['readonly'] = True
+            form.base_fields['cliente'].initial = obj.orden_de_trabajo.cliente
+
+        return form
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'orden_de_trabajo':
+            if 'obj' in kwargs:
+                # Obtener el objeto de Reporte si está editando un reporte existente
+                reporte = kwargs['obj']
+                # Si ya se ha guardado el reporte, excluye la orden de trabajo asociada
+                kwargs['queryset'] = OrdenDeTrabajo.objects.exclude(reporte__id=reporte.id_reporte)
+            else:
+                # Si es un nuevo reporte, muestra todas las órdenes de trabajo disponibles
+                kwargs['queryset'] = OrdenDeTrabajo.objects.filter(reporte__isnull=True)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
         
 class FacturaAdmin(admin.ModelAdmin):
@@ -146,6 +175,8 @@ class FacturaAdmin(admin.ModelAdmin):
                 obj.numero_factura = 1
 
         obj.total = obj.orden_de_trabajo.calcular_total() - obj.descuento
+        obj.orden_de_trabajo.facturada = True  # Marcar la orden de trabajo como facturada
+        obj.orden_de_trabajo.save()  # Guardar la orden de trabajo
         super().save_model(request, obj, form, change)
     class Media:
         js = ('js/factura_form.js',)  # Ruta al archivo JavaScript        
@@ -198,10 +229,28 @@ class OrdenDeTrabajoForm(forms.ModelForm):
         fields = '__all__'
 
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
-    list_display = ('numero_orden', 'fecha', 'cliente', 'formatted_total','enlace_comisiones')
+    list_display = ('numero_orden','facturada_icon','fecha','cliente','formatted_total','enlace_comisiones')
     form = OrdenDeTrabajoForm  
     search_fields = ['cliente__nombre']  # Agrega los campos relevantes para la búsqueda
     ordering = ['numero_orden']  # Agrega el ordenamiento por número de orden
+    actions = ['marcar_como_facturada']
+          
+    def marcar_como_facturada(modeladmin, request, queryset):
+        for orden in queryset:
+            if not orden.facturada:
+                factura = Factura.objects.create(orden_de_trabajo=orden)
+                orden.facturada = True
+                orden.save()
+
+    marcar_como_facturada.short_description = 'Marcar como facturada'
+    
+    def facturada_icon(self, obj):
+        if obj.facturada:
+            return mark_safe('<button class="boton-verde">SI</button>')
+        else:
+            return mark_safe('<button class="boton-rojo">NO</button>')
+
+    facturada_icon.short_description = 'Facturada'
     
     def formatted_total(self, obj):
         total = obj.calcular_total()
@@ -215,6 +264,7 @@ class OrdenDeTrabajoAdmin(admin.ModelAdmin):
         return mark_safe(f'<a href="{enlace}" target="_blank">Ver Comisiones</a>')
 
     enlace_comisiones.short_description = 'Comisiones'
+    
   
 class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre','formatted_precio','cantidad','link_orden')

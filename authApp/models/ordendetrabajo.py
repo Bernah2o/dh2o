@@ -11,6 +11,8 @@ class OrdenDeTrabajo(models.Model):
     operador = models.ForeignKey('authApp.Operador', on_delete=models.CASCADE)
     descripcion = models.TextField()
     productos = models.ManyToManyField('authApp.Producto', blank=True)
+    facturada = models.BooleanField(default=False)
+
     
 
     def __str__(self):

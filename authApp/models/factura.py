@@ -13,10 +13,6 @@ class Factura(models.Model):
     descripcion = models.CharField(max_length=200, blank=True) 
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     creacion = models.DateTimeField(auto_now_add=True) 
-               
-    @property
-    def cliente(self):
-        return self.orden_de_trabajo.cliente
     
     def __str__(self):
         return f"Factura {self.numero_factura}"
@@ -24,6 +20,17 @@ class Factura(models.Model):
     def save(self, *args, **kwargs):
         self.total = self.orden_de_trabajo.calcular_total() - self.descuento
         super().save(*args, **kwargs)
+        
+        self.orden_de_trabajo.facturada = True
+        self.orden_de_trabajo.save()
+               
+    @property
+    def cliente(self):
+        return self.orden_de_trabajo.cliente
+    
+   
+    
+   
         
    
     
