@@ -149,7 +149,7 @@ class ReporteAdmin(admin.ModelAdmin):
 class FacturaAdmin(admin.ModelAdmin):
     readonly_fields = ('creacion',)
     actions = ['ventas_mensuales_action']
-    list_display = ('numero_factura', 'cliente', 'formatted_total', 'ventas_mensuales_column')
+    list_display = ('numero_factura', 'cliente', 'formatted_total', 'ventas_mensuales_column','generar_factura_link')
     list_filter = (('creacion', admin.DateFieldListFilter),)
     
 
@@ -217,6 +217,16 @@ class FacturaAdmin(admin.ModelAdmin):
 
         super().save_model(request, obj, form, change) 
     
+    def generar_factura_link(self, obj):
+        # Genera la URL para la página de generación de la factura
+        url = reverse('generar_factura', args=[obj.pk])
+
+       # Retorna un enlace HTML con el nombre "Factura" que redirige a la URL de generación de la factura
+        return format_html('<a href="{}" target="_blank">Factura</a>', url)
+
+    generar_factura_link.short_description = 'Factura'
+    
+    
 class OrdenDeTrabajoForm(forms.ModelForm):
     servicios = forms.ModelMultipleChoiceField(
         queryset=Servicio.objects.all(),
@@ -229,7 +239,7 @@ class OrdenDeTrabajoForm(forms.ModelForm):
         fields = '__all__'
 
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
-    list_display = ('numero_orden','facturada_icon','fecha','cliente','formatted_total','enlace_comisiones')
+    list_display = ('numero_orden','cliente','formatted_total','fecha','facturada_icon','enlace_comisiones')
     form = OrdenDeTrabajoForm  
     search_fields = ['cliente__nombre']  # Agrega los campos relevantes para la búsqueda
     ordering = ['numero_orden']  # Agrega el ordenamiento por número de orden
@@ -255,7 +265,7 @@ class OrdenDeTrabajoAdmin(admin.ModelAdmin):
     def formatted_total(self, obj):
         total = obj.calcular_total()
         total_formatted = f"{total:,.2f}".rstrip('0').rstrip('.')
-        return format_html(f"${total_formatted} COP")
+        return format_html(f"${total_formatted}")
 
     formatted_total.short_description = 'Total'
     

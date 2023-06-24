@@ -1,9 +1,5 @@
 from django.db import models
-from authApp.models.clientes import Cliente
-
-from authApp.models.mpago import Mpago
-
-
+from django.template.loader import render_to_string
 
 class Factura(models.Model):
     numero_factura = models.AutoField(primary_key=True)
@@ -28,6 +24,11 @@ class Factura(models.Model):
     def cliente(self):
         return self.orden_de_trabajo.cliente
     
+    def generar_html_factura(self):
+        context = {'factura': self}
+        html = render_to_string('factura_template.html', context)
+        return html
+        
    
     
    

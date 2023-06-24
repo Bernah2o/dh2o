@@ -16,6 +16,7 @@ from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.productoViewSet import ProductoViewSet
+
 #Importaciones para swagger
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -97,6 +98,8 @@ urlpatterns = [
     #Api para Swagger
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redocs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    #Generar factura en html
+    path('generar_factura/<int:pk>/', FacturaViewSet.generar_factura, name='generar_factura'),
     
    
     # otras rutas ...

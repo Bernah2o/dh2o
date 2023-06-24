@@ -1,0 +1,198 @@
+{% load static %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header text-center">
+          <img
+            src="{% static 'img/logo.png' %}"
+            alt="Logo"
+            width="200"
+            class="logo-img"
+          />
+          <h1 class="text-center">Factura</h1>
+        </div>
+        <div class="card-body">
+          <div class="factura-container">
+            <div class="table-container">
+              <table style="border-collapse: collapse; width: 100%">
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    Número de factura
+                  </th>
+                  <td
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    {{ factura.numero_factura }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    Orden de trabajo
+                  </th>
+                  <td
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    {{ factura.orden_de_trabajo }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    Cliente
+                  </th>
+                  <td
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    {{ factura.cliente }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    Método de pago
+                  </th>
+                  <td
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    {{ factura.mpago }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    Descuento
+                  </th>
+                  <td
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    {{ factura.descuento }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    Descripción
+                  </th>
+                  <td
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    {{ factura.descripcion }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    Total
+                  </th>
+                  <td
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    {{ factura.total }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    Fecha de creación
+                  </th>
+                  <td
+                    style="
+                      border: 1px solid black;
+                      padding: 8px;
+                      text-align: center;
+                    "
+                  >
+                    {{ factura.creacion }}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Carga de archivos CSS -->
+<link rel="stylesheet" href="{% static 'css/factura.css' %}" />
+
+<script>
+  function cerrarVentana() {
+    window.close();
+  }
+</script>
+
+<button class="close-button" onclick="cerrarVentana()">Cerrar</button>
+{% endblock %}

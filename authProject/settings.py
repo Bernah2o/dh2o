@@ -22,7 +22,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
 
 INSTALLED_APPS = [
-    #'jazzmin',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -161,7 +161,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
     'site_title': 'AppDh2oCol',
-    'site_logo': 'img/logo v2.png',
+    'site_logo': 'img/logo2.png',
     'site_header': 'Dh2oCol',
     'site_brand': "Dh2oColApp",
     'welcome_sign': 'Inicio de Sesion',
