@@ -6,6 +6,7 @@ from rest_framework import routers, permissions
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
+from authApp.views import facturaViewSet
 from authApp.views.loginViewSet import LoginView
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet

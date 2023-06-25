@@ -2,9 +2,6 @@ from rest_framework import viewsets
 from decimal import Decimal
 from django.shortcuts import render
 from rest_framework.views import APIView
-
-
-
 from authApp.models.ordendetrabajo import OrdenDeTrabajo
 from authApp.serializers.ordendetrabajoSerializers import OrdenDeTrabajoSerializer
 

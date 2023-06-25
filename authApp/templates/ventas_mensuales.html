@@ -1,53 +1,55 @@
-{% extends 'base.html' %}
-
-{% load static %}
-{% block content %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header text-center">
-            <img src="{% static 'img/logo.png' %}" alt="Logo" width="200" class="logo-img">
-            <h1 class="text-center">Ventas Mensuales 2023</h1>
-          </div>
-          <div class="card-body">
-            <div class="ventas-container">
-              <h2 class="text-center mb-4">Ventas por mes</h2>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Mes</th>
-                    <th>Total de Ventas</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for venta in ventas_mensuales %}
-                    <tr>
-                      <td class="border">{{ venta.mes|date:'F Y' }}</td>
-                      <td class="border">${{ venta.total_ventas|floatformat:"-2" }}</td>
-                    </tr>
-                  {% empty %}
-                    <tr>
-                      <td colspan="2">No hay ventas registradas</td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header text-center">
+          <img
+            src="{% static 'img/logo.png' %}"
+            alt="Logo"
+            width="200"
+            class="logo-img"
+          />
+          <h1 class="text-center">Ventas Mensuales 2023</h1>
+        </div>
+        <div class="card-body">
+          <div class="ventas-container">
+            <h2 class="text-center mb-4">Ventas por mes</h2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Mes</th>
+                  <th>Ventas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for venta in ventas_mensuales %}
+                <tr>
+                  <td>{{ venta.1 }}</td>
+                  <td>{{ venta.2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="2">No hay ventas registradas</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Carga de archivos CSS -->
-  <link rel="stylesheet" href="{% static 'css/ventas_mensuales.css' %}">
-  
-  <script>
-    function cerrarVentana() {
-      window.close();
-    }
-  </script>
+<!-- Carga de archivos CSS -->
+<link rel="stylesheet" href="{% static 'css/ventas_mensuales.css' %}" />
 
-  <button class="close-button" onclick="cerrarVentana()">Cerrar</button>
+<script>
+  function cerrarVentana() {
+    window.close();
+  }
+</script>
+
+<button class="close-button" onclick="cerrarVentana()">Cerrar</button>
 {% endblock %}

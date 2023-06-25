@@ -12,6 +12,7 @@ from django.db.models.functions import TruncMonth
 import locale
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
+from django.db.models.signals import post_delete
 
 from authApp.forms import ReporteForm
 
@@ -254,14 +255,17 @@ class OrdenDeTrabajoAdmin(admin.ModelAdmin):
 
     marcar_como_facturada.short_description = 'Marcar como facturada'
     
+   
     def facturada_icon(self, obj):
-        if obj.facturada:
+        if Factura.objects.filter(orden_de_trabajo=obj).exists():
             return mark_safe('<button class="boton-verde">SI</button>')
         else:
             return mark_safe('<button class="boton-rojo">NO</button>')
 
     facturada_icon.short_description = 'Facturada'
+
     
+       
     def formatted_total(self, obj):
         total = obj.calcular_total()
         total_formatted = f"{total:,.2f}".rstrip('0').rstrip('.')
@@ -275,6 +279,12 @@ class OrdenDeTrabajoAdmin(admin.ModelAdmin):
 
     enlace_comisiones.short_description = 'Comisiones'
     
+@receiver(post_delete, sender=Factura)
+def actualizar_estado_facturada(sender, instance, **kwargs):
+        orden_de_trabajo = instance.orden_de_trabajo
+        orden_de_trabajo.facturada = False
+        orden_de_trabajo.save()
+            
   
 class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre','formatted_precio','cantidad','link_orden')

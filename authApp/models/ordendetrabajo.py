@@ -13,8 +13,6 @@ class OrdenDeTrabajo(models.Model):
     productos = models.ManyToManyField('authApp.Producto', blank=True)
     facturada = models.BooleanField(default=False)
 
-    
-
     def __str__(self):
         return f"OrdenDeTrabajo {self.numero_orden}"
     

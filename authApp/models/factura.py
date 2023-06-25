@@ -3,6 +3,7 @@ from django.template.loader import render_to_string
 
 class Factura(models.Model):
     numero_factura = models.AutoField(primary_key=True)
+    fecha = models.DateField()
     orden_de_trabajo = models.ForeignKey('authApp.OrdenDeTrabajo', on_delete=models.CASCADE, limit_choices_to={'factura__isnull': True})
     mpago = models.ForeignKey('authApp.Mpago', on_delete=models.CASCADE)
     descuento = models.DecimalField(max_digits=7, decimal_places=2, default=0)
