@@ -114,7 +114,7 @@ class ReporteViewSet(viewsets.ModelViewSet):
 
         # Crear las imágenes de después del lavado con las dimensiones deseadas
         imagen_despues_1 = Image(imagen_despues_1_path, width=2 * inch, height=2 * inch) if imagen_despues_1_path else None
-        imagen_despues_2 = Image(imagen_despues_2_path, width=2 * inch, height=1 * inch) if imagen_despues_2_path else None 
+        imagen_despues_2 = Image(imagen_despues_2_path, width=2 * inch, height=2 * inch) if imagen_despues_2_path else None 
                         
         # Agregar los atributos del reporte
         tabla_datos = [

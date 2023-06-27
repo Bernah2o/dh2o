@@ -102,6 +102,8 @@ urlpatterns = [
     #Generar factura en html
     path('generar_factura/<int:pk>/', FacturaViewSet.generar_factura, name='generar_factura'),
     
+    
+    
    
     # otras rutas ...
 

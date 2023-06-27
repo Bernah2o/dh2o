@@ -55,6 +55,20 @@ class Cliente(models.Model):
             
         super().save(*args, **kwargs)
         
+    @staticmethod
+    def buscar_por_nombre(nombre):
+        """Retorna una lista de clientes que coinciden con el nombre dado"""
+        return Cliente.objects.filter(nombre__icontains=nombre)
+
+    @staticmethod
+    def buscar_por_apellido(apellido):
+        """Retorna una lista de clientes que coinciden con el apellido dado"""
+        return Cliente.objects.filter(apellido__icontains=apellido)
+
+    @staticmethod
+    def buscar_por_tipo_documento(tipo_documento):
+        """Retorna una lista de clientes que tienen el tipo de documento dado"""
+        return Cliente.objects.filter(tipo_documento=tipo_documento)    
         
         
         

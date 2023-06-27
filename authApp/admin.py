@@ -101,7 +101,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
-    list_display = ['orden_de_trabajo','obtener_cliente','fecha','ver_pdf']
+    list_display = ['mostrar_orden_de_trabajo','obtener_cliente','fecha','ver_pdf']
     search_fields = ('cliente__nombre',)
     readonly_fields = ('creacion','proxima_limpieza') # campo inmodificable
        
@@ -145,6 +145,17 @@ class ReporteAdmin(admin.ModelAdmin):
                 # Si es un nuevo reporte, muestra todas las órdenes de trabajo disponibles
                 kwargs['queryset'] = OrdenDeTrabajo.objects.filter(reporte__isnull=True)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+    def mostrar_orden_de_trabajo(self, obj):
+        if obj.orden_de_trabajo:
+            return str(obj.orden_de_trabajo)  # Reemplazar "numero" con el campo correcto del modelo OrdenDeTrabajo
+        return None
+
+    mostrar_orden_de_trabajo.short_description = 'Orden de trabajo'
+
+    list_display_links = None  # Elimina los enlaces de la columna "orden_de_trabajo"
+    
+    
 
         
 class FacturaAdmin(admin.ModelAdmin):

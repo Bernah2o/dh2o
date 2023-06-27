@@ -1,24 +1,89 @@
-/* Estilos adicionales */
+/* Estilos para la factura */
+
+.container {
+  width: 50%; /* Ancho del contenedor principal, ajustar según necesidad */
+  margin: 0 auto; /* Centrar el contenedor en la página */
+  padding: 20px;
+}
+
+.factura-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px; /* Tamaño de fuente ajustado para media hoja */
+}
+
 body {
+  background-color: #f1f1f1;
+  font-family: Arial, sans-serif;
   text-align: center;
 }
 
-.logo {
+.container {
+  margin-top: 40px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+}
+
+.card-header {
+  background-color: #f8f8f8;
+  padding: 20px;
+}
+
+.logo-img {
   margin-bottom: 20px;
 }
 
-.table-bordered {
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.factura-container {
+  margin-bottom: 20px;
+}
+
+.factura-table {
+  width: 100%;
   border-collapse: collapse;
-  margin: 0 auto;
-  width: 80%;
 }
 
-.table-bordered th,
-.table-bordered td {
-  border: 1px solid black;
-  padding: 8px;
+.factura-table th,
+.factura-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
 }
 
-.table-bordered th {
-  background-color: lightgray;
+.factura-table th {
+  text-align: left;
+  background-color: #f8f8f8;
+}
+
+.close-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #555;
+}
+
+/* Media queries para ajustar el diseño en pantallas más pequeñas */
+@media screen and (max-width: 768px) {
+  .col-md-6 {
+    width: 100%;
+  }
 }
