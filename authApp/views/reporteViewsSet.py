@@ -1,5 +1,6 @@
 import textwrap
 from django.shortcuts import get_object_or_404, render
+from requests import request
 from rest_framework import viewsets
 from django.http import HttpResponse
 from rest_framework.decorators import action
@@ -17,6 +18,11 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import cm
 import re
+import os
+from django.conf import settings
+from django.urls import reverse
+
+from weasyprint import CSS, HTML
 
 from authApp.models.reporte import Reporte
 from authApp.serializers.reporteSerializers import ReporteSerializer
@@ -25,7 +31,8 @@ class ReporteViewSet(viewsets.ModelViewSet):
     queryset = Reporte.objects.all()
     serializer_class = ReporteSerializer
     permission_classes = [] # Permite el acceso sin autenticación
-              
+
+                   
     @action(detail=True, methods=['get'])
     def generar_reporte_pdf(self, request, reporte_id=None):
         # Obtener los datos del reporte
@@ -252,7 +259,7 @@ class ReporteViewSet(viewsets.ModelViewSet):
         pdf.build(elements)
         
 
-        return response
+        return response 
     
     def obtener_cliente(request, reporte_id):
         # Obtén una instancia de Reporte
@@ -265,6 +272,35 @@ class ReporteViewSet(viewsets.ModelViewSet):
         # ...
 
         return render(request, 'tu_template.html', {'cliente': cliente_asociado})
+    
+    
+    #@action(detail=False, methods=['get'])
+    #def generar_reporte_pdf(self, request, id_reporte=None):
+        # Obtener los datos del reporte de la solicitud o de donde corresponda
+    #    reporte = get_object_or_404(Reporte, id_reporte=id_reporte)
+
+        # Renderizar la plantilla HTML con los datos necesarios
+    #    context = {'reporte': reporte, 'media_url': settings.MEDIA_URL}
+     #   html_template = render(request, 'reporte.html', context)
+      #  html_string = html_template.content.decode()
+
+        # Crear una instancia de HTML a partir de una cadena de texto
+       # html_obj = HTML(string=html_string, base_url=request.build_absolute_uri())
+
+        # Crear una instancia de CSS a partir de un archivo
+        #css_url = os.path.join(settings.BASE_DIR, 'authApp/static/css/reporte.css')
+        #css = CSS(filename=css_url)
+
+        # Generar el archivo PDF
+        #pdf_output = html_obj.write_pdf(stylesheets=[css])
+
+        # Devolver el PDF como respuesta
+        #response = HttpResponse(content_type='application/pdf')
+        #response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
+        #response.write(pdf_output)
+
+        #return response
+     
 
   
    

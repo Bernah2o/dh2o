@@ -1,78 +1,115 @@
-/* Estilos CSS para el reporte */
-
+/* Estilos generales */
 body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+  color: #333;
 }
 
-.page-container {
-    width: 800px;
-    padding: 20px;
-    border: 1px solid #000;
-    box-sizing: border-box;
-    background-color: #fff;
-    margin: 0 auto;
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  page-break-inside: avoid;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 20px;
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-top: 30px;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+ul {
+  margin-top: 10px;
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+/* Estilos para secciones específicas */
+.report-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.report-section {
+  margin-bottom: 30px;
+}
+
+.report-section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.report-images {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.report-images img {
+  width: 48%;
+}
+
+.report-date {
+  font-style: italic;
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* Media queries para ajustar el diseño en pantallas más pequeñas */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .report-images {
+    flex-wrap: wrap;
+  }
+
+  .report-images img {
+    width: 100%;
+  }
 }
 
 .logo-img {
-    margin-top: 20px;
+  width: 150px;
+  max-width: 150%;
+  height: auto;
+  margin-bottom: 10px;
 }
 
-.section {
-    margin-bottom: 30px;
+.horizontal-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.section-title {
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-align: center;
+.horizontal-list li {
+  margin-right: 10px;
 }
-
-.section-content {
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-.activity-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.activity-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.activity-list li {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid black;
-    margin-bottom: 5px;
-}
-
-.imagen-antes,
-.imagen-despues {
-    width: 100%;
-    max-height: 300px;
-    object-fit: cover;
-    margin-top: 10px;
-}
-
-.footer {
-    margin-top: 30px;
-    text-align: center;
-}
-
-

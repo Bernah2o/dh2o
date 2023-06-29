@@ -6,7 +6,6 @@ from rest_framework import routers, permissions
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
-from authApp.views import facturaViewSet
 from authApp.views.loginViewSet import LoginView
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
@@ -17,6 +16,7 @@ from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.productoViewSet import ProductoViewSet
+
 
 #Importaciones para swagger
 from drf_yasg.views import get_schema_view
@@ -67,8 +67,8 @@ urlpatterns = [
     # Agregamos la URL para refrescar un token JWT
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # Agregamos la URL para imprimir un reporte
-    path('reportes/<int:reporte_id>/pdf/',
-         ReporteViewSet.as_view ({'get': 'generar_reporte_pdf'}), name='generar_reporte_pdf'),
+    path('reportes/<int:reporte_id>/pdf/',ReporteViewSet.as_view ({'get': 'generar_reporte_pdf'}), name='generar_reporte_pdf'),
+    #path('reportes/<int:id_reporte>/pdf/', ReporteViewSet.as_view({'get': 'generar_reporte_pdf'}), name='generar_reporte_pdf'),
     # Agregamos la URL para obtener los clientes próximos
     path('clientes/proximos/',
          ClienteViewSet.as_view({'get': 'clientes_proximos'}), name='clientes_proximos'),

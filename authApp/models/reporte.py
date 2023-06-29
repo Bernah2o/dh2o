@@ -1,15 +1,10 @@
 from dateutil.relativedelta import relativedelta
 from django.db import models
-from django.forms import ValidationError
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from multiselectfield import MultiSelectField
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 
-from authApp.models.factura import Factura
 from authApp.models.ordendetrabajo import OrdenDeTrabajo
-from authApp.models.clientes import Cliente
 class Reporte(models.Model):
     id_reporte = models.AutoField(primary_key=True)
     orden_de_trabajo = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)
