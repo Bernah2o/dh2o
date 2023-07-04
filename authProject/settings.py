@@ -2,13 +2,13 @@ from datetime import timedelta
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from django.core.management.utils import get_random_secret_key
 
+# Carga las variables de entorno desde el archivo .env
 load_dotenv()
-
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Obtén el valor de SECRET_KEY del archivo .env
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Quick-start development settings - unsuitable for production

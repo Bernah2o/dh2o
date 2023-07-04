@@ -72,47 +72,4 @@ class Cliente(models.Model):
         
         
         
-"""    
-def enviar_whatsapp(clientes, mensaje):
-    # Inicializar el navegador Google Chrome con el controlador de selenium
-    driver = webdriver.Chrome('D:\MINTIC\PROGRAMACION\CICLO 3\BACKEND\driver\chromedriver.exe')
-
-    # Abrir WhatsApp Web en una nueva pestaña
-    driver.execute_script("window.open('https://web.whatsapp.com');")
-    driver.switch_to.window(driver.window_handles[-1])
-
-    for cliente in clientes:
-        # Buscar el chat del número de teléfono especificado
-        search_box = driver.find_element_by_xpath('//div[@class="_2S1VP copyable-text selectable-text"]')
-        search_box.send_keys(cliente.telefono)
-        time.sleep(2)
-        search_box.submit()
-
-        # Esperar a que el chat se abra
-        time.sleep(2)
-
-        # Escribir el mensaje y enviarlo
-        message_box = driver.find_element_by_xpath('//div[@class="_3uMse"]')
-        message_box.send_keys(mensaje)
-        
-        # Presionar la tecla Enter para enviar el mensaje
-        message_box.send_keys(Keys.ENTER)
-        
-        # Esperar unos segundos para asegurarnos de que el mensaje se haya escrito completamente
-        time.sleep(2)   
-
-    # Cerrar el navegador
-    driver.quit()
-    """
     
-   
-        
-        
-  
-    
-    
-    
-        
-    
-    
-

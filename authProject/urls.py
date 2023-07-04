@@ -76,8 +76,7 @@ urlpatterns = [
     path('clientes/panel/', ClienteViewSet.panel_clientes, name='panel_clientes'),
     # Agregamos la URL para ventas mensuales
     path('ventas-mensuales/', FacturaViewSet.as_view({'get': 'ventas_mensuales'}), name='ventas_mensuales'),
-    # Agregamos la URL para enviar un mensaje de WhatsApp
-    path('clientes/<int:cliente_id>/enviar-whatsapp/', ClienteViewSet.as_view({'get': 'enviar_whatsapp'}), name='enviar_whatsapp'),
+    
     # Agregamos la URL para comisiones
     #path('comisiones/<int:pk>/', OrdenDeTrabajoViewSet.as_view({'get': 'calcular_comision'}), name='authApp_ordendetrabajo_comisiones'),
     path('comisiones/<int:pk>/', CalcularComisionView.as_view(), name='authApp_ordendetrabajo_comisiones'), 
