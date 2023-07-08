@@ -1,11 +1,6 @@
 from django.db import models
 from datetime import timedelta
 from django.utils import timezone
-from selenium import webdriver
-import time
-from selenium.webdriver.common.keys import Keys
-
-
 
 class Cliente(models.Model):
     TIPO_DOCUMENTO_CHOICES = [

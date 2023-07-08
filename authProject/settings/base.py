@@ -1,32 +1,39 @@
 from datetime import timedelta
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+from django.core.management.utils import get_random_secret_key
 
+# Carga las variables de entorno desde el archivo .env
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
+BASE_DIR = Path(__file__).resolve().parent.parent
+# Obtén el valor de SECRET_KEY del archivo .env
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = []
 CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
 
-BASE_APPS = [
-    
+INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-]
-
-LOCAL_APPS = [
-    #'jazzmin',
     'rest_framework_simplejwt',
     'rest_framework',
     'drf_yasg',
@@ -35,17 +42,11 @@ LOCAL_APPS = [
     'import_export',
     'multiselectfield',
     
-]
-
-THIRD_APPS = [
+    
     
 ]
 
-INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
-
-
-BASE_MIDDLEWARE = [
-    
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,22 +54,10 @@ BASE_MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-]
-
-LOCAL_MIDDLEWARE = [
-    
     'corsheaders.middleware.CorsMiddleware',
-    
-    
+
+
 ]
-
-THIRD_MIDDLEWARE = [
-    
-]
-
-MIDDLEWARE = BASE_MIDDLEWARE + LOCAL_MIDDLEWARE + THIRD_MIDDLEWARE
-
 
 ROOT_URLCONF = 'authProject.urls'
 
@@ -90,7 +79,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'authProject.wsgi.application'
 
+# Database
+# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
+# configuracion bd postgres para desarrollo
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+    }
+}
 # MySQL para produccion
 #DATABASES = {
 #    'default': {
@@ -144,6 +154,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'authApp/static')
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Default primary key field type
@@ -156,7 +167,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
     'site_title': 'AppDh2oCol',
-    'site_logo': 'img/logo v2.png',
+    'site_logo': 'img/logo2.png',
     'site_header': 'Dh2oCol',
     'site_brand': "Dh2oColApp",
     'welcome_sign': 'Inicio de Sesion',
