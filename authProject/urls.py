@@ -7,6 +7,8 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
 from authApp.views.loginViewSet import LoginView
+from authApp.views import views
+
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
 from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet, CalcularComisionView
@@ -100,6 +102,9 @@ urlpatterns = [
     path('redocs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     #Generar factura en html
     path('generar_factura/<int:pk>/', FacturaViewSet.generar_factura, name='generar_factura'),
+    
+    path('enviar-mensaje/', views.enviar_mensaje, name='enviar_mensaje'),
+    path('', views.index, name='index'),
     
     
     

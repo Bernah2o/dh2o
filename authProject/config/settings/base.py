@@ -2,12 +2,11 @@ from datetime import timedelta
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from django.core.management.utils import get_random_secret_key
 
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Obtén el valor de SECRET_KEY del archivo .env
 SECRET_KEY = os.getenv('SECRET_KEY')
 
@@ -26,27 +25,39 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
-INSTALLED_APPS = [
-    'jazzmin',
+
+
+BASE_APPS = [
+   
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+   
+]
+
+LOCAL_APPS =[
+      
+    'authApp',
+      
+]
+
+THIRD_APPS = [
+    'jazzmin',
     'rest_framework_simplejwt',
     'rest_framework',
-    'drf_yasg',
-    'authApp',
     'corsheaders',
     'import_export',
     'multiselectfield',
-    
-    
-    
+    'drf_yasg',
+    # Third party apps go here
 ]
+INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
 
-MIDDLEWARE = [
+BASE_MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,10 +65,21 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-
+   
 
 ]
+
+LOCAL_MIDDLEWARE = [
+    
+]
+
+THIRD_MIDDLEWARE = [
+     'corsheaders.middleware.CorsMiddleware',   
+]
+
+MIDDLEWARE = BASE_MIDDLEWARE + LOCAL_MIDDLEWARE + THIRD_MIDDLEWARE
+
+
 
 ROOT_URLCONF = 'authProject.urls'
 
@@ -78,40 +100,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'authProject.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
-# configuracion bd postgres para desarrollo
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
-    }
-}
-# MySQL para produccion
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'db_dh2ocol',
-#        'USER': 'berna2023',
-#        'PASSWORD': 'Mateo2023$',
-#        'HOST': 'berna2023.mysql.pythonanywhere-services.com',
-#        'PORT': '3306',
-#   }
-#}
 
 
 # Password validation

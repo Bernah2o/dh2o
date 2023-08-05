@@ -1,4 +1,5 @@
-from .base import *
+from config.settings.base import *
+#from .base import *
 import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -14,10 +15,9 @@ ALLOWED_HOSTS = ['*']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bd_dh2o',
-        'USER': 'postgres',
-        'PASSWORD': '15172967',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }

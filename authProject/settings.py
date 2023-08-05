@@ -2,7 +2,6 @@ from datetime import timedelta
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from django.core.management.utils import get_random_secret_key
 
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
@@ -42,8 +41,6 @@ INSTALLED_APPS = [
     'import_export',
     'multiselectfield',
     
-    
-    
 ]
 
 MIDDLEWARE = [
@@ -55,8 +52,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-
-
 ]
 
 ROOT_URLCONF = 'authProject.urls'
@@ -90,7 +85,6 @@ WSGI_APPLICATION = 'authProject.wsgi.application'
 #}
 
 # configuracion bd postgres para desarrollo
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -113,7 +107,6 @@ DATABASES = {
 #   }
 #}
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -132,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -146,7 +138,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -156,14 +147,12 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #################CONFIGURACIONES HECHAS POR MI #################################################
-
 
 JAZZMIN_SETTINGS = {
     'site_title': 'AppDh2oCol',
@@ -205,13 +194,6 @@ JAZZMIN_UI_TWEAKS = {
     "dark_mode_theme": "slate",
 }
 
-#CORS_ALLOWED_ORIGINS = [
-#    "https://example.com",
-#    "https://sub.example.com",
-#    "http://localhost:8080",
-#    "http://127.0.0.1:9000",
-#] 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -219,7 +201,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     )
-    
     
 }
 
@@ -233,8 +214,8 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
-
 }
+
 # Configuración de archivos multimedia
 MEDIA_URL = '/media/' # Define la URL base para acceder a los archivos multimedia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'authApp/media') # Define la ruta donde se guardarán los archivos multimedia cargados por los usuarios
@@ -251,8 +232,3 @@ DEFAULT_FROM_EMAIL = 'dh2ovpar@gmail.com'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
-
-
-
-
-

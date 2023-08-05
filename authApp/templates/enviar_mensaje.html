@@ -1,5 +1,41 @@
-<!-- templates/clientes/detalles_cliente.html -->
-<h1>{{ cliente.nombre }}</h1>
-<p>Teléfono: {{ cliente.telefono }}</p>
+<!-- enviar_mensaje.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enviar mensaje</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <img src="{% static 'img/logo2.png' %}"alt="Logo" width="200" class="logo-img" 
+          />
+    <h1>Enviar mensaje</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" required>
+        <br>
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="mensaje" required></textarea>
+        <br>
+        <button type="submit">Enviar</button>
+    </form>
 
-<a href="{% url 'enviar_whatsapp' cliente.id %}">Enviar mensaje de WhatsApp</a>
+    <a href="{% url 'index' %}">Regresar</a>
+
+    <script>
+        // Agregar un evento de escucha para el campo de teléfono
+        const telefonoInput = document.getElementById('telefono');
+        telefonoInput.addEventListener('input', (event) => {
+            // Obtener el valor del campo de teléfono
+            let telefono = event.target.value;
+
+            // Agregar el prefijo "+57" al número de teléfono si no lo tiene
+            if (telefono && !telefono.startsWith('+57')) {
+                telefono = '+57' + telefono;
+                telefonoInput.value = telefono; // Actualizar el valor del campo de teléfono
+            }
+        });
+    </script>
+</body>
+</html>
