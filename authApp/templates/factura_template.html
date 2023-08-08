@@ -1,63 +1,55 @@
-{% load static %} {% block content %}
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header text-center">
-          <img
-            src="{% static 'img/logo2.png' %}"
-            alt="Logo"
-            width="200"
-            class="logo-img"
-          />
-          <h1 class="text-center">Factura</h1>
-        </div>
-        <div class="card-body">
-          <div class="factura-container">
-            <div class="table-container">
-              <table class="factura-table">
-                <tr>
-                  <th>Número de factura</th>
-                  <td>{{ factura.numero_factura }}</td>
-                </tr>
-                <tr>
-                  <th>Orden de trabajo</th>
-                  <td>{{ factura.orden_de_trabajo }}</td>
-                </tr>
-                <tr>
-                  <th>Cliente</th>
-                  <td>{{ factura.cliente }}</td>
-                </tr>
-                <tr>
-                  <th>Método de pago</th>
-                  <td>{{ factura.mpago }}</td>
-                </tr>
-                <tr>
-                  <th>Descuento</th>
-                  <td>{{ factura.descuento }}</td>
-                </tr>
-                <tr>
-                  <th>Descripción</th>
-                  <td>{{ factura.descripcion }}</td>
-                </tr>
-                <tr>
-                  <th>Total</th>
-                  <td>{{ factura.total }}</td>
-                </tr>
-                <tr>
-                  <th>Fecha de creación</th>
-                  <td>{{ factura.creacion }}</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=420px, initial-scale=1.0">
+  <title>Factura</title>
+  <!-- Carga de archivos CSS -->
+  <link rel="stylesheet" href="{% static 'css/factura.css' %}" />
+</head>
+<body>
+  <div class="factura-container">
+    <img src="{% static 'img/logo2.png' %}" alt="Logo" class="logo-img" />
+    <div class="factura-card">
+      <h1 class="factura-title">Factura</h1>
+      <table class="factura-table">
+        <tr>
+          <th>Número de factura</th>
+          <td>{{ factura.numero_factura }}</td>
+        </tr>
+        <tr>
+          <th>Orden de trabajo</th>
+          <td>{{ factura.orden_de_trabajo }}</td>
+        </tr>
+        <tr>
+          <th>Cliente</th>
+          <td>{{ factura.cliente }}</td>
+        </tr>
+        <tr>
+          <th>Método de pago</th>
+          <td>{{ factura.mpago }}</td>
+        </tr>
+        <tr>
+          <th>Descuento</th>
+          <td>${{ factura.descuento|floatformat:0 }}</td>
+        </tr>
+        <tr>
+          <th>Descripción</th>
+          <td>{{ factura.descripcion }}</td>
+        </tr>
+        <tr>
+          <th>Total</th>
+          <td>${{ factura.total|floatformat:0 }}</td>
+        </tr>
+        <tr>
+          <th>Fecha de creación</th>
+          <td>{{ factura.creacion }}</td>
+        </tr>
+      </table>
     </div>
   </div>
-</div>
-
-<!-- Carga de archivos CSS -->
-<link rel="stylesheet" href="{% static 'css/factura.css' %}" />
-
+</body>
+</html>
 {% endblock %}

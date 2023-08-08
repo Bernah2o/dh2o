@@ -1,5 +1,4 @@
 from django import forms
-from authApp.models.factura import Factura
 from authApp.models.reporte import Reporte
 
 

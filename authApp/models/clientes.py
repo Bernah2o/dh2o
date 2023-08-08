@@ -12,7 +12,7 @@ class Cliente(models.Model):
     tipo_documento = models.CharField(max_length=3, choices=TIPO_DOCUMENTO_CHOICES, default='CC')
     numero_documento = models.CharField(max_length=20, unique=True, null=True, blank=True)
     nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100, blank=True)
     direccion = models.CharField(max_length=100)
     telefono = models.CharField(max_length=11, unique=True)
     correo = models.EmailField(max_length=100, blank=True)
