@@ -1,24 +1,27 @@
 from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
-
+from authApp.models.clientes import Cliente
 from authApp.models.factura import Factura
+from dal import autocomplete
+
+
 class OrdenDeTrabajo(models.Model):
-    numero_orden = models.AutoField(primary_key=True, verbose_name='Número de Orden')
+    numero_orden = models.AutoField(primary_key=True, verbose_name="Número de Orden")
     fecha = models.DateField()
-    cliente = models.ForeignKey('authApp.Cliente', on_delete=models.CASCADE)
-    servicios = models.ManyToManyField('authApp.Servicio')
-    operador = models.ForeignKey('authApp.Operador', on_delete=models.CASCADE)
+    cliente = models.ForeignKey("authApp.Cliente", on_delete=models.CASCADE)
+    servicios = models.ManyToManyField("authApp.Servicio")
+    operador = models.ForeignKey("authApp.Operador", on_delete=models.CASCADE)
     descripcion = models.TextField()
-    productos = models.ManyToManyField('authApp.Producto', blank=True)
+    productos = models.ManyToManyField("authApp.Producto", blank=True)
     facturada = models.BooleanField(default=False)
 
     def __str__(self):
         return f"OrdenDeTrabajo {self.numero_orden}"
-    
+
     def save(self, *args, **kwargs):
         if not self.pk:  # Si el objeto no tiene clave primaria asignada (es nuevo)
-            ultima_orden = OrdenDeTrabajo.objects.order_by('-numero_orden').first()
+            ultima_orden = OrdenDeTrabajo.objects.order_by("-numero_orden").first()
             if ultima_orden:
                 self.numero_orden = ultima_orden.numero_orden + 1
             else:
@@ -30,11 +33,15 @@ class OrdenDeTrabajo(models.Model):
         if self.pk:
             existing_facturas = Factura.objects.filter(orden_de_trabajo=self)
             if existing_facturas.exists():
-                raise ValidationError('Esta orden de trabajo ya tiene una factura asociada.')
-            
+                raise ValidationError(
+                    "Esta orden de trabajo ya tiene una factura asociada."
+                )
+
     def calcular_comision(self):
         total_servicios = sum(
-            servicio.precio for servicio in self.servicios.all() if servicio.precio > 120000
+            servicio.precio
+            for servicio in self.servicios.all()
+            if servicio.precio > 120000
         )
         comision = total_servicios * 0.1
 
@@ -49,7 +56,7 @@ class OrdenDeTrabajo(models.Model):
             pass
 
         return comision
-    
+
     def calcular_total(self):
         # Utilizar diccionarios para realizar el seguimiento de la cantidad y el precio de cada servicio y producto
         cantidad_servicios = {}
@@ -84,6 +91,4 @@ class OrdenDeTrabajo(models.Model):
             total += precio_productos[producto] * cantidad
 
         return total
-    
-   
-    
+
