@@ -5,6 +5,16 @@
 <head>
   <title>Login</title>
   <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <style>
+    /* Estilos para los íconos de redes sociales */
+    .social-icon {
+      margin-right: 10px;
+    }
+
+    .social-icon img {
+      width: 30px; /* Ajusta el tamaño según tus preferencias */
+    }
+  </style>
 </head>
 <body>
   <div class="logo-container">
@@ -49,6 +59,11 @@
 
   <footer>
     <!-- Pie de página -->
+    <div class="social-media">
+      <a href="https://www.facebook.com/tu-pagina-de-facebook" class="social-icon"><img src="{% static 'img/facebook-icon.png' %}" alt="Facebook"></a>
+      <a href="https://wa.me/3157484662" class="social-icon"><img src="{% static 'img/icon-whatsapp.png' %}" alt="Twitter"></a>
+      <a href="https://www.instagram.com/dh2ocol/" class="social-icon"><img src="{% static 'img/instagram-icon.png' %}" alt="Instagram"></a>
+    </div>
     <p>Derechos reservados &copy;</p>
   </footer>
   

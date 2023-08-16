@@ -1,57 +1,10 @@
+{% load static %}  <!-- Carga la biblioteca static -->
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>www.dh2o.com</title>
-  <style>
-    /* Estilos CSS */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-
-    .header {
-      background-color: #333;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .logo {
-      max-width: 200px;
-      margin: 0 auto;
-    }
-
-    .content {
-      padding: 20px;
-      text-align: center;
-    }
-
-    .table-container {
-      margin: 20px auto;
-      width: 80%;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 8px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-    }
-
-    .close-button {
-      margin-top: 20px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/calcular_comision.css' %}">
   <script>
     function cerrarVentana() {
       window.close();
@@ -59,8 +12,6 @@
   </script>
 </head>
 <body>
-  {% load static %}  <!-- Carga la biblioteca static -->
-
   <div class="header">
     <img src="{% static 'img/logo.png' %}" alt="Logo" width="200" class="logo-img">
     <h1>DH2O S.A.S</h1>

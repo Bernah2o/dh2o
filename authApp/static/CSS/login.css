@@ -6,7 +6,7 @@ body {
   color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between; /* Cambia a space-between para ajustar la ubicación del formulario y el pie de página */
   align-items: center;
   min-height: 100vh;
 }
@@ -93,6 +93,7 @@ form {
   color: #fff;
 }
 
+/* Estilos para el pie de página */
 footer {
   background-color: transparent;
   padding: 20px;
@@ -103,4 +104,3 @@ footer p {
   font-size: 12px; /* Ajusta el tamaño de fuente según tus preferencias */
   color: #fff;
 }
-

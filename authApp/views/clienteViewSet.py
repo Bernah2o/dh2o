@@ -1,11 +1,9 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from django.shortcuts import render
-
-
-
 from authApp.models.clientes import Cliente
 from authApp.serializers.clientesSerializer import ClienteSerializer
+
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
