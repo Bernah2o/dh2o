@@ -76,7 +76,6 @@ urlpatterns = [
         ReporteViewSet.as_view({"get": "generar_reporte_pdf"}),
         name="generar_reporte_pdf",
     ),
-    # path('reportes/<int:id_reporte>/pdf/', ReporteViewSet.as_view({'get': 'generar_reporte_pdf'}), name='generar_reporte_pdf'),
     # Agregamos la URL para obtener los clientes próximos
     path(
         "clientes/proximos/",
@@ -138,6 +137,7 @@ urlpatterns = [
     path("enviar-mensaje/", views.enviar_mensaje, name="enviar_mensaje"),
     path("", views.index, name="index"),
     # otras rutas ...
+    
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

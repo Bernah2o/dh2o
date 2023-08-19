@@ -1,50 +1,54 @@
-{% load static %}  <!-- Carga la biblioteca static -->
+{% load static %}
+<!-- Carga la biblioteca static -->
 
 <!DOCTYPE html>
 <html>
-<head>
-  <title>www.dh2o.com</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/calcular_comision.css' %}">
-  <script>
-    function cerrarVentana() {
-      window.close();
-    }
-  </script>
-</head>
-<body>
-  <div class="header">
-    <img src="{% static 'img/logo.png' %}" alt="Logo" width="200" class="logo-img">
-    <h1>DH2O S.A.S</h1>
-  </div>
-  <div class="content">
-    <h2>Informe de Comisiones</h2>
-    <p>Contenido de la página...</p>
+  <head>
+    <title>Título de la página</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/calcular_comision.css' %}"
+    />
+  </head>
+  <body>
+    <div class="content">
+      <div class="header">
+        <img src="{% static 'img/logo2.png' %}" alt="Logo" class="logo" />
+        <h2>Informe de Comisiones</h2>
+      </div>
 
-    <div class="table-container">
-      <!-- Agrega la tabla de la comisión calculada aquí -->
-      <table>
-        <thead>
-          <tr>
-            <th>Número de Orden</th>
-            <th>Operador</th>
-            <th>Cliente</th>
-            <th>Comisión</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ orden_de_trabajo.numero_orden }}</td>
-            <td>{{ orden_de_trabajo.operador }}</td>
-            <td>{{ orden_de_trabajo.cliente }}</td>
-            <td>${{ comision|floatformat:"-2" }}</td>
-            <td>{{ orden_de_trabajo.fecha }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <!-- Agrega la tabla de la comisión calculada aquí -->
+        <table>
+          <thead>
+            <tr>
+              <th>Número de Orden</th>
+              <th>Operador</th>
+              <th>Cliente</th>
+              <th>Comisión</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ orden_de_trabajo.numero_orden }}</td>
+              <td>{{ orden_de_trabajo.operador }}</td>
+              <td>{{ orden_de_trabajo.cliente }}</td>
+              <td>${{ comision|floatformat:"-2" }}</td>
+              <td>{{ orden_de_trabajo.fecha }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button class="close-button" onclick="cerrarVentana()">Cerrar</button>
     </div>
-
-    <button class="close-button" onclick="cerrarVentana()">Cerrar</button>
-  </div>
-</body>
+  </body>
 </html>
+<script>
+  function cerrarVentana() {
+    console.log("Botón Cerrar clickeado");
+    window.close();
+  }
+</script>

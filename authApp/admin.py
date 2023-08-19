@@ -55,7 +55,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     # Definimos que el campo `creacion` sea de solo lectura
     readonly_fields = ("creacion",)
     # Especificamos los campos por los que se puede realizar una búsqueda
-    search_fields = ["numero_documento", "nombre"]
+    search_fields = ["numero_documento", "nombre", "apellido"]
     # Especificamos los campos que se mostrarán en la lista de objetos del modelo
     list_display = (
         "numero_documento",
