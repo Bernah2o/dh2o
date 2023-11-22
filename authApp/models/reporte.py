@@ -71,3 +71,7 @@ class Reporte(models.Model):
         if self.orden_de_trabajo:
             return self.orden_de_trabajo.cliente
         return None
+    
+    @staticmethod
+    def buscar_por_cliente(cliente_id):
+        return Reporte.objects.filter(orden_de_trabajo__cliente__id=cliente_id)
