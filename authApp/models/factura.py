@@ -11,6 +11,8 @@ class Factura(models.Model):
         limit_choices_to={"factura__isnull": True},
     )
     mpago = models.ForeignKey("authApp.Mpago", on_delete=models.CASCADE)
+    servicios = models.ManyToManyField("authApp.Servicio", blank=True)
+    productos = models.ManyToManyField("authApp.Producto", blank=True)
     descuento = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     descripcion = models.CharField(max_length=200, blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)

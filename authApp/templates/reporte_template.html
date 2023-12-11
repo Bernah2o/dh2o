@@ -1,0 +1,131 @@
+<!-- reporte_template.html -->
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Informe de Actividades</title>
+    <!-- Carga de archivos CSS -->
+    <link rel="stylesheet" href="{% static 'css/reporte.css' %}" />
+  </head>
+  <body>
+    <div class="informe-container">
+      <div class="informe-card">
+        <div class="informe-header">
+          <img src="{% static 'img/logo2.png' %}" alt="Logo" class="logo-img" />
+          <h1 class="informe-title">Informe de Actividades</h1>
+        </div>
+        <table class="informe-table">
+          <!-- Datos generales del cliente y fecha -->
+          <tr>
+            <th>Cliente:</th>
+            <td>{{ reporte.cliente.nombre }} {{ reporte.cliente.apellido }}</td>
+          </tr>
+          <tr>
+            <th>Dirección:</th>
+            <td>{{ reporte.cliente.direccion }}</td>
+          </tr>
+          <tr>
+            <th>Teléfono:</th>
+            <td>{{ reporte.cliente.telefono }}</td>
+          </tr>
+          <tr>
+            <th>Fecha:</th>
+            <td>{{ reporte.fecha }}</td>
+          </tr>
+          <!-- Imágenes antes del lavado -->
+          <tr>
+            <th>Antes del lavado:</th>
+            <td>
+              {% if reporte.imagen_antes_lavado_1 %}
+              <img
+                src="{{ reporte.imagen_antes_lavado_1.url }}"
+                alt="Antes del lavado 1"
+                class="informe-image"
+              />
+              {% endif %} {% if reporte.imagen_antes_lavado_2 %}
+              <img
+                src="{{ reporte.imagen_antes_lavado_2.url }}"
+                alt="Antes del lavado 2"
+                class="informe-image"
+              />
+              {% endif %}
+            </td>
+          </tr>
+          <!-- Imágenes después del lavado -->
+          <tr>
+            <th>Después del lavado:</th>
+            <td>
+              {% if reporte.imagen_despues_lavado_1 %}
+              <img
+                src="{{ reporte.imagen_despues_lavado_1.url }}"
+                alt="Después del lavado 1"
+                class="informe-image"
+              />
+              {% endif %} {% if reporte.imagen_despues_lavado_2 %}
+              <img
+                src="{{ reporte.imagen_despues_lavado_2.url }}"
+                alt="Después del lavado 2"
+                class="informe-image"
+              />
+              {% endif %}
+            </td>
+          </tr>
+          <!-- Próxima limpieza y notas -->
+          <tr>
+            <th>Próxima Limpieza:</th>
+            <td>{{ reporte.proxima_limpieza }}</td>
+          </tr>
+          <tr>
+            <th>Nota:</th>
+            <td>
+              Estos tanques deben lavarse y desinfectarse<br />
+              mínimo cada seis meses, todo esto regido<br />
+              bajo los parámetros Decreto 1575 de l9<br />
+              de Mayo de 2007.
+            </td>
+          </tr>
+          <!-- Total Servicio -->
+          <tr>
+            <th>Total Servicio:</th>
+            <td>${{ reporte.total_servicio|floatformat:"-2"|intword }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- Rutas de los logos de las redes sociales -->
+    <div class="redes-sociales">
+      <!--<h2>Siguenos en nuestras redes sociales</h2>-->
+      <a href="https://www.instagram.com/dh2ocol/" class="enlace-red-social">
+        <img
+          src="{% static 'img/instagram-icon.png' %}"
+          alt="Instagram"
+          class="logo-red-social"
+        />
+      </a>
+      <a href="https://wa.me/3157484662" class="enlace-red-social">
+        <img
+          src="{% static 'img/icon-whatsapp.png' %}"
+          alt="WhatsApp"
+          class="logo-red-social"
+        />
+      </a>
+      <a href="https://www.facebook.com/dh2ocol/" class="enlace-red-social">
+        <img
+          src="{% static 'img/facebook-icon.png' %}"
+          alt="Facebook"
+          class="logo-red-social"
+        />
+      </a>
+      <a href="https://dh2o.com.co/" class="enlace-red-social">
+        <img
+          src="{% static 'img/web-icon.png' %}"
+          alt="Web"
+          class="logo-red-social"
+        />
+      </a>
+    </div>
+  </body>
+</html>

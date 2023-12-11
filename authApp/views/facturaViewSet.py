@@ -9,8 +9,6 @@ from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
 import os
-
-
 from authApp.models.factura import Factura
 from authApp.serializers.facturaSerializer import FacturaSerializer
 
@@ -82,9 +80,4 @@ class FacturaViewSet(viewsets.ModelViewSet):
         response["Content-Disposition"] = 'attachment; filename="factura.pdf"'
         return response
 
-    """@staticmethod
-    def generar_factura(request, pk):
-        factura = get_object_or_404(Factura, pk=pk)
-        context = {'factura': factura}
-        html = render_to_string('factura_template.html', context)
-        return HttpResponse(html)"""
+    

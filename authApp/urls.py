@@ -50,7 +50,7 @@ schema_view = get_schema_view(
         title="API Dh2oCol",
         default_version="v1",
         description="Test description",
-        terms_of_service="https://dh2ocol.my.canva.site",
+        terms_of_service="https://dh2o.com.co/",
         contact=openapi.Contact(email="dh2ovpar@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),
@@ -63,7 +63,7 @@ urlpatterns = [
     # Agregamos las URLs del router
     path("", include(router.urls)),
     # Agregamos la URL del admin de Django
-    path("admin/", admin.site.urls),
+    path("mi_admin/", admin.site.urls),
     # Agregamos la URL para la autenticación de la API
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Agregamos la URL para obtener un token JWT
@@ -71,11 +71,9 @@ urlpatterns = [
     # Agregamos la URL para refrescar un token JWT
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     # Agregamos la URL para imprimir un reporte
-    path(
-        "reportes/<int:reporte_id>/pdf/",
-        ReporteViewSet.as_view({"get": "generar_reporte_pdf"}),
+    path("reportes/<int:pk>/pdf/", ReporteViewSet.as_view({"get": "generar_reporte_pdf"}),
         name="generar_reporte_pdf",
-    ),
+        ),
     # Agregamos la URL para obtener los clientes próximos
     path(
         "clientes/proximos/",
@@ -134,8 +132,7 @@ urlpatterns = [
         FacturaViewSet.generar_factura,
         name="generar_factura",
     ),
-    path("enviar-mensaje/", views.enviar_mensaje, name="enviar_mensaje"),
-    path("", views.index, name="index"),
+    
     # otras rutas ...
     
 ]

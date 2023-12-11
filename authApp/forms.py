@@ -5,27 +5,6 @@ from authApp.models.reporte import Reporte
 
 
 class ReporteForm(forms.ModelForm):
-    ACTIVIDADES_CHOICES = Reporte.ACTIVIDADES_CHOICES + [
-        ("All", "Seleccionar todas las actividades")
-    ]
-    actividades_desarrolladas = forms.MultipleChoiceField(
-        choices=ACTIVIDADES_CHOICES,
-        widget=forms.SelectMultiple(attrs={"class": "form-control"}),
-        required=False,
-    )
-    imagen_antes_lavado_1 = forms.ImageField(
-        required=False, widget=forms.FileInput(attrs={"class": "form-control-file"})
-    )
-    imagen_antes_lavado_2 = forms.ImageField(
-        required=False, widget=forms.FileInput(attrs={"class": "form-control-file"})
-    )
-    imagen_despues_lavado_1 = forms.ImageField(
-        required=False, widget=forms.FileInput(attrs={"class": "form-control-file"})
-    )
-    imagen_despues_lavado_2 = forms.ImageField(
-        required=False, widget=forms.FileInput(attrs={"class": "form-control-file"})
-    )
-
     class Meta:
         model = Reporte
         fields = "__all__"
