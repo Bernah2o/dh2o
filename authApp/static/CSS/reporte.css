@@ -43,12 +43,14 @@ body {
   text-align: left;
   overflow: hidden; /* Oculta el contenido que se desborda */
   white-space: nowrap; /* No permite que el texto se divida en líneas */
+  
 }
 
 .informe-image {
-  max-width: 50%; /* Ajusta el tamaño máximo de la imagen */
+  max-width: 48%; /* Ajusta el tamaño máximo de la imagen */
   height: auto;
   margin-bottom: 10px;
+  margin: 5px; /* Ajusta según sea necesario */
 }
 
 .logo-img {

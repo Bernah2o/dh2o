@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "multiselectfield",
     "dal",
     "dal_select2",
+    "easyaudit",
     
 ]
 
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "easyaudit.middleware.easyaudit.EasyAuditMiddleware",
 ]
 
 ROOT_URLCONF = "authProject.urls"
