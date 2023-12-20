@@ -10,7 +10,8 @@ env/
 *.sqlite3
 .env
 
-
+# Ignore all .jpg files
+*.jpg
 
 # Compiled Java class files
 *.class
