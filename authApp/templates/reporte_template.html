@@ -36,7 +36,9 @@
           </tr>
           <!-- Imágenes antes del lavado -->
           <tr>
-            <th>Antes del lavado:</th>
+            <th colspan="2" style="text-align: center;">Transformación Transparente: Antes y Después del lavado</th>
+          </tr>
+          <tr>
             <td>
               {% if reporte.imagen_antes_lavado_1 %}
               <img
@@ -52,10 +54,6 @@
               />
               {% endif %}
             </td>
-          </tr>
-          <!-- Imágenes después del lavado -->
-          <tr>
-            <th>Después del lavado:</th>
             <td>
               {% if reporte.imagen_despues_lavado_1 %}
               <img
