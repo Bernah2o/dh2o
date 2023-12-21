@@ -13,6 +13,11 @@ env/
 # Ignore all .jpg files
 *.jpg
 
+# En el archivo .gitignore
+config/postgres_config.yml
+config/sqlite_config.yml
+
+
 # Compiled Java class files
 *.class
 
