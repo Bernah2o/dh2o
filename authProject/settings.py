@@ -82,15 +82,8 @@ WSGI_APPLICATION = "authProject.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-} 
-
 # configuracion bd postgres
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -100,7 +93,7 @@ DATABASES = {
         'HOST':  os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
     }
-}"""
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [
