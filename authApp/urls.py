@@ -63,7 +63,7 @@ urlpatterns = [
     # Agregamos las URLs del router
     path("", include(router.urls)),
     # Agregamos la URL del admin de Django
-    path("mi_admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
     # Agregamos la URL para la autenticación de la API
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Agregamos la URL para obtener un token JWT

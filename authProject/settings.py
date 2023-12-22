@@ -84,6 +84,7 @@ WSGI_APPLICATION = "authProject.wsgi.application"
 
 # configuracion bd postgres
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -94,6 +95,19 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
+    
+"""
+# Usa configuraciones directas sin variables de entorno para probar
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mateo',
+        'USER': 'postgres',
+        'PASSWORD': 'Mateo2023',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}"""    
 
 
 AUTH_PASSWORD_VALIDATORS = [
