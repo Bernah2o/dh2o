@@ -29,7 +29,7 @@ class Cliente(models.Model):
     proxima_limpieza = models.DateField(
         null=True, blank=True
     )  # Fecha de próxima limpieza
-
+    
     def __str__(self):
         texto = "{0} {1}"
         return texto.format(self.nombre, self.apellido)

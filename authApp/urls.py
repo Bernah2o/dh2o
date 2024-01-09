@@ -71,9 +71,11 @@ urlpatterns = [
     # Agregamos la URL para refrescar un token JWT
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     # Agregamos la URL para imprimir un reporte
-    path("reportes/<int:pk>/pdf/", ReporteViewSet.as_view({"get": "generar_reporte_pdf"}),
+    path(
+        "reportes/<int:pk>/pdf/",
+        ReporteViewSet.as_view({"get": "generar_reporte_pdf"}),
         name="generar_reporte_pdf",
-        ),
+    ),
     # Agregamos la URL para obtener los clientes próximos
     path(
         "clientes/proximos/",
@@ -132,9 +134,7 @@ urlpatterns = [
         FacturaViewSet.generar_factura,
         name="generar_factura",
     ),
-    
     # otras rutas ...
-    
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

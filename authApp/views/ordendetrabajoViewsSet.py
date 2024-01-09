@@ -8,11 +8,11 @@ from authApp.serializers.ordendetrabajoSerializers import OrdenDeTrabajoSerializ
 from dal import autocomplete
 
 
-
 class OrdenDeTrabajoViewSet(viewsets.ModelViewSet):
     queryset = OrdenDeTrabajo.objects.all()
     serializer_class = OrdenDeTrabajoSerializer
     permission_classes = []  # Permite el acceso sin autenticación
+
     class ClienteAutoComplete(autocomplete.Select2QuerySetView):
         def get_queryset(self):
             qs = Cliente.objects.all()
@@ -23,8 +23,9 @@ class OrdenDeTrabajoViewSet(viewsets.ModelViewSet):
             return qs
 
     autocomplete_fields = {
-        'cliente': ('authApp.Cliente', ClienteAutoComplete),
+        "cliente": ("authApp.Cliente", ClienteAutoComplete),
     }
+
     def perform_create(self, serializer):
         servicios = self.request.data.pop("servicios", [])
         orden_de_trabajo = serializer.save()
@@ -39,28 +40,35 @@ class OrdenDeTrabajoViewSet(viewsets.ModelViewSet):
 
 
 class CalcularComisionView(APIView):
+    template_name = "calcular_comision.html"
+
     def get(self, request, pk):
-        orden_de_trabajo = OrdenDeTrabajo.objects.get(pk=pk)
-        comision = Decimal(0)
+        try:
+            orden_de_trabajo = OrdenDeTrabajo.objects.get(pk=pk)
 
-        for servicio in orden_de_trabajo.servicios.all():
-            if servicio.precio > Decimal("120000"):
-                comision += servicio.precio * Decimal("0.1")
+            # Obtener la suma total de los precios de los servicios
+            total_servicios = sum(
+                servicio.precio for servicio in orden_de_trabajo.servicios.all()
+            )
 
-        orden_de_trabajo.operador.comisiones += comision
-        orden_de_trabajo.operador.save()
+            # Calcular la comisión como el 10% de la suma total de servicios
+            comision = total_servicios * Decimal("0.1")
 
-        orden_de_trabajo_dict = {
-            "numero_orden": orden_de_trabajo.numero_orden,
-            "operador": orden_de_trabajo.operador.nombre,  # Reemplaza "nombre" con el campo correcto del operador
-            "cliente": f"{orden_de_trabajo.cliente.nombre} {orden_de_trabajo.cliente.apellido}",  # Incluye el campo "apellido" del cliente
-            "fecha": orden_de_trabajo.fecha,
-        }
+            # Si la comisión es mayor que cero, agregarla al operador y guardar
+            if comision > 0:
+                orden_de_trabajo.operador.comisiones += comision
+                orden_de_trabajo.operador.save()
 
-        context = {
-            "orden_de_trabajo": orden_de_trabajo_dict,
-            "comision": comision,
-        }
+            context = {
+                "orden_de_trabajo": orden_de_trabajo,
+                "comision": comision,
+            }
 
-        return render(request, "calcular_comision.html", context)
-
+            return render(request, self.template_name, context)
+        except OrdenDeTrabajo.DoesNotExist:
+            # Manejo de error si la orden de trabajo no existe
+            return render(request, "orden_no_encontrada.html")
+        except Exception as e:
+            # Manejo de errores generales
+            print("Error al calcular la comisión:", e)
+            return render(request, "error_calculando_comision.html")
