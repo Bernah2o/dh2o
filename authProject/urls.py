@@ -6,7 +6,7 @@ from django.urls import include, path
 # Configuramos las URLs
 urlpatterns = [
     # Agregamos la URL del admin de Django
-    path("mi_admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
     # Agregamos las URLs del router
     path("", include("authApp.urls")),
 ]

@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from authApp.models.servicios import Servicio
 from authApp.serializers.servicioSerializer import ServicioSerializer
 

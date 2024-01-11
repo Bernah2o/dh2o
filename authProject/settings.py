@@ -129,7 +129,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-#################CONFIGURACIONES HECHAS POR MI #################################################
+#################CONFIGURACIONES HECHAS POR MI ################################################
 
 JAZZMIN_SETTINGS = {
     "site_title": "AppDh2oCol",
@@ -164,7 +164,7 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
     "dark_mode_theme": "slate",
-}
+} 
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

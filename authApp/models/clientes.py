@@ -23,12 +23,8 @@ class Cliente(models.Model):
     correo = models.EmailField(max_length=100, blank=True)
     creacion = models.DateTimeField(auto_now_add=True)
     descripcion = models.CharField(max_length=200, blank=True)
-    ultima_limpieza = models.DateField(
-        null=True, blank=True
-    )  # Fecha de última limpieza
-    proxima_limpieza = models.DateField(
-        null=True, blank=True
-    )  # Fecha de próxima limpieza
+    ultima_limpieza = models.DateField(null=True, blank=True)  # Fecha de última limpieza
+    proxima_limpieza = models.DateField(null=True, blank=True)  # Fecha de próxima limpieza
     
     def __str__(self):
         texto = "{0} {1}"

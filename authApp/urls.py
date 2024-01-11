@@ -7,7 +7,6 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
 from authApp.views.loginViewSet import LoginView
-from authApp.views import views
 
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
@@ -21,7 +20,6 @@ from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
 from authApp.views.productoViewSet import ProductoViewSet
-
 
 # Importaciones para swagger
 from drf_yasg.views import get_schema_view
@@ -38,6 +36,7 @@ router.register(r"mpagos", MpagoViewSet)
 router.register(r"ordenesdetrabajo", OrdenDeTrabajoViewSet)
 router.register(r"reportes", ReporteViewSet)
 router.register(r"producto", ProductoViewSet)
+
 
 # Personalizacion del panel de admin
 admin.site.site_header = "Bienvenido"
@@ -60,10 +59,6 @@ schema_view = get_schema_view(
 
 # Configuramos las URLs
 urlpatterns = [
-    # Agregamos las URLs del router
-    path("", include(router.urls)),
-    # Agregamos la URL del admin de Django
-    path("mi_admin/", admin.site.urls),
     # Agregamos la URL para la autenticación de la API
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Agregamos la URL para obtener un token JWT
@@ -76,14 +71,6 @@ urlpatterns = [
         ReporteViewSet.as_view({"get": "generar_reporte_pdf"}),
         name="generar_reporte_pdf",
     ),
-    # Agregamos la URL para obtener los clientes próximos
-    path(
-        "clientes/proximos/",
-        ClienteViewSet.as_view({"get": "clientes_proximos"}),
-        name="clientes_proximos",
-    ),
-    # Agregamos la URL para el panel de clientes
-    path("clientes/panel/", ClienteViewSet.panel_clientes, name="panel_clientes"),
     # Agregamos la URL para ventas mensuales
     path(
         "ventas-mensuales/",
@@ -91,7 +78,6 @@ urlpatterns = [
         name="ventas_mensuales",
     ),
     # Agregamos la URL para comisiones
-    # path('comisiones/<int:pk>/', OrdenDeTrabajoViewSet.as_view({'get': 'calcular_comision'}), name='authApp_ordendetrabajo_comisiones'),
     path(
         "comisiones/<int:pk>/",
         CalcularComisionView.as_view(),
