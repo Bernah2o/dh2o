@@ -64,7 +64,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "nombre",
         "apellido",
         "direccion",
-        "telefono",
+        "telefono_link",
         "ver_clientes_proximos",
     )
     # Especificamos los campos que tendrán un enlace en la lista de objetos del modelo
@@ -115,6 +115,21 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     ver_clientes_proximos.short_description = "Estado"
     ver_clientes_proximos.allow_tags = True
+    
+    def telefono_link(self, obj):
+        telefono = obj.telefono
+        #print(telefono)  # Imprime el número de teléfono en la consola
+
+        # Agrega el indicativo de Colombia y el símbolo "+" si el número no está vacío
+        if telefono:
+            telefono_con_codigo = f'57{telefono}'  # Agrega el indicativo de Colombia (57)
+            link = f'https://wa.me/{telefono_con_codigo}'
+            return format_html(f'<a href="{link}" target="_blank">{telefono}</a>')
+
+        return "N/A"
+
+    telefono_link.short_description = "Teléfono"
+
 
 
 class ReporteAdmin(admin.ModelAdmin):
