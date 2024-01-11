@@ -91,7 +91,7 @@ DATABASES = {
 
 # configuracion bd postgres
 
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -103,7 +103,7 @@ DATABASES = {
     }
 }
     
-"""
+
 # Usa configuraciones directas sin variables de entorno para probar
 DATABASES = {
     'default': {
