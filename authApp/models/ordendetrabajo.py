@@ -38,24 +38,27 @@ class OrdenDeTrabajo(models.Model):
                 )
 
     def calcular_comision(self):
-        total_servicios = sum(
-            servicio.precio
-            for servicio in self.servicios.all()
-            if servicio.precio > 120000
-        )
-        comision = total_servicios * 0.1
+        try:
+            # Obtener la suma total de los precios de todos los servicios
+            total_servicios = sum(servicio.precio for servicio in self.servicios.all())
 
-        if comision > 0:
-            self.operador.comisiones += comision
-            self.operador.save()
+            # Calcular la comisión como el 10% de la suma total de servicios
+            comision = total_servicios * 0.1
 
-        # Verificar si la comisión es cero y aplicar lógica adicional si es necesario
-        if comision == 0:
+            # Si la comisión es mayor que cero, agregarla al operador y guardar
+            if comision > 0:
+                self.operador.comisiones += comision
+                self.operador.save()
+
             # Lógica adicional cuando la comisión es cero
-            # Puedes agregar aquí tu código personalizado
-            pass
+            if comision == 0:
+                # Puedes agregar aquí tu código personalizado
+                pass
 
-        return comision
+            return comision
+        except Exception as e:
+            print("Error al calcular la comisión:", e)
+            return 0  # Retornar 0 o algún valor por defecto en caso de error
 
     def calcular_total(self):
         # Utilizar diccionarios para realizar el seguimiento de la cantidad y el precio de cada servicio y producto
@@ -91,4 +94,3 @@ class OrdenDeTrabajo(models.Model):
             total += precio_productos[producto] * cantidad
 
         return total
-

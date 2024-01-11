@@ -23,6 +23,7 @@ class LoginView(View):
             if user is not None:
                 login(request, user)
                 admin_url = reverse("admin:index")  # Obtiene la URL de administración
+                messages.success(request, "¡Inicio de sesión exitoso!")
                 return redirect(
                     admin_url
                 )  # Redirige al usuario al panel de administración

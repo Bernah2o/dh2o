@@ -82,9 +82,16 @@ WSGI_APPLICATION = "authProject.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    }
+}
+
 # configuracion bd postgres
 
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -96,7 +103,7 @@ DATABASES = {
     }
 }
     
-"""
+
 # Usa configuraciones directas sin variables de entorno para probar
 DATABASES = {
     'default': {
@@ -108,6 +115,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }"""    
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -150,7 +158,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-#################CONFIGURACIONES HECHAS POR MI #################################################
+#################CONFIGURACIONES HECHAS POR MI ################################################
 
 JAZZMIN_SETTINGS = {
     "site_title": "AppDh2oCol",
@@ -185,7 +193,7 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
     "dark_mode_theme": "slate",
-}
+} 
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

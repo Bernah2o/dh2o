@@ -64,7 +64,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "nombre",
         "apellido",
         "direccion",
-        "telefono",
+        "telefono_link",
         "ver_clientes_proximos",
     )
     # Especificamos los campos que tendrán un enlace en la lista de objetos del modelo
@@ -115,12 +115,30 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     ver_clientes_proximos.short_description = "Estado"
     ver_clientes_proximos.allow_tags = True
+    
+    def telefono_link(self, obj):
+        telefono = obj.telefono
+        #print(telefono)  # Imprime el número de teléfono en la consola
+
+        # Agrega el indicativo de Colombia y el símbolo "+" si el número no está vacío
+        if telefono:
+            telefono_con_codigo = f'57{telefono}'  # Agrega el indicativo de Colombia (57)
+            link = f'https://wa.me/{telefono_con_codigo}'
+            return format_html(f'<a href="{link}" target="_blank">{telefono}</a>')
+
+        return "N/A"
+
+    telefono_link.short_description = "Teléfono"
+
 
 
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
     list_display = ["mostrar_orden_de_trabajo", "obtener_cliente", "fecha", "ver_pdf"]
-    search_fields = ["orden_de_trabajo__numero_orden", "orden_de_trabajo__cliente__nombre"]
+    search_fields = [
+        "orden_de_trabajo__numero_orden",
+        "orden_de_trabajo__cliente__nombre",
+    ]
     readonly_fields = ["creacion", "proxima_limpieza"]  # campo inmodificable
 
     def ver_pdf(self, obj):
@@ -189,8 +207,7 @@ class FacturaAdmin(admin.ModelAdmin):
         "ventas_mensuales_column",
         "generar_factura_link",
     )
-    
-    
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "orden_de_trabajo":
             kwargs["queryset"] = OrdenDeTrabajo.objects.filter(factura__isnull=True)
@@ -256,7 +273,7 @@ class FacturaAdmin(admin.ModelAdmin):
         return format_html(f"${total_formatted} COP")
 
     formatted_total.short_description = "Total"
-    
+
     def generar_factura_link(self, obj):
         # Genera la URL para la página de generación de la factura
         url = reverse("generar_factura", args=[obj.pk])
@@ -265,12 +282,13 @@ class FacturaAdmin(admin.ModelAdmin):
         return format_html('<a href="{}" target="_blank">Factura</a>', url)
 
     generar_factura_link.short_description = "Factura"
-    
-   
+
     def get_search_results(self, request, queryset, search_term):
         # Override del método get_search_results para buscar únicamente por número de orden de trabajo
 
-        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        queryset, use_distinct = super().get_search_results(
+            request, queryset, search_term
+        )
 
         try:
             # Intentar convertir el término de búsqueda a un entero

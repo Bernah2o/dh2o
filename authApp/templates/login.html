@@ -21,6 +21,14 @@
     <!--<img src="{% static 'img/logo2.png' %}" alt="Logo">-->
   </div>
   <h2>Inicio de Sesion</h2>
+  <!-- Agregar este bloque para mostrar el mensaje de éxito -->
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
   <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
     {% if form.errors %}
@@ -60,11 +68,11 @@
   <footer>
     <!-- Pie de página -->
     <div class="social-media">
-      <a href="https://www.facebook.com/tu-pagina-de-facebook" class="social-icon"><img src="{% static 'img/facebook-icon.png' %}" alt="Facebook"></a>
-      <a href="https://wa.me/3157484662" class="social-icon"><img src="{% static 'img/icon-whatsapp.png' %}" alt="Twitter"></a>
-      <a href="https://www.instagram.com/dh2ocol/" class="social-icon"><img src="{% static 'img/instagram-icon.png' %}" alt="Instagram"></a>
+      <a href="https://www.facebook.com/tu-pagina-de-facebook" class="social-icon" aria-label="Facebook"><img src="{% static 'img/facebook-icon.png' %}" alt="Facebook"></a>
+      <a href="https://wa.me/3157484662" class="social-icon" aria-label="WhatsApp"><img src="{% static 'img/icon-whatsapp.png' %}" alt="WhatsApp"></a>
+      <a href="https://www.instagram.com/dh2ocol/" class="social-icon" aria-label="Instagram"><img src="{% static 'img/instagram-icon.png' %}" alt="Instagram"></a>
     </div>
-    <p>Derechos reservados &copy;</p>
-  </footer>
+    <p>&copy; Derechos reservados</p>
+  </footer>  
 </body>
 </html>
