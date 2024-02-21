@@ -166,7 +166,7 @@ JAZZMIN_SETTINGS = {
     "site_header": "Dh2oCol",
     "site_brand": "Dh2oColApp",
     "welcome_sign": "Inicio de Sesion",
-    "copyright": "Dh2oCol",
+    "copyright": "Kasaparty",
     "search_model": "auth.User",
     "show_sidebar": True,
     # Links to put along the top menu

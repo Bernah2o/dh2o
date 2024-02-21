@@ -1,9 +1,6 @@
-from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
-from authApp.models.clientes import Cliente
 from authApp.models.factura import Factura
-from dal import autocomplete
 
 
 class OrdenDeTrabajo(models.Model):
