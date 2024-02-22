@@ -88,10 +88,8 @@ DATABASES = {
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
-
-# configuracion bd postgres
-
 """
+# configuracion bd postgres
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -101,9 +99,9 @@ DATABASES = {
         'HOST':  os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
     }
-}
+}"""
     
-
+"""
 # Usa configuraciones directas sin variables de entorno para probar
 DATABASES = {
     'default': {
