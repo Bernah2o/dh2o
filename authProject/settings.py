@@ -88,10 +88,8 @@ DATABASES = {
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
-
-# configuracion bd postgres
-
 """
+# configuracion bd postgres
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -101,9 +99,9 @@ DATABASES = {
         'HOST':  os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
     }
-}
-    
+}"""
 
+"""
 # Usa configuraciones directas sin variables de entorno para probar
 DATABASES = {
     'default': {
@@ -114,8 +112,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
-}"""    
-
+}"""
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -193,7 +190,7 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
     "dark_mode_theme": "slate",
-} 
+}
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
