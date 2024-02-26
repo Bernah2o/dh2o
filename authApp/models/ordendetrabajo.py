@@ -68,7 +68,7 @@ class OrdenDeTrabajo(models.Model):
 
 class ServicioEnOrden(models.Model):
     orden_de_trabajo = models.ForeignKey(
-        OrdenDeTrabajo, on_delete=models.CASCADE, related_name="servicios_en_orden"
+        "OrdenDeTrabajo", on_delete=models.CASCADE, related_name="servicios_en_orden"
     )
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
