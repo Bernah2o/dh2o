@@ -37,8 +37,10 @@ class OrdenDeTrabajo(models.Model):
     def calcular_comision(self):
         try:
             # Obtener la suma total de los precios de todos los servicios en la orden de trabajo
-            total_servicios = sum(servicio_en_orden.servicio.precio * servicio_en_orden.cantidad 
-                                for servicio_en_orden in self.servicios_en_orden.all())
+            total_servicios = sum(
+                servicio_en_orden.servicio.precio * servicio_en_orden.cantidad
+                for servicio_en_orden in self.servicios_en_orden.all()
+            )
 
             # Calcular la comisión como el 10% de la suma total de servicios
             comision = total_servicios * 0.1
@@ -58,7 +60,6 @@ class OrdenDeTrabajo(models.Model):
             print("Error al calcular la comisión:", e)
             return 0  # Retornar 0 o algún valor por defecto en caso de error
 
-
     def calcular_total(self):
         total = 0
         for servicio_en_orden in self.servicios_en_orden.all():
@@ -67,14 +68,12 @@ class OrdenDeTrabajo(models.Model):
 
 
 class ServicioEnOrden(models.Model):
-    orden_de_trabajo = models.ForeignKey(
-        "OrdenDeTrabajo", on_delete=models.CASCADE, related_name="servicios_en_orden"
-    )
+    orden = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
 
     class Meta:
-        unique_together = ["orden_de_trabajo", "servicio"]
+        unique_together = ["orden", "servicio"]
 
     def save(self, *args, **kwargs):
         if not self.pk:  # Si el objeto no tiene clave primaria asignada (es nuevo)
