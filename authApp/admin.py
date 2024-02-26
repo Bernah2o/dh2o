@@ -24,7 +24,7 @@ from .models.factura import Factura
 from .models.operador import Operador
 from .models.servicios import Servicio
 from .models.mpago import Mpago
-from .models.ordendetrabajo import OrdenDeTrabajo
+from .models.ordendetrabajo import OrdenDeTrabajo, ServicioEnOrden
 from .models.reporte import Reporte
 from .models.producto import Producto
 
@@ -50,9 +50,8 @@ class EstadoProximaLimpiezaFilter(admin.SimpleListFilter):
             )
 
 
-# Definimos una clase que hereda de `ImportExpodmin` y `admin.ModelAdmin` para personalizar el comportamiento del modelo en el sitio de administraciónrtModelA
-
-
+# Definimos una clase que hereda de `ImportExpodmin` y `admin.ModelAdmin`
+# para personalizar el comportamiento del modelo en el sitio de administraciónrtModelA
 class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     # Definimos que el campo `creacion` sea de solo lectura
     readonly_fields = ("creacion",)
@@ -115,21 +114,22 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     ver_clientes_proximos.short_description = "Estado"
     ver_clientes_proximos.allow_tags = True
-    
+
     def telefono_link(self, obj):
         telefono = obj.telefono
-        #print(telefono)  # Imprime el número de teléfono en la consola
+        # print(telefono)  # Imprime el número de teléfono en la consola
 
         # Agrega el indicativo de Colombia y el símbolo "+" si el número no está vacío
         if telefono:
-            telefono_con_codigo = f'57{telefono}'  # Agrega el indicativo de Colombia (57)
-            link = f'https://wa.me/{telefono_con_codigo}'
+            telefono_con_codigo = (
+                f"57{telefono}"  # Agrega el indicativo de Colombia (57)
+            )
+            link = f"https://wa.me/{telefono_con_codigo}"
             return format_html(f'<a href="{link}" target="_blank">{telefono}</a>')
 
         return "N/A"
 
     telefono_link.short_description = "Teléfono"
-
 
 
 class ReporteAdmin(admin.ModelAdmin):
@@ -304,20 +304,13 @@ class FacturaAdmin(admin.ModelAdmin):
 
         return queryset, use_distinct
 
-
-class OrdenDeTrabajoForm(forms.ModelForm):
-    servicios = forms.ModelMultipleChoiceField(
-        queryset=Servicio.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-    )
-
-    class Meta:
-        model = OrdenDeTrabajo
-        fields = "__all__"
+class ServicioEnOrdenInline(admin.TabularInline):
+    model = ServicioEnOrden
+    extra = 1
 
 
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
+    inlines = [ServicioEnOrdenInline]
     list_display = (
         "numero_orden",
         "cliente",
@@ -326,7 +319,6 @@ class OrdenDeTrabajoAdmin(admin.ModelAdmin):
         "facturada_icon",
         "enlace_comisiones",
     )
-    form = OrdenDeTrabajoForm
     search_fields = ["cliente__nombre"]  # Agrega los campos relevantes para la búsqueda
     ordering = ["numero_orden"]  # Agrega el ordenamiento por número de orden
     actions = ["marcar_como_facturada"]
@@ -442,3 +434,4 @@ admin.site.register(Mpago)
 admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Producto, ProductoAdmin)
+# admin.site.register(ServicioEnOrden)
