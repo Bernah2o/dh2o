@@ -14,6 +14,7 @@ from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from django.db.models import Q
+from django.utils import timezone
 
 
 from authApp.forms import ReporteForm
@@ -64,6 +65,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "apellido",
         "direccion",
         "telefono_link",
+        "dias_vencidos",
         "ver_clientes_proximos",
     )
     # Especificamos los campos que tendrán un enlace en la lista de objetos del modelo
@@ -131,6 +133,14 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     telefono_link.short_description = "Teléfono"
 
+    def dias_vencidos(self, obj):
+        if obj.ultima_limpieza:
+            # Calcular los días vencidos desde la última limpieza hasta hoy
+            dias_vencidos = (timezone.now().date() - obj.ultima_limpieza).days
+            return dias_vencidos
+        return None
+
+    dias_vencidos.short_description = "Días vencidos"
 
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
