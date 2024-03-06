@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from authApp.models import Operador
 from authApp.serializers.operadorSerializer import OperadorSerializer
 

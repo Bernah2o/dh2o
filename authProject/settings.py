@@ -27,6 +27,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS = [
     "jazzmin",
+    "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -35,7 +36,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "rest_framework_simplejwt",
-    "rest_framework",
     "drf_yasg",
     "authApp",
     "corsheaders",
@@ -138,7 +138,7 @@ JAZZMIN_SETTINGS = {
     "site_header": "Dh2oCol",
     "site_brand": "Dh2oColApp",
     "welcome_sign": "Inicio de Sesion",
-    "copyright": "Kasaparty",
+    "copyright": "Berna de Aguas",
     "search_model": "auth.User",
     "show_sidebar": True,
     # Links to put along the top menu
@@ -163,7 +163,7 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "theme": "flatly",
+    "theme": "slate",
     "dark_mode_theme": "slate",
 }
 

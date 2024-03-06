@@ -1,6 +1,6 @@
 from authApp.models.inventario import Inventario
 from authApp.serializers.inventarioSerializer import InventarioSerializer
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 
 
 class InventarioViewSet(viewsets.ModelViewSet):

@@ -3,6 +3,7 @@
 from django.contrib import admin
 from django.urls import include, path
 
+
 # Configuramos las URLs
 urlpatterns = [
     # Agregamos la URL del admin de Django
