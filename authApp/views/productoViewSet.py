@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from authApp.models.producto import Producto
 from authApp.serializers.productoSerializer import ProductoSerializer
 

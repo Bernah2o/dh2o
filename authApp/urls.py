@@ -2,11 +2,12 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework import routers, permissions
+from rest_framework import permissions
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
 from authApp.views.loginViewSet import LoginView
+from rest_framework.routers import DefaultRouter
 
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
@@ -27,15 +28,15 @@ from drf_yasg import openapi
 
 
 # Definimos nuestro router para manejar todas las vistas de la API
-router = routers.DefaultRouter()
-router.register(r"clientes", ClienteViewSet)
-router.register(r"facturas", FacturaViewSet)
-router.register(r"servicios", ServicioViewSet)
-router.register(r"operadores", OperadorViewSet)
-router.register(r"mpagos", MpagoViewSet)
-router.register(r"ordenesdetrabajo", OrdenDeTrabajoViewSet)
-router.register(r"reportes", ReporteViewSet)
-router.register(r"producto", ProductoViewSet)
+router = DefaultRouter()
+router.register(r"clientes", ClienteViewSet, "clientes")
+router.register(r"facturas", FacturaViewSet, "facturas")
+router.register(r"servicios", ServicioViewSet, "servicios")
+router.register(r"operadores", OperadorViewSet, "operadores")
+router.register(r"mpagos", MpagoViewSet, "mpagos")
+router.register(r"ordenesdetrabajo", OrdenDeTrabajoViewSet, "ordenesdetrabajo")
+router.register(r"reportes", ReporteViewSet, "reportes")
+router.register(r"producto", ProductoViewSet, "producto")
 
 
 # Personalizacion del panel de admin
@@ -59,6 +60,7 @@ schema_view = get_schema_view(
 
 # Configuramos las URLs
 urlpatterns = [
+    path("api/", include(router.urls)),
     # Agregamos la URL para la autenticación de la API
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Agregamos la URL para obtener un token JWT
