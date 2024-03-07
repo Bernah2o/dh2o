@@ -12,6 +12,12 @@ class OrdenDeTrabajo(models.Model):
     descripcion = models.TextField()
     productos = models.ManyToManyField("authApp.Producto", blank=True)
     facturada = models.BooleanField(default=False)
+    servicios_en_orden = models.ManyToManyField(
+        "Servicio",
+        through="ServicioEnOrden",
+        related_name="ordenes_de_trabajo",
+        blank=True,
+    )
 
     def __str__(self):
         return f"OrdenDeTrabajo {self.numero_orden}"
@@ -38,8 +44,8 @@ class OrdenDeTrabajo(models.Model):
         try:
             # Obtener la suma total de los precios de todos los servicios en la orden de trabajo
             total_servicios = sum(
-                servicio_en_orden.servicio.precio * servicio_en_orden.cantidad
-                for servicio_en_orden in self.servicios_en_orden.all()
+                servicio_en_orden.calcular_total()
+                for servicio_en_orden in self.servicioenorden_set.all()
             )
 
             # Calcular la comisión como el 10% de la suma total de servicios
@@ -62,7 +68,7 @@ class OrdenDeTrabajo(models.Model):
 
     def calcular_total(self):
         total = 0
-        for servicio_en_orden in self.servicios_en_orden.all():
+        for servicio_en_orden in self.servicioenorden_set.all():
             total += servicio_en_orden.calcular_total()
         return total
 
@@ -74,24 +80,6 @@ class ServicioEnOrden(models.Model):
 
     class Meta:
         unique_together = ["orden", "servicio"]
-
-    def save(self, *args, **kwargs):
-        if not self.pk:  # Si el objeto no tiene clave primaria asignada (es nuevo)
-            ultima_orden = OrdenDeTrabajo.objects.order_by("-numero_orden").first()
-            if ultima_orden:
-                self.numero_orden = ultima_orden.numero_orden + 1
-            else:
-                self.numero_orden = 1
-
-        super().save(*args, **kwargs)
-
-    def clean(self):
-        if self.pk:
-            existing_facturas = Factura.objects.filter(orden_de_trabajo=self)
-            if existing_facturas.exists():
-                raise ValidationError(
-                    "Esta orden de trabajo ya tiene una factura asociada."
-                )
 
     def calcular_total(self):
         return self.servicio.precio * self.cantidad
