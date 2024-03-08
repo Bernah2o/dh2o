@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Factura{% endblock %}
+
+{% block content %}
+<div class="factura-container">
+  <div class="factura-card">
+    <h1 class="factura-title">Resumen del costo de las reparaciones realizadas</h1>
+    <table class="factura-table">
+      <tr>
+        <th>Cliente</th>
+        <td>{{ factura.cliente }}</td>
+      </tr>
+      <tr>
+        <th>Método de pago</th>
+        <td>{{ factura.mpago }}</td>
+      </tr>
+      <tr>
+        <th>Servicios</th>
+        <td>
+          {% for servicio_en_orden in factura.orden_de_trabajo.servicioenorden_set.all %}
+          {{ servicio_en_orden.servicio.nombre }}<br />
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <th>Productos</th>
+        <td>
+          {% for servicio_en_orden in factura.orden_de_trabajo.servicioenorden_set.all %}
+          {{ servicio_en_orden.producto.nombre }}<br />
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <th>Descuento</th>
+        <td>${{ factura.descuento|floatformat:0 }}</td>
+      </tr>
+      <tr>
+        <th>Descripción</th>
+        <td>{{ factura.descripcion }}</td>
+      </tr>
+      <tr>
+        <th>Total</th>
+        <td>${{ factura.total|floatformat:0 }}</td>
+      </tr>
+      <tr>
+        <th>Fecha de creación</th>
+        <td>{{ factura.creacion }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+{% endblock %}

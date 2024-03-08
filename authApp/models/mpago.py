@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Mpago(models.Model):
-    id_mpago = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
 
     def __str__(self):

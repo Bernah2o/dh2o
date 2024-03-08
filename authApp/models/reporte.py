@@ -10,7 +10,6 @@ from authApp.models.ordendetrabajo import OrdenDeTrabajo
 
 
 class Reporte(models.Model):
-    id_reporte = models.AutoField(primary_key=True)
     orden_de_trabajo = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)
     fecha = models.DateField()
     imagen_antes_lavado_1 = models.ImageField(upload_to="reportes/", null=True)

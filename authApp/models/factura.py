@@ -1,5 +1,8 @@
 from django.db import models
 from django.template.loader import render_to_string
+from django.core.exceptions import ValidationError
+
+from authApp.models import servicios
 
 
 class Factura(models.Model):
@@ -11,18 +14,35 @@ class Factura(models.Model):
         limit_choices_to={"factura__isnull": True},
     )
     mpago = models.ForeignKey("authApp.Mpago", on_delete=models.CASCADE)
-    servicios = models.ManyToManyField("authApp.Servicio", blank=True)
-    productos = models.ManyToManyField("authApp.Producto", blank=True)
     descuento = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     descripcion = models.CharField(max_length=200, blank=True)
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     creacion = models.DateTimeField(auto_now_add=True)
+    total = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+    )  # Campo para almacenar el total de la factura
 
     def __str__(self):
         return f"Factura {self.numero_factura}"
 
+    def clean(self):
+        if Factura.objects.filter(numero_factura=self.numero_factura).exists():
+            raise ValidationError("El número de factura debe ser único.")
+
+    def calcular_total(self):
+        total_orden_trabajo = (
+            self.orden_de_trabajo.calcular_total()
+        )  # Obtener el total de la orden de trabajo
+        return (
+            total_orden_trabajo - self.descuento
+        )  # Restar el descuento y retornar el total de la factura
+
     def save(self, *args, **kwargs):
-        self.total = self.orden_de_trabajo.calcular_total() - self.descuento
+        if not self.pk:
+            last_invoice = Factura.objects.order_by("-pk").first()
+            self.pk = last_invoice.pk + 1 if last_invoice else 1
+
         super().save(*args, **kwargs)
 
         self.orden_de_trabajo.facturada = True
@@ -34,5 +54,5 @@ class Factura(models.Model):
 
     def generar_html_factura(self):
         context = {"factura": self}
-        html = render_to_string("factura_template.html", context)
+        html = render_to_string("factura.html", context)
         return html

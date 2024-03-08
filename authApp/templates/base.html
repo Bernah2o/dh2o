@@ -1,31 +1,64 @@
-<!-- base.html -->
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Mi Aplicación{% endblock %}</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-      crossorigin="anonymous"
-    />
-    <!-- Otros archivos de estilo -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}DH2OCOL{% endblock %}</title>
+    <!-- Agrega más metadatos si son necesarios -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
   </head>
   <body>
-    {% block content %}{% endblock %}
+    <header>
+      <img src="{% static 'img/logo2.png' %}" alt="Logo" class="logo" />
+      <!-- Puedes agregar más contenido al encabezado si es necesario -->
+    </header>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-      crossorigin="anonymous"
-    ></script>
-    <!-- Otros archivos de script -->
+    <div class="container">{% block content %} {% endblock %}</div>
+
+    <footer>
+      <div class="footer-content">
+        <div class="redes-sociales">
+          <!--<h2>Síguenos en nuestras redes sociales</h2>-->
+          <a
+            href="https://www.instagram.com/dh2ocol/"
+            class="enlace-red-social"
+          >
+            <img
+              src="{% static 'img/instagram-icon.png' %}"
+              alt="Instagram"
+              class="logo-red-social"
+            />
+          </a>
+          <a href="https://wa.me/3157484662" class="enlace-red-social">
+            <img
+              src="{% static 'img/icon-whatsapp.png' %}"
+              alt="WhatsApp"
+              class="logo-red-social"
+            />
+          </a>
+          <a href="https://www.facebook.com/dh2ocol/" class="enlace-red-social">
+            <img
+              src="{% static 'img/facebook-icon.png' %}"
+              alt="Facebook"
+              class="logo-red-social"
+            />
+          </a>
+          <a href="https://dh2o.com.co/" class="enlace-red-social">
+            <img
+              src="{% static 'img/web-icon.png' %}"
+              alt="Web"
+              class="logo-red-social"
+            />
+          </a>
+          <!-- Puedes agregar más redes sociales si es necesario -->
+        </div>
+      </div>
+    </footer>
+
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Asegúrate de incluir los scripts necesarios -->
   </body>
 </html>

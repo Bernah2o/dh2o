@@ -15,6 +15,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from django.db.models import Q
 from django.utils import timezone
+from authApp import models
 
 
 from authApp.forms import ReporteForm
@@ -211,7 +212,6 @@ class FacturaAdmin(admin.ModelAdmin):
     actions = ["ventas_mensuales_action"]
     search_fields = ["orden_de_trabajo__numero_orden"]
     list_display = (
-        "numero_factura",
         "cliente",
         "formatted_total",
         "ventas_mensuales_column",
@@ -322,7 +322,7 @@ class ServicioEnOrdenInline(admin.TabularInline):
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
     inlines = [ServicioEnOrdenInline]
     list_display = (
-        "numero_orden",
+        #"numero_orden",
         "cliente",
         "formatted_total",
         "fecha",
@@ -381,21 +381,19 @@ class ProductoAdmin(admin.ModelAdmin):
 
     formatted_precio.short_description = "Precio"
 
-    @receiver(m2m_changed, sender=OrdenDeTrabajo.productos.through)
+    @receiver(m2m_changed, sender=Producto.ordenes_trabajo.through)
     def actualizar_inventario(sender, instance, action, **kwargs):
         if action == "post_add":
-            for producto_id in kwargs["pk_set"]:
-                producto = Producto.objects.get(id_producto=producto_id)
-                producto.cantidad -= 1
-                producto.save()
+            Producto.objects.filter(id__in=kwargs["pk_set"]).update(
+                cantidad=models.F("cantidad") - 1
+            )
         elif action == "post_remove":
-            for producto_id in kwargs["pk_set"]:
-                producto = Producto.objects.get(id_producto=producto_id)
-                producto.cantidad += 1
-                producto.save()
+            Producto.objects.filter(id__in=kwargs["pk_set"]).update(
+                cantidad=models.F("cantidad") + 1
+            )
 
     def link_orden(self, obj):
-        ordenes = obj.ordendetrabajo_set.all()
+        ordenes = obj.ordenes_trabajo.all()
         if ordenes:
             links = []
             for orden in ordenes:
@@ -409,7 +407,6 @@ class ProductoAdmin(admin.ModelAdmin):
 
     link_orden.short_description = "Número de Orden"
 
-    # Funcion para mostrar la imagen del producto en el panel
     def imagen_tag(self, obj):
         if obj.imagen:
             return format_html(
@@ -422,7 +419,6 @@ class ProductoAdmin(admin.ModelAdmin):
 
     imagen_tag.short_description = "Imagen"
     imagen_tag.allow_tags = True
-
 
 class ServicioAdmin(admin.ModelAdmin):
     list_display = ("nombre", "formatted_precio")

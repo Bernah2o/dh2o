@@ -63,7 +63,7 @@ class FacturaViewSet(viewsets.ModelViewSet):
         context = {"factura": factura}
 
         # Renderizar el HTML a partir de la plantilla
-        html_string = render_to_string("factura_template.html", context)
+        html_string = render_to_string("factura.html", context)
 
         # Crear una instancia de HTML a partir de una cadena de texto
         html_obj = HTML(string=html_string, base_url=request.build_absolute_uri())
@@ -79,5 +79,3 @@ class FacturaViewSet(viewsets.ModelViewSet):
         response = HttpResponse(pdf_file, content_type="application/pdf")
         response["Content-Disposition"] = 'attachment; filename="factura.pdf"'
         return response
-
-    
