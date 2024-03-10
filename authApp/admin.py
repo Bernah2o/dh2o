@@ -15,6 +15,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from django.db.models import Q
 from django.utils import timezone
+from authApp import models
 
 
 from authApp.forms import ReporteForm
@@ -142,6 +143,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     dias_vencidos.short_description = "Días vencidos"
 
+
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
     list_display = ["mostrar_orden_de_trabajo", "obtener_cliente", "fecha", "ver_pdf"]
@@ -211,7 +213,6 @@ class FacturaAdmin(admin.ModelAdmin):
     actions = ["ventas_mensuales_action"]
     search_fields = ["orden_de_trabajo__numero_orden"]
     list_display = (
-        "numero_factura",
         "cliente",
         "formatted_total",
         "ventas_mensuales_column",
@@ -314,6 +315,7 @@ class FacturaAdmin(admin.ModelAdmin):
 
         return queryset, use_distinct
 
+
 class ServicioEnOrdenInline(admin.TabularInline):
     model = ServicioEnOrden
     extra = 1
@@ -322,7 +324,7 @@ class ServicioEnOrdenInline(admin.TabularInline):
 class OrdenDeTrabajoAdmin(admin.ModelAdmin):
     inlines = [ServicioEnOrdenInline]
     list_display = (
-        "numero_orden",
+        # "numero_orden",
         "cliente",
         "formatted_total",
         "fecha",
@@ -372,7 +374,7 @@ def actualizar_estado_facturada(sender, instance, **kwargs):
 
 
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "formatted_precio", "cantidad", "link_orden")
+    list_display = ("nombre", "formatted_precio", "cantidad", "reporte_link")
     readonly_fields = ("imagen_tag",)
 
     def formatted_precio(self, obj):
@@ -381,35 +383,26 @@ class ProductoAdmin(admin.ModelAdmin):
 
     formatted_precio.short_description = "Precio"
 
-    @receiver(m2m_changed, sender=OrdenDeTrabajo.productos.through)
+    @receiver(m2m_changed, sender=Producto.ordenes_trabajo.through)
     def actualizar_inventario(sender, instance, action, **kwargs):
         if action == "post_add":
-            for producto_id in kwargs["pk_set"]:
-                producto = Producto.objects.get(id_producto=producto_id)
-                producto.cantidad -= 1
-                producto.save()
+            Producto.objects.filter(id__in=kwargs["pk_set"]).update(
+                cantidad=models.F("cantidad") - 1
+            )
         elif action == "post_remove":
-            for producto_id in kwargs["pk_set"]:
-                producto = Producto.objects.get(id_producto=producto_id)
-                producto.cantidad += 1
-                producto.save()
+            Producto.objects.filter(id__in=kwargs["pk_set"]).update(
+                cantidad=models.F("cantidad") + 1
+            )
 
-    def link_orden(self, obj):
-        ordenes = obj.ordendetrabajo_set.all()
-        if ordenes:
-            links = []
-            for orden in ordenes:
-                url = reverse(
-                    "admin:authApp_ordendetrabajo_change", args=(orden.numero_orden,)
-                )
-                link = f'<a href="{url}">{orden.numero_orden}</a>'
-                links.append(link)
-            return format_html(", ".join(links))
-        return "-"
+    def reporte_link(self, obj):
+        enlace = reverse(
+            "reporte_productos"
+        )  # Asegúrate de tener la URL adecuada para el reporte de productos
 
-    link_orden.short_description = "Número de Orden"
+        return mark_safe(f'<a href="{enlace}" target="_blank">Ver Reporte</a>')
+    
+    reporte_link.short_description = "Reporte de Productos"
 
-    # Funcion para mostrar la imagen del producto en el panel
     def imagen_tag(self, obj):
         if obj.imagen:
             return format_html(

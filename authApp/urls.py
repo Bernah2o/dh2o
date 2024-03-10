@@ -20,7 +20,7 @@ from authApp.views.servicioViewSet import ServicioViewSet
 from authApp.views.operadorViewSet import OperadorViewSet
 from authApp.views.mpagoViewSet import MpagoViewSet
 from authApp.views.clienteViewSet import ClienteViewSet
-from authApp.views.productoViewSet import ProductoViewSet
+from authApp.views.productoViewSet import ProductoViewSet, reporte_productos_view
 
 # Importaciones para swagger
 from drf_yasg.views import get_schema_view
@@ -122,6 +122,8 @@ urlpatterns = [
         FacturaViewSet.generar_factura,
         name="generar_factura",
     ),
+    # Generar informe de productos en html
+    path("reporte-productos/", reporte_productos_view, name="reporte_productos"),
     # otras rutas ...
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.shortcuts import render
 from rest_framework.views import APIView
 from authApp.models.clientes import Cliente
-from authApp.models.ordendetrabajo import OrdenDeTrabajo
+from authApp.models.ordendetrabajo import OrdenDeTrabajo, ServicioEnOrden
 from authApp.serializers.ordendetrabajoSerializers import OrdenDeTrabajoSerializer
 from dal import autocomplete
 
@@ -27,17 +27,35 @@ class OrdenDeTrabajoViewSet(viewsets.ModelViewSet):
     }
 
     def perform_create(self, serializer):
-        servicios = self.request.data.pop("servicios", [])
+        servicios_ids = self.request.data.pop("servicios", [])  # Obtener IDs de servicios
         orden_de_trabajo = serializer.save()
-        orden_de_trabajo.servicios.set(servicios)
-        # orden_de_trabajo.calcular_comision()  # Calcular comisión al crear la orden de trabajo
+
+        # Crear instancias de ServicioEnOrden con los IDs proporcionados y la cantidad deseada
+        nuevos_servicios_en_orden = [
+            ServicioEnOrden(orden=orden_de_trabajo, servicio_id=servicio_id, cantidad=1)
+            for servicio_id in servicios_ids
+        ]
+        ServicioEnOrden.objects.bulk_create(nuevos_servicios_en_orden)
+
+        # Calcular el total después de guardar los cambios en la base de datos
+        orden_de_trabajo.calcular_total()
 
     def perform_update(self, serializer):
-        servicios = self.request.data.pop("servicios", [])
+        servicios_ids = self.request.data.pop("servicios", [])  # Obtener IDs de servicios
         orden_de_trabajo = serializer.save()
-        orden_de_trabajo.servicios.set(servicios)
-        # orden_de_trabajo.calcular_comision()  # Calcular comisión al actualizar la orden de trabajo
 
+        # Limpiar los servicios existentes
+        orden_de_trabajo.servicios_en_orden.clear()
+
+        # Crear instancias de ServicioEnOrden con los IDs proporcionados y la cantidad deseada
+        nuevos_servicios_en_orden = [
+            ServicioEnOrden(orden=orden_de_trabajo, servicio_id=servicio_id, cantidad=1)
+            for servicio_id in servicios_ids
+        ]
+        ServicioEnOrden.objects.bulk_create(nuevos_servicios_en_orden)
+
+        # Calcular el total después de guardar los cambios en la base de datos
+        orden_de_trabajo.calcular_total()
 
 class CalcularComisionView(APIView):
     template_name = "calcular_comision.html"

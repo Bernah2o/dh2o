@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Reporte de
+Productos{% endblock %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/reporteproductos.css' %}" />
+<h1>Reporte de Productos</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Cliente</th>
+      <th>Orden de Trabajo</th>
+      <th>Fecha de Orden</th>
+      <th>Producto</th>
+      <th>Precio</th>
+      <th>Cantidad asignada</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for producto in productos %}
+    <tr>
+      <td>{{ producto.orden.cliente }}</td>
+      <td>{{ producto.orden }}</td>
+      <td>{{ producto.orden.fecha }}</td>
+      <td>{{ producto.producto.nombre }}</td>
+      <td>${{ producto.producto.precio }}</td>
+      <td>{{ producto.cantidad_producto }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,62 @@
+/* Estilos generales */
+
+body {
+  font-family: Arial, sans-serif; /* Fuente predeterminada */
+  margin: 0; /* Eliminar márgenes predeterminados */
+  padding: 0; /* Eliminar relleno predeterminado */
+}
+
+.container {
+  width: 80%; /* Ancho del contenedor principal */
+  margin: auto; /* Centrar el contenedor en la página */
+}
+
+/* Estilos para el encabezado */
+
+header {
+  background-color: #ffffff; /* Color de fondo */
+  padding: 20px 0; /* Espaciado interno */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+.logo {
+  max-width: 200px; /* Tamaño máximo del logo */
+}
+
+/* Estilos para el pie de página */
+
+/* Estilos para el footer */
+footer {
+  background-color: transparent; /* Fondo transparente */
+  color: #ffffff; /* Color del texto */
+  padding: 20px 0; /* Espaciado interno */
+  display: flex; /* Mostrar elementos en línea */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+}
+
+/* Estilos para la sección de redes sociales */
+.redes-sociales {
+  text-align: center;
+  margin-top: 20px; /* Ajusta este valor según tus necesidades */
+  position: fixed; /* Fija la sección en la parte inferior de la página */
+  bottom: 0; /* Alinea la sección en la parte inferior */
+  left: 0;
+  right: 0;
+  padding: 10px; /* Espaciado interno del pie de página */
+}
+
+.enlace-red-social {
+  margin: 5 20px;
+  text-decoration: none;
+}
+
+.logo-red-social {
+  width: 30px; /* para cambiar el tamaño del logo */
+  height: auto;
+}
+
+.redes-sociales h2 {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
