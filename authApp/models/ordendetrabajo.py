@@ -83,25 +83,6 @@ class OrdenDeTrabajo(models.Model):
         )
         return total
 
-    def delete(self, *args, **kwargs):
-        logger.info("Entrando en delete() de OrdenDeTrabajo")
-        with transaction.atomic():
-            # Recuperar los productos asociados a esta orden
-            productos_en_orden = ServicioEnOrden.objects.filter(
-                orden=self
-            ).select_related("producto")
-
-            # Eliminar la orden de trabajo
-            super(OrdenDeTrabajo, self).delete(*args, **kwargs)
-
-            # Incrementar la cantidad de productos nuevamente
-            for servicio_en_orden in productos_en_orden:
-                producto = servicio_en_orden.producto
-                producto.cantidad += servicio_en_orden.cantidad_producto
-                producto.save(update_fields=["cantidad"])
-                logger.info(
-                    f"Actualizada la cantidad de {producto.nombre}: {producto.cantidad}"
-                )
 
 class ServicioEnOrden(models.Model):
     orden = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)

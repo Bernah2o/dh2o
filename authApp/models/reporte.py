@@ -8,8 +8,8 @@ from django.db import models
 from authApp.models.ordendetrabajo import OrdenDeTrabajo
 
 
-
 class Reporte(models.Model):
+    id_reporte = models.AutoField(primary_key=True)
     orden_de_trabajo = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)
     fecha = models.DateField()
     imagen_antes_lavado_1 = models.ImageField(upload_to="reportes/", null=True)
@@ -21,7 +21,7 @@ class Reporte(models.Model):
 
     def __str__(self):
         return f"Reporte {self.orden_de_trabajo.numero_orden}"
-    
+
     def save(self, *args, **kwargs):
         # Calcula la fecha de próxima limpieza sumando 6 meses a la fecha actual
         if not self.proxima_limpieza:

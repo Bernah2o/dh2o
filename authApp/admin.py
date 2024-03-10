@@ -400,7 +400,7 @@ class ProductoAdmin(admin.ModelAdmin):
         )  # Asegúrate de tener la URL adecuada para el reporte de productos
 
         return mark_safe(f'<a href="{enlace}" target="_blank">Ver Reporte</a>')
-    
+
     reporte_link.short_description = "Reporte de Productos"
 
     def imagen_tag(self, obj):
@@ -429,11 +429,18 @@ class ServicioAdmin(admin.ModelAdmin):
     formatted_precio.short_description = "Precio"
 
 
+class OperadorAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "apellido", "telefono")
+    
+class MpagoAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "numero_cuenta")    
+
+
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Factura, FacturaAdmin)
-admin.site.register(Operador)
+admin.site.register(Operador, OperadorAdmin)
 admin.site.register(Servicio, ServicioAdmin)
-admin.site.register(Mpago)
+admin.site.register(Mpago, MpagoAdmin)
 admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Producto, ProductoAdmin)
