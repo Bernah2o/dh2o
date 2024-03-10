@@ -1,8 +1,13 @@
-from django.db import models
+from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from authApp.models.factura import Factura
 from authApp.models.producto import Producto
 from authApp.models.servicios import Servicio
+
+import logging
+
+# Configurar el logger para que imprima mensajes de depuración
+logger = logging.getLogger(__name__)
 
 
 class OrdenDeTrabajo(models.Model):
@@ -27,7 +32,11 @@ class OrdenDeTrabajo(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:  # Si el objeto no tiene clave primaria asignada (es nuevo)
-            ultimo_numero_orden = OrdenDeTrabajo.objects.order_by("-numero_orden").values_list('numero_orden', flat=True).first()
+            ultimo_numero_orden = (
+                OrdenDeTrabajo.objects.order_by("-numero_orden")
+                .values_list("numero_orden", flat=True)
+                .first()
+            )
             self.numero_orden = ultimo_numero_orden + 1 if ultimo_numero_orden else 1
         # Calcular el total antes de guardar
         self.total = self.calcular_total()
@@ -74,6 +83,25 @@ class OrdenDeTrabajo(models.Model):
         )
         return total
 
+    def delete(self, *args, **kwargs):
+        logger.info("Entrando en delete() de OrdenDeTrabajo")
+        with transaction.atomic():
+            # Recuperar los productos asociados a esta orden
+            productos_en_orden = ServicioEnOrden.objects.filter(
+                orden=self
+            ).select_related("producto")
+
+            # Eliminar la orden de trabajo
+            super(OrdenDeTrabajo, self).delete(*args, **kwargs)
+
+            # Incrementar la cantidad de productos nuevamente
+            for servicio_en_orden in productos_en_orden:
+                producto = servicio_en_orden.producto
+                producto.cantidad += servicio_en_orden.cantidad_producto
+                producto.save(update_fields=["cantidad"])
+                logger.info(
+                    f"Actualizada la cantidad de {producto.nombre}: {producto.cantidad}"
+                )
 
 class ServicioEnOrden(models.Model):
     orden = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)
@@ -89,3 +117,11 @@ class ServicioEnOrden(models.Model):
         total_servicio = self.servicio.precio * self.cantidad_servicio
         total_producto = self.producto.precio * self.cantidad_producto
         return total_servicio + total_producto
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            super(ServicioEnOrden, self).save(*args, **kwargs)
+            # Actualizar la cantidad de productos en el modelo Producto
+            producto = self.producto
+            producto.cantidad -= self.cantidad_producto
+            producto.save(update_fields=["cantidad"])

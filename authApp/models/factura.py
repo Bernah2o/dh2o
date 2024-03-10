@@ -2,7 +2,6 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.core.exceptions import ValidationError
 
-from authApp.models import servicios
 
 
 class Factura(models.Model):
