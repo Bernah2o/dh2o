@@ -28,7 +28,7 @@ class OrdenDeTrabajo(models.Model):
     )  # Campo no editable
 
     def __str__(self):
-        return f"OrdenDeTrabajo {self.numero_orden}"
+        return f" {self.numero_orden} - Cliente: {self.cliente}"
 
     def save(self, *args, **kwargs):
         if not self.pk:  # Si el objeto no tiene clave primaria asignada (es nuevo)
@@ -86,23 +86,35 @@ class OrdenDeTrabajo(models.Model):
 
 class ServicioEnOrden(models.Model):
     orden = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)
-    servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
-    cantidad_servicio = models.PositiveIntegerField(default=1)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    cantidad_producto = models.PositiveIntegerField(default=1)
+    servicio = models.ForeignKey(
+        Servicio, on_delete=models.CASCADE, null=True, blank=True
+    )
+    cantidad_servicio = models.PositiveIntegerField(default=0, null=True, blank=True)
+    producto = models.ForeignKey(
+        Producto, on_delete=models.CASCADE, null=True, blank=True
+    )
+    cantidad_producto = models.PositiveIntegerField(default=0, null=True, blank=True)
 
     class Meta:
         unique_together = ["orden", "servicio", "producto"]
 
     def calcular_total(self):
-        total_servicio = self.servicio.precio * self.cantidad_servicio
-        total_producto = self.producto.precio * self.cantidad_producto
+        total_servicio = 0
+        if self.servicio:
+            total_servicio = self.servicio.precio * self.cantidad_servicio
+
+        total_producto = 0
+        if self.producto:
+            total_producto = self.producto.precio * self.cantidad_producto
+
         return total_servicio + total_producto
 
     def save(self, *args, **kwargs):
         with transaction.atomic():
             super(ServicioEnOrden, self).save(*args, **kwargs)
-            # Actualizar la cantidad de productos en el modelo Producto
-            producto = self.producto
-            producto.cantidad -= self.cantidad_producto
-            producto.save(update_fields=["cantidad"])
+
+            # Actualizar la cantidad de productos en el modelo Producto si el producto existe
+            if self.producto:
+                producto = self.producto
+                producto.cantidad -= self.cantidad_producto
+                producto.save(update_fields=["cantidad"])

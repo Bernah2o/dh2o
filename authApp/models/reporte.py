@@ -58,15 +58,13 @@ class Reporte(models.Model):
             print(f"Error al generar el PDF: {e}")
             raise RuntimeError(f"Error al generar el PDF: {e}")
 
-    def obtener_cliente(self):
-        if self.orden_de_trabajo:
-            return self.orden_de_trabajo.cliente
-        return None
-
-    obtener_cliente.short_description = "Cliente asociado"
-
     def total_servicio(self):
-        return self.orden_de_trabajo.calcular_total()
+        # Obtener la factura asociada a la OrdenDeTrabajo
+        factura = self.orden_de_trabajo.factura_set.first()
+        if factura:
+            return factura.total
+        else:
+            return None  # O el valor que prefieras en caso de no haber factura
 
     @property
     def cliente(self):
