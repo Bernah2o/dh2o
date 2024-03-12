@@ -11,10 +11,7 @@ from rest_framework.routers import DefaultRouter
 
 # Importamos las vistas necesarias
 from authApp.views.facturaViewSet import FacturaViewSet
-from authApp.views.ordendetrabajoViewsSet import (
-    OrdenDeTrabajoViewSet,
-    CalcularComisionView,
-)
+from authApp.views.ordendetrabajoViewsSet import OrdenDeTrabajoViewSet
 from authApp.views.reporteViewsSet import ReporteViewSet
 from authApp.views.servicioViewSet import ServicioViewSet
 from authApp.views.operadorViewSet import OperadorViewSet
@@ -82,7 +79,7 @@ urlpatterns = [
     # Agregamos la URL para comisiones
     path(
         "comisiones/<int:pk>/",
-        CalcularComisionView.as_view(),
+        OrdenDeTrabajoViewSet.calcular_comision_view,
         name="authApp_ordendetrabajo_comisiones",
     ),
     # URL para solicitar la recuperación de contraseña

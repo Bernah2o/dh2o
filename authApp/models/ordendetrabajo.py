@@ -1,4 +1,5 @@
 from django.db import models, transaction
+from decimal import Decimal
 from django.core.exceptions import ValidationError
 from authApp.models.factura import Factura
 from authApp.models.producto import Producto
@@ -50,32 +51,28 @@ class OrdenDeTrabajo(models.Model):
                 raise ValidationError(
                     "Esta orden de trabajo ya tiene una factura asociada."
                 )
-
     def calcular_comision(self):
-        try:
-            # Obtener la suma total de los precios de todos los servicios en la orden de trabajo
-            total_servicios = sum(
-                servicio_en_orden.calcular_total()
-                for servicio_en_orden in self.servicioenorden_set.all()
-            )
+            try:
+                # Obtener la suma total de los precios de todos los servicios en la orden de trabajo
+                total_servicios = self.calcular_total()
 
-            # Calcular la comisión como el 10% de la suma total de servicios
-            comision = total_servicios * 0.1
-            # Si la comisión es mayor que cero, agregarla al operador y guardar
-            if comision > 0:
-                self.operador.comisiones += comision
-                self.operador.save()
+                # Calcular la comisión como el 10% de la suma total de servicios
+                comision = total_servicios * Decimal("0.1")
 
-            # Lógica adicional cuando la comisión es cero
-            if comision == 0:
-                # Puedes agregar aquí tu código personalizado
-                pass
+                # Si la comisión es mayor que cero, agregarla al operador y guardar
+                if comision > 0:
+                    self.operador.comisiones += comision
+                    self.operador.save()
 
-            return comision
-        except Exception as e:
-            # Manejo de errores aquí
-            return 0  # Retornar 0 o algún valor por defecto en caso de error
+                # Lógica adicional cuando la comisión es cero
+                if comision == 0:
+                    # Puedes agregar aquí tu código personalizado
+                    pass
 
+                return comision
+            except Exception as e:
+                # Manejo de errores aquí
+                return Decimal(0)  # Retornar 0 o algún valor por defecto en caso de error
     def calcular_total(self):
         total = sum(
             servicio_en_orden.calcular_total()
