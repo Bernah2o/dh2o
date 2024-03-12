@@ -146,7 +146,7 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
-    list_display = ["mostrar_orden_de_trabajo", "obtener_cliente", "fecha", "ver_pdf"]
+    list_display = ["mostrar_orden_de_trabajo", "fecha", "ver_pdf"]
     search_fields = [
         "orden_de_trabajo__numero_orden",
         "orden_de_trabajo__cliente__nombre",
@@ -164,13 +164,6 @@ class ReporteAdmin(admin.ModelAdmin):
     ver_pdf.short_description = "Descargar"
 
     form = ReporteForm
-
-    def obtener_cliente(self, obj):
-        if obj.orden_de_trabajo:
-            return obj.orden_de_trabajo.cliente
-        return None
-
-    obtener_cliente.short_description = "Cliente asociado"
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
@@ -209,7 +202,7 @@ class ReporteAdmin(admin.ModelAdmin):
 
 
 class FacturaAdmin(admin.ModelAdmin):
-    readonly_fields = ("creacion",)
+    readonly_fields = ["creacion"]
     actions = ["ventas_mensuales_action"]
     search_fields = ["orden_de_trabajo__numero_orden"]
     list_display = (
@@ -400,7 +393,7 @@ class ProductoAdmin(admin.ModelAdmin):
         )  # Asegúrate de tener la URL adecuada para el reporte de productos
 
         return mark_safe(f'<a href="{enlace}" target="_blank">Ver Reporte</a>')
-    
+
     reporte_link.short_description = "Reporte de Productos"
 
     def imagen_tag(self, obj):
@@ -429,11 +422,19 @@ class ServicioAdmin(admin.ModelAdmin):
     formatted_precio.short_description = "Precio"
 
 
+class OperadorAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "apellido", "telefono")
+
+
+class MpagoAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "numero_cuenta")
+
+
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Factura, FacturaAdmin)
-admin.site.register(Operador)
+admin.site.register(Operador, OperadorAdmin)
 admin.site.register(Servicio, ServicioAdmin)
-admin.site.register(Mpago)
+admin.site.register(Mpago, MpagoAdmin)
 admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Producto, ProductoAdmin)

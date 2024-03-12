@@ -3,7 +3,6 @@ from django.template.loader import render_to_string
 from django.core.exceptions import ValidationError
 
 
-
 class Factura(models.Model):
     numero_factura = models.AutoField(primary_key=True)
     fecha = models.DateField()
@@ -17,9 +16,7 @@ class Factura(models.Model):
     descripcion = models.CharField(max_length=200, blank=True)
     creacion = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0,
+        max_digits=10, decimal_places=0, default=0, editable=False
     )  # Campo para almacenar el total de la factura
 
     def __str__(self):

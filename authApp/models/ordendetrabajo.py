@@ -1,4 +1,5 @@
 from django.db import models, transaction
+from decimal import Decimal
 from django.core.exceptions import ValidationError
 from authApp.models.factura import Factura
 from authApp.models.producto import Producto
@@ -28,7 +29,7 @@ class OrdenDeTrabajo(models.Model):
     )  # Campo no editable
 
     def __str__(self):
-        return f"OrdenDeTrabajo {self.numero_orden}"
+        return f" {self.numero_orden} - Cliente: {self.cliente}"
 
     def save(self, *args, **kwargs):
         if not self.pk:  # Si el objeto no tiene clave primaria asignada (es nuevo)
@@ -50,32 +51,28 @@ class OrdenDeTrabajo(models.Model):
                 raise ValidationError(
                     "Esta orden de trabajo ya tiene una factura asociada."
                 )
-
     def calcular_comision(self):
-        try:
-            # Obtener la suma total de los precios de todos los servicios en la orden de trabajo
-            total_servicios = sum(
-                servicio_en_orden.calcular_total()
-                for servicio_en_orden in self.servicioenorden_set.all()
-            )
+            try:
+                # Obtener la suma total de los precios de todos los servicios en la orden de trabajo
+                total_servicios = self.calcular_total()
 
-            # Calcular la comisión como el 10% de la suma total de servicios
-            comision = total_servicios * 0.1
-            # Si la comisión es mayor que cero, agregarla al operador y guardar
-            if comision > 0:
-                self.operador.comisiones += comision
-                self.operador.save()
+                # Calcular la comisión como el 10% de la suma total de servicios
+                comision = total_servicios * Decimal("0.1")
 
-            # Lógica adicional cuando la comisión es cero
-            if comision == 0:
-                # Puedes agregar aquí tu código personalizado
-                pass
+                # Si la comisión es mayor que cero, agregarla al operador y guardar
+                if comision > 0:
+                    self.operador.comisiones += comision
+                    self.operador.save()
 
-            return comision
-        except Exception as e:
-            # Manejo de errores aquí
-            return 0  # Retornar 0 o algún valor por defecto en caso de error
+                # Lógica adicional cuando la comisión es cero
+                if comision == 0:
+                    # Puedes agregar aquí tu código personalizado
+                    pass
 
+                return comision
+            except Exception as e:
+                # Manejo de errores aquí
+                return Decimal(0)  # Retornar 0 o algún valor por defecto en caso de error
     def calcular_total(self):
         total = sum(
             servicio_en_orden.calcular_total()
@@ -83,45 +80,38 @@ class OrdenDeTrabajo(models.Model):
         )
         return total
 
-    def delete(self, *args, **kwargs):
-        logger.info("Entrando en delete() de OrdenDeTrabajo")
-        with transaction.atomic():
-            # Recuperar los productos asociados a esta orden
-            productos_en_orden = ServicioEnOrden.objects.filter(
-                orden=self
-            ).select_related("producto")
-
-            # Eliminar la orden de trabajo
-            super(OrdenDeTrabajo, self).delete(*args, **kwargs)
-
-            # Incrementar la cantidad de productos nuevamente
-            for servicio_en_orden in productos_en_orden:
-                producto = servicio_en_orden.producto
-                producto.cantidad += servicio_en_orden.cantidad_producto
-                producto.save(update_fields=["cantidad"])
-                logger.info(
-                    f"Actualizada la cantidad de {producto.nombre}: {producto.cantidad}"
-                )
 
 class ServicioEnOrden(models.Model):
     orden = models.ForeignKey(OrdenDeTrabajo, on_delete=models.CASCADE)
-    servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
-    cantidad_servicio = models.PositiveIntegerField(default=1)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    cantidad_producto = models.PositiveIntegerField(default=1)
+    servicio = models.ForeignKey(
+        Servicio, on_delete=models.CASCADE, null=True, blank=True
+    )
+    cantidad_servicio = models.PositiveIntegerField(default=0, null=True, blank=True)
+    producto = models.ForeignKey(
+        Producto, on_delete=models.CASCADE, null=True, blank=True
+    )
+    cantidad_producto = models.PositiveIntegerField(default=0, null=True, blank=True)
 
     class Meta:
         unique_together = ["orden", "servicio", "producto"]
 
     def calcular_total(self):
-        total_servicio = self.servicio.precio * self.cantidad_servicio
-        total_producto = self.producto.precio * self.cantidad_producto
+        total_servicio = 0
+        if self.servicio:
+            total_servicio = self.servicio.precio * self.cantidad_servicio
+
+        total_producto = 0
+        if self.producto:
+            total_producto = self.producto.precio * self.cantidad_producto
+
         return total_servicio + total_producto
 
     def save(self, *args, **kwargs):
         with transaction.atomic():
             super(ServicioEnOrden, self).save(*args, **kwargs)
-            # Actualizar la cantidad de productos en el modelo Producto
-            producto = self.producto
-            producto.cantidad -= self.cantidad_producto
-            producto.save(update_fields=["cantidad"])
+
+            # Actualizar la cantidad de productos en el modelo Producto si el producto existe
+            if self.producto:
+                producto = self.producto
+                producto.cantidad -= self.cantidad_producto
+                producto.save(update_fields=["cantidad"])
