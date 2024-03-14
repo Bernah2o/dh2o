@@ -67,7 +67,7 @@ urlpatterns = [
     # Agregamos la URL para imprimir un reporte
     path(
         "reportes/<int:pk>/pdf/",
-        ReporteViewSet.as_view({"get": "generar_reporte_pdf"}),
+        ReporteViewSet.as_view({"get": "generar_pdf"}),
         name="generar_reporte_pdf",
     ),
     # Agregamos la URL para ventas mensuales

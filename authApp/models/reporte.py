@@ -1,8 +1,5 @@
-from io import BytesIO
-from xhtml2pdf import pisa
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.template.loader import get_template
 from dateutil.relativedelta import relativedelta
 from django.utils import timezone
 from django.db import models
@@ -36,38 +33,15 @@ class Reporte(models.Model):
             self.proxima_limpieza = self.fecha + relativedelta(months=6)
         super().save(*args, **kwargs)
 
-    def generar_pdf(self, request, reporte_instance):
-        cliente = reporte_instance.orden_de_trabajo.cliente
-        servicio_en_orden = reporte_instance.servicio_en_orden
+    def generar_reporte_pdf(request, pk):
+        # Obtener la instancia del reporte
+        reporte_instance = get_object_or_404(Reporte, pk=pk)
 
-        # Ruta de la plantilla HTML
-        template_path = "authApp/reporte_template.html"
-        template = get_template(template_path)
+        # Generar el PDF del reporte
+        pdf = reporte_instance.generar_pdf(request)
 
-        # Contexto para la plantilla
-        context = {
-            "reporte": reporte_instance,
-            "imagen_antes_lavado_1": reporte_instance.imagen_antes_lavado_1.path,
-            "imagen_antes_lavado_2": reporte_instance.imagen_antes_lavado_2.path,
-            "imagen_despues_lavado_1": reporte_instance.imagen_despues_lavado_1.path,
-            "imagen_despues_lavado_2": reporte_instance.imagen_despues_lavado_2.path,
-        }
-
-        # Renderizar la plantilla con el contexto
-        html = template.render(context)
-
-        try:
-            # Crear el PDF usando xhtml2pdf
-            pdf_response = HttpResponse(content_type="application/pdf")
-            pdf_response["Content-Disposition"] = (
-                f'filename="{reporte_instance.id_reporte}.pdf"'
-            )
-            pisa.CreatePDF(BytesIO(html), dest=pdf_response)
-            return pdf_response
-
-        except Exception as e:
-            print(f"Error al generar el PDF: {e}")
-            raise RuntimeError(f"Error al generar el PDF: {e}")
+        # Devolver el PDF como una respuesta HTTP
+        return HttpResponse(pdf, content_type="application/pdf")
 
     def total_servicio(self):
         # Obtener la factura asociada a la OrdenDeTrabajo
@@ -89,11 +63,10 @@ class Reporte(models.Model):
                 # Generar un reporte para cada servicio
                 reporte = Reporte(
                     orden_de_trabajo=orden_de_trabajo,
-                    servicio_en_orden=servicio_en_orden,  # Corregir aquí
+                    servicio_en_orden=servicio_en_orden,
                     fecha=timezone.now(),
                 )
                 reporte.save()
-                reporte.generar_pdf()
 
     @property
     def cliente(self):

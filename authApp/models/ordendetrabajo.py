@@ -84,7 +84,7 @@ class OrdenDeTrabajo(models.Model):
 
 
 class ServicioEnOrden(models.Model):
-    id = models.AutoField(primary_key=True)
+    id_servicio_en_orden = models.AutoField(primary_key=True)
     orden = models.ForeignKey(
         OrdenDeTrabajo,
         on_delete=models.CASCADE,
@@ -103,7 +103,7 @@ class ServicioEnOrden(models.Model):
         unique_together = ["orden", "servicio", "producto"]
 
     def __str__(self):
-        return f"{self.servicio.nombre} ({self.cantidad_servicio})"
+        return f"{self.servicio.nombre} - {self.cantidad_servicio}"
 
     def calcular_total(self):
         total_servicio = 0
