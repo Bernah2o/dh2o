@@ -121,6 +121,11 @@ urlpatterns = [
     ),
     # Generar informe de productos en html
     path("reporte-productos/", reporte_productos_view, name="reporte_productos"),
+    path(
+        "ordenes-de-trabajo/<int:orden_de_trabajo_id>/reportes/",
+        ReporteViewSet.as_view({"post": "create"}),
+        name="crear-reporte",
+    ),
     # otras rutas ...
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

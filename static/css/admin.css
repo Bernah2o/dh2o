@@ -1,0 +1,63 @@
+/* Estilo del título de la columna "Próx. a vencerse" */
+.th_ver_clientes_proximos {
+  font-weight: bold;
+  text-align: left;
+  color: #0056b3;
+}
+
+.th_ver_pdf {
+  font-weight: bold;
+  text-align: left;
+  color: #0056b3;
+}
+
+table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.boton-azul {
+  background-color: #33daff;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 2px;
+  cursor: default;
+}
+
+.boton-verde {
+  background-color: #33ff35;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 2px;
+  cursor: pointer; /* Usamos el cursor pointer para indicar que es un botón clickeable */
+}
+
+.boton-rojo {
+  background-color: #ff333f;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 2px;
+  cursor: default;
+}
+.logo {
+  background-image: url("../images/logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 100px;
+}

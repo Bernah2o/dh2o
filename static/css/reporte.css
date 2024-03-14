@@ -1,0 +1,92 @@
+/* reporte.css */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.informe-container {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 900px; /* Ajusta el ancho según tu preferencia */
+  overflow-x: auto; /* Agrega desbordamiento horizontal automático */
+}
+
+.logo-img {
+  width: 100px; /* Ajusta el tamaño según tu preferencia */
+  height: auto;
+}
+
+.informe-card {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  border: 2px solid #000; /* Borde negro */
+}
+
+.informe-title {
+  color: #333;
+}
+
+.informe-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  table-layout: fixed; /* Fija el ancho de la tabla */
+}
+
+.informe-table th,
+.informe-table td {
+  padding: 10px;
+  border: 1px solid #000; /* Borde negro */
+  text-align: left;
+  overflow: hidden; /* Oculta el contenido que se desborda */
+  white-space: nowrap; /* No permite que el texto se divida en líneas */
+  
+}
+
+.informe-image {
+  max-width: 48%; /* Ajusta el tamaño máximo de la imagen */
+  height: auto;
+  margin-bottom: 10px;
+  margin: 5px; /* Ajusta según sea necesario */
+}
+
+.logo-img {
+  width: 100px; /* Ajusta el tamaño según tu preferencia */
+  height: auto;
+}
+
+/* Estilos para la sección "Total Servicio" */
+.total-servicio {
+  text-align: right; /* Alinea el texto a la derecha */
+  margin-top: 10px; /* Agrega espacio en la parte superior */
+  font-weight: bold; /* Hace que el texto sea negrita */
+}
+
+/* Estilos para la sección de redes sociales */
+.redes-sociales {
+  text-align: center;
+  margin-top: 20px; /* Ajusta este valor según tus necesidades */
+  position: fixed; /* Fija la sección en la parte inferior de la página */
+  bottom: 0; /* Alinea la sección en la parte inferior */
+  left: 0;
+  right: 0;
+  padding: 10px; /* Espaciado interno del pie de página */
+}
+
+.enlace-red-social {
+  margin: 5 20px;
+  text-decoration: none;
+}
+
+.logo-red-social {
+  width: 30px; /* para cambiar el tamaño del logo */
+  height: auto;
+}
+
+.redes-sociales h2 {
+  font-size: 12px;
+  margin-bottom: 10px;
+}

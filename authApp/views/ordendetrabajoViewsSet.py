@@ -12,6 +12,13 @@ class OrdenDeTrabajoViewSet(viewsets.ModelViewSet):
     serializer_class = OrdenDeTrabajoSerializer
     permission_classes = []  # Permite el acceso sin autenticación
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        orden_de_trabajo = self.get_object()
+        servicios_en_orden = orden_de_trabajo.servicioenorden_set.all()
+        context["servicios_en_orden"] = servicios_en_orden
+        return context
+
     class ClienteAutoComplete(autocomplete.Select2QuerySetView):
         def get_queryset(self):
             qs = Cliente.objects.all()
