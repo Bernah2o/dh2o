@@ -27,6 +27,7 @@ class OrdenDeTrabajo(models.Model):
     total = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, editable=False
     )  # Campo no editable
+    completa = models.BooleanField(default=False)
 
     def __str__(self):
         return f" {self.numero_orden} - Cliente: {self.cliente}"

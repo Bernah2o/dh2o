@@ -1,7 +1,8 @@
 from django import forms
 from dal import autocomplete
+from django.db.models import Count
 from authApp.models.clientes import Cliente
-from authApp.models.ordendetrabajo import ServicioEnOrden
+from authApp.models.ordendetrabajo import OrdenDeTrabajo, ServicioEnOrden
 from authApp.models.reporte import Reporte
 
 
@@ -11,28 +12,37 @@ class ReporteForm(forms.ModelForm):
         required=False,
         widget=forms.SelectMultiple(),
     )
+
+    orden_de_trabajo = forms.ModelChoiceField(
+        queryset=OrdenDeTrabajo.objects.all(), required=True
+    )  # Agregamos este campo
+
     class Meta:
         model = Reporte
         fields = ['orden_de_trabajo', 'servicio_en_orden', 'fecha', 'imagen_antes_lavado_1', 'imagen_antes_lavado_2', 'imagen_despues_lavado_1', 'imagen_despues_lavado_2', 'proxima_limpieza']
 
     def __init__(self, *args, **kwargs):
-        orden_de_trabajo_instance = kwargs.pop("orden_de_trabajo_instance", None)
         super().__init__(*args, **kwargs)
-        if orden_de_trabajo_instance:
+        if "orden_de_trabajo_instance" in kwargs:
+            orden_de_trabajo_instance = kwargs.pop("orden_de_trabajo_instance")
             servicios_en_orden = (
                 orden_de_trabajo_instance.servicios_en_orden_detalle.all()
             )
             self.fields["servicios_en_orden"].queryset = servicios_en_orden
 
-            for servicio in servicios_en_orden:
-                cantidad_disponible = servicio.cantidad_servicio
-                self.fields[f"servicio_{servicio.id}"] = forms.IntegerField(
-                    label=f"Servicio: {servicio.servicio.nombre} - Cantidad disponible: {cantidad_disponible}",
-                    required=False,
-                    min_value=0,
-                    max_value=cantidad_disponible,
-                    widget=forms.NumberInput(attrs={"class": "form-control"}),
+            ordenes_no_completas = OrdenDeTrabajo.objects.exclude(
+                id=orden_de_trabajo_instance.id
+            )
+            ordenes_no_completas = ordenes_no_completas.filter(completa=False)
+            servicios_pendientes = (
+                orden_de_trabajo_instance.servicios_en_orden_detalle.filter(
+                    reporte__isnull=True
                 )
+            )
+            ordenes_no_completas = ordenes_no_completas.annotate(
+                num_reportes=Count("servicios_en_orden_detalle__reporte")
+            ).filter(num_reportes__lt=servicios_pendientes.count())
+            self.fields["orden_de_trabajo"].queryset = ordenes_no_completas
 
     def clean(self):
         cleaned_data = super().clean()
