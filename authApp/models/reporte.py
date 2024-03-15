@@ -62,12 +62,19 @@ class Reporte(models.Model):
         return HttpResponse(pdf, content_type="application/pdf")
 
     def total_servicio(self):
-        # Obtener la factura asociada a la OrdenDeTrabajo
-        factura = self.orden_de_trabajo.factura_set.first()
-        if factura:
-            return factura.total
-        else:
-            return None  # O el valor que prefieras en caso de no haber factura
+        # Obtener el servicio asociado al reporte
+        servicio_en_orden = self.servicio_en_orden
+
+        if servicio_en_orden:
+            # Calcular el total del servicio en base a la cantidad y el precio del servicio
+            total = servicio_en_orden.total_servicio()
+            return total
+
+    def total_producto(self):
+        # Obtener el total del producto asociado al reporte
+        if self.servicio_en_orden:
+            return self.servicio_en_orden.total_producto()
+        return None
 
     def generar_reportes_por_cliente(cliente_id):
         # Obtener todas las órdenes de trabajo del cliente

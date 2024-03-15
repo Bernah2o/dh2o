@@ -146,12 +146,29 @@ class ClienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 class ReporteAdmin(admin.ModelAdmin):
     # Agregar una columna para el botón de descarga de PDF
-    list_display = ["mostrar_orden_de_trabajo", "fecha", "ver_pdf"]
+    list_display = [
+        "mostrar_orden_de_trabajo",
+        "fecha",
+        "total_servicio",
+        "total_producto" ,"ver_pdf",
+    ]
     search_fields = [
         "orden_de_trabajo__numero_orden",
         "orden_de_trabajo__cliente__nombre",
     ]
     readonly_fields = ["creacion", "proxima_limpieza"]  # campo inmodificable
+
+    def total_servicio(self, obj):
+        # Obtener el total del servicio asociado al reporte
+        return int(obj.total_servicio())
+
+    def total_producto(self, obj):
+        # Obtener el total del producto asociado al reporte
+        return int(obj.total_producto())
+
+    # Definir los nombres de columna para los métodos personalizados
+    total_servicio.short_description = "Total Servicio"
+    total_producto.short_description = "Total Producto"
 
     def ver_pdf(self, obj):
         # Generar la URL para descargar el PDF del reporte

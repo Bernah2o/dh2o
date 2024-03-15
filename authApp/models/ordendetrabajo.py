@@ -1,5 +1,6 @@
 from django.db import models, transaction
 from decimal import Decimal
+from django.db.models import Sum
 from django.core.exceptions import ValidationError
 from authApp.models.factura import Factura
 from authApp.models.producto import Producto
@@ -77,15 +78,18 @@ class OrdenDeTrabajo(models.Model):
             return Decimal(0)  # Retornar 0 o algún valor por defecto en caso de error
 
     def calcular_total(self):
-        total = sum(
+        total_servicios = sum(
             servicio_en_orden.calcular_total()
             for servicio_en_orden in self.servicios_en_orden_detalle.all()
         )
-        return total
-    
+
+        return total_servicios
+
     @property
     def completa(self):
-        return all(servicio.reportado for servicio in self.servicios_en_orden_detalle.all())
+        return all(
+            servicio.reportado for servicio in self.servicios_en_orden_detalle.all()
+        )
 
 
 class ServicioEnOrden(models.Model):
@@ -116,15 +120,21 @@ class ServicioEnOrden(models.Model):
         self.reportado = True
         self.save()
 
-    def calcular_total(self):
+    def total_servicio(self):
         total_servicio = 0
         if self.servicio:
             total_servicio = self.servicio.precio * self.cantidad_servicio
+        return total_servicio
 
+    def total_producto(self):
         total_producto = 0
         if self.producto:
             total_producto = self.producto.precio * self.cantidad_producto
+        return total_producto    
 
+    def calcular_total(self):
+        total_servicio = self.total_servicio()
+        total_producto = self.total_producto()
         return total_servicio + total_producto
 
     def save(self, *args, **kwargs):

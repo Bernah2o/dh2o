@@ -12,6 +12,8 @@ env/
 
 # Ignore all .jpg files
 *.jpg
+*.jpeg
+
 
 # En el archivo .gitignore
 config/postgres_config.yml
