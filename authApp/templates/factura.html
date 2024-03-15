@@ -19,7 +19,7 @@
       <tr>
         <th>Servicios</th>
         <td>
-          {% for servicio_en_orden in factura.orden_de_trabajo.servicioenorden_set.all %}
+          {% for servicio_en_orden in factura.orden_de_trabajo.servicios_en_orden_detalle.all %}
           {{ servicio_en_orden.servicio.nombre }}<br />
           {% endfor %}
         </td>

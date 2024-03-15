@@ -82,6 +82,10 @@ class OrdenDeTrabajo(models.Model):
             for servicio_en_orden in self.servicios_en_orden_detalle.all()
         )
         return total
+    
+    @property
+    def completa(self):
+        return all(servicio.reportado for servicio in self.servicios_en_orden_detalle.all())
 
 
 class ServicioEnOrden(models.Model):
@@ -100,11 +104,17 @@ class ServicioEnOrden(models.Model):
     )
     cantidad_producto = models.PositiveIntegerField(default=0, null=True, blank=True)
 
+    reportado = models.BooleanField(default=False)
+
     class Meta:
         unique_together = ["orden", "servicio", "producto"]
 
     def __str__(self):
         return f"{self.servicio.nombre} - {self.cantidad_servicio}"
+
+    def marcar_como_reportado(self):
+        self.reportado = True
+        self.save()
 
     def calcular_total(self):
         total_servicio = 0

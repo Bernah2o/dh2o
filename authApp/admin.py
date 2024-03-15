@@ -18,7 +18,7 @@ from django.utils import timezone
 from authApp import models
 
 
-from authApp.forms import ReporteForm
+# from authApp.forms import ReporteForm
 
 # Importamos los modelos que queremos registrar
 from .models.clientes import Cliente
@@ -156,37 +156,52 @@ class ReporteAdmin(admin.ModelAdmin):
     def ver_pdf(self, obj):
         # Generar la URL para descargar el PDF del reporte
         url = reverse("generar_reporte_pdf", args=[obj.id_reporte])
-
         # Retornar un enlace HTML con el botón de descarga del PDF
         return format_html('<a class="button" href="{}">PDF</a>', url)
-
     # Cambiar el título de la columna en la página de admin
     ver_pdf.short_description = "Descargar"
 
-    form = ReporteForm
+    # form = ReporteForm
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-
         if obj and obj.orden_de_trabajo:
             form.base_fields["cliente"].disabled = True
             form.base_fields["cliente"].widget.attrs["readonly"] = True
             form.base_fields["cliente"].initial = obj.orden_de_trabajo.cliente
-
         return form
-
+    # Logica para mostrar los servicios asociados a la orden de trabajo
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "orden_de_trabajo":
             if "obj" in kwargs:
-                # Obtener el objeto de Reporte si está editando un reporte existente
+                # Si se está editando un reporte existente, excluimos las órdenes con todos los servicios reportados
                 reporte = kwargs["obj"]
-                # Si ya se ha guardado el reporte, excluye la orden de trabajo asociada
-                kwargs["queryset"] = OrdenDeTrabajo.objects.exclude(
-                    reporte__id=reporte.id_reporte
+                ordenes_con_servicios_no_reportados = OrdenDeTrabajo.objects.filter(
+                    servicios_en_orden_detalle__reportado=False
+                ).distinct()
+                kwargs["queryset"] = ordenes_con_servicios_no_reportados.exclude(
+                    servicios_en_orden_detalle__isnull=True
                 )
             else:
-                # Si es un nuevo reporte, muestra todas las órdenes de trabajo disponibles
-                kwargs["queryset"] = OrdenDeTrabajo.objects.filter(reporte__isnull=True)
+                # Si es un nuevo reporte, mostramos todas las órdenes de trabajo que tengan al menos un servicio no reportado
+                ordenes_con_servicios_no_reportados = OrdenDeTrabajo.objects.filter(
+                    servicios_en_orden_detalle__reportado=False
+                ).distinct()
+                kwargs["queryset"] = OrdenDeTrabajo.objects.filter(
+                    pk__in=ordenes_con_servicios_no_reportados
+                )
+        elif db_field.name == "servicio_en_orden":
+            if "obj" in kwargs:
+                # Si se está editando un reporte existente, mostramos solo el servicio asociado no reportado
+                reporte = kwargs["obj"]
+                kwargs["queryset"] = ServicioEnOrden.objects.filter(
+                    orden=reporte.orden_de_trabajo, reportado=False
+                )
+            else:
+                # Si es un nuevo reporte, mostramos todos los servicios asociados no reportados
+                kwargs["queryset"] = ServicioEnOrden.objects.filter(
+                    orden__servicios_en_orden_detalle__reportado=False, reportado=False
+                ).distinct()
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def mostrar_orden_de_trabajo(self, obj):
@@ -199,7 +214,6 @@ class ReporteAdmin(admin.ModelAdmin):
     mostrar_orden_de_trabajo.short_description = "Orden de trabajo"
 
     list_display_links = None  # Elimina los enlaces de la columna "orden_de_trabajo"
-
 
 class FacturaAdmin(admin.ModelAdmin):
     readonly_fields = ["creacion"]
@@ -428,6 +442,13 @@ class OperadorAdmin(admin.ModelAdmin):
 
 class MpagoAdmin(admin.ModelAdmin):
     list_display = ("nombre", "numero_cuenta")
+
+
+class ServicioEnOrdenAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        # Filtrar los servicios disponibles excluyendo aquellos que ya tienen un reporte asociado
+        return queryset.filter(reportado=False)
 
 
 admin.site.register(Cliente, ClienteAdmin)
