@@ -1,6 +1,5 @@
 from django.db import models, transaction
 from decimal import Decimal
-from django.db.models import Sum
 from django.core.exceptions import ValidationError
 from authApp.models.factura import Factura
 from authApp.models.producto import Producto
@@ -130,7 +129,7 @@ class ServicioEnOrden(models.Model):
         total_producto = 0
         if self.producto:
             total_producto = self.producto.precio * self.cantidad_producto
-        return total_producto    
+        return total_producto
 
     def calcular_total(self):
         total_servicio = self.total_servicio()
