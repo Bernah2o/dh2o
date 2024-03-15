@@ -87,7 +87,7 @@ DATABASES = {
 }
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 # configuracion bd postgres
-#DATABASES = {
+# DATABASES = {
 #    "default": {
 #        "ENGINE": "django.db.backends.postgresql",
 #        "NAME": os.getenv("DB_NAME"),
@@ -96,7 +96,7 @@ DATABASES = {
 #        "HOST": os.getenv("DB_HOST"),
 #        "PORT": os.getenv("DB_PORT"),
 #    }
-#}
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
