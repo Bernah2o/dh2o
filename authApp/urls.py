@@ -6,6 +6,7 @@ from rest_framework import permissions
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
+from authApp.views.activoViewSet import ActivoViewSet
 from authApp.views.loginViewSet import LoginView
 from rest_framework.routers import DefaultRouter
 
@@ -34,6 +35,7 @@ router.register(r"mpagos", MpagoViewSet, "mpagos")
 router.register(r"ordenesdetrabajo", OrdenDeTrabajoViewSet, "ordenesdetrabajo")
 router.register(r"reportes", ReporteViewSet, "reportes")
 router.register(r"producto", ProductoViewSet, "producto")
+router.register(r"activo", ActivoViewSet, "activo")
 
 
 # Personalizacion del panel de admin

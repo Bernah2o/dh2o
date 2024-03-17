@@ -113,7 +113,10 @@ class ServicioEnOrden(models.Model):
         unique_together = ["orden", "servicio", "producto"]
 
     def __str__(self):
-        return f"{self.servicio.nombre} - {self.cantidad_servicio}"
+        if self.servicio:
+            return f"{self.servicio.nombre} - {self.cantidad_servicio}"
+        else:
+            return f"Servicio no especificado - {self.cantidad_servicio}"
 
     def marcar_como_reportado(self):
         self.reportado = True
@@ -128,7 +131,9 @@ class ServicioEnOrden(models.Model):
     def total_producto(self):
         total_producto = 0
         if self.producto:
-            total_producto = self.producto.precio * self.cantidad_producto
+            total_producto = (
+                self.producto.calcular_precio_con_incremento() * self.cantidad_producto
+            )
         return total_producto
 
     def calcular_total(self):

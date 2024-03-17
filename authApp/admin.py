@@ -6,7 +6,6 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.urls import reverse
 from django.utils.html import format_html
-from django import forms
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 import locale
@@ -16,6 +15,7 @@ from django.db.models.signals import post_delete
 from django.db.models import Q
 from django.utils import timezone
 from authApp import models
+from authApp.models.activo import Activo, InventarioActivo
 
 
 # from authApp.forms import ReporteForm
@@ -398,14 +398,23 @@ def actualizar_estado_facturada(sender, instance, **kwargs):
 
 
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "formatted_precio", "cantidad", "reporte_link")
+    list_display = ("nombre", "formatted_precio", "formatted_precio_con_incremento","cantidad", "reporte_link")
     readonly_fields = ("imagen_tag",)
 
     def formatted_precio(self, obj):
         precio_formatted = f"{obj.precio:,.2f}".rstrip("0").rstrip(".")
-        return format_html(f"${precio_formatted} COP")
+        return format_html(f"${precio_formatted}")
 
     formatted_precio.short_description = "Precio"
+    
+    def formatted_precio_con_incremento(self, obj):
+        precio_con_incremento = obj.calcular_precio_con_incremento()
+        precio_con_incremento_formatted = f"{precio_con_incremento:,.2f}".rstrip("0").rstrip(".")
+        return format_html(f"${precio_con_incremento_formatted}")
+
+    formatted_precio_con_incremento.short_description = "Precio con incremento"
+
+
 
     @receiver(m2m_changed, sender=Producto.ordenes_trabajo.through)
     def actualizar_inventario(sender, instance, action, **kwargs):
@@ -468,6 +477,31 @@ class ServicioEnOrdenAdmin(admin.ModelAdmin):
         return queryset.filter(reportado=False)
 
 
+class InventarioActivoInline(admin.TabularInline):
+    model = InventarioActivo
+    extra = 1
+
+
+class ActivoAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "fecha_adquisicion", "formato_valor", "get_responsable")
+    search_fields = ["nombre", ]
+    list_filter = ["fecha_adquisicion"]
+    inlines = [InventarioActivoInline]
+
+    def formato_valor(self, obj):
+        locale.setlocale(locale.LC_ALL, "es_CO.UTF-8")
+        formatted = locale.format_string("%d", obj.valor, grouping=True)
+        formatted = formatted[:]  # Eliminar los dos ceros adicionales al final
+        return f"${formatted}"
+    formato_valor.short_description = "Valor"
+    
+    def get_responsable(self, obj):
+        primer_inventario = obj.inventarioactivo_set.first()
+        return primer_inventario.responsable if primer_inventario else None
+
+    get_responsable.short_description = "Responsable"
+
+
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Operador, OperadorAdmin)
@@ -476,4 +510,5 @@ admin.site.register(Mpago, MpagoAdmin)
 admin.site.register(OrdenDeTrabajo, OrdenDeTrabajoAdmin)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Producto, ProductoAdmin)
+admin.site.register(Activo, ActivoAdmin)
 # admin.site.register(ServicioEnOrden)

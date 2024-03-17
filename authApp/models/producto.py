@@ -1,4 +1,5 @@
 from django.db import models
+from decimal import Decimal
 
 
 class Producto(models.Model):
@@ -19,3 +20,8 @@ class Producto(models.Model):
         super(Producto, self).save(
             *args, **kwargs
         )  # Guardar el objeto en la base de datos
+        
+    def calcular_precio_con_incremento(self):
+        incremento = self.precio * Decimal("0.30")  # Calcula el 30% del precio
+        precio_con_incremento = self.precio + incremento
+        return precio_con_incremento    

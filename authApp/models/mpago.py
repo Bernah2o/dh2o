@@ -3,7 +3,7 @@ from django.db import models
 
 class Mpago(models.Model):
     nombre = models.CharField(max_length=50)
-    numero_cuenta = models.BigIntegerField()
+    numero_cuenta = models.BigIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.nombre
