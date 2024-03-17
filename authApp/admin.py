@@ -483,7 +483,7 @@ class InventarioActivoInline(admin.TabularInline):
 
 
 class ActivoAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "fecha_adquisicion", "formato_valor", "get_responsable")
+    list_display = ("nombre", "fecha_adquisicion", "get_cantidad","formato_valor", "get_responsable")
     search_fields = ["nombre", ]
     list_filter = ["fecha_adquisicion"]
     inlines = [InventarioActivoInline]
@@ -500,6 +500,12 @@ class ActivoAdmin(admin.ModelAdmin):
         return primer_inventario.responsable if primer_inventario else None
 
     get_responsable.short_description = "Responsable"
+    
+    def get_cantidad(self, obj):
+        cantidad_inventario = obj.inventarioactivo_set.first()
+        return cantidad_inventario.cantidad if cantidad_inventario else None
+    
+    get_cantidad.short_description = "Cantidad"
 
 
 admin.site.register(Cliente, ClienteAdmin)
