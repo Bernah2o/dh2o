@@ -3,13 +3,15 @@ from rest_framework import serializers
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 from authApp.models.servicios import Servicio
+from authApp.serializers.servicioSerializer import ServicioSerializer
 
 
 class FacturaSerializer(serializers.ModelSerializer):
     creacion = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
-    servicios = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Servicio.objects.all()
-    )
+    # servicios = serializers.PrimaryKeyRelatedField(
+    #    many=True, queryset=Servicio.objects.all()
+    # )
+    servicios = ServicioSerializer(many=True, read_only=True)
 
     class Meta:
         model = Factura

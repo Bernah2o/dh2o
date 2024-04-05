@@ -118,15 +118,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "es-pe"
+LANGUAGE_CODE = "es-co"
 
-TIME_ZONE = "America/Lima"
+TIME_ZONE = "America/Bogota"  # Zona horaria de Colombia
 
-USE_I18N = True
+USE_I18N = True  # Habilitar internacionalización
 
-USE_L10N = True
+USE_L10N = True  # Habilitar formato de datos localizado
 
-USE_TZ = True
+USE_TZ = True  # Habilitar zonas horarias
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
