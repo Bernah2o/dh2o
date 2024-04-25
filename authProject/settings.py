@@ -20,8 +20,13 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
+
+# cors authorization
+CORS_ALLOW_ORIGINS = [
+    "http://localhost:4200"
+]  # Agrega aquí el origen desde el que estás realizando las solicitudes
 
 
 # Application definition
@@ -29,6 +34,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS = [
     "jazzmin",
     "rest_framework",
+    "admin_confirm",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -49,12 +55,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "authProject.urls"
@@ -140,6 +146,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 #################CONFIGURACIONES HECHAS POR MI ################################################
 
 JAZZMIN_SETTINGS = {
@@ -173,8 +180,8 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "theme": "slate",
-    "dark_mode_theme": "slate",
+    "theme": "flatly",
+    "dark_mode_theme": "darkly",
 }
 
 REST_FRAMEWORK = {

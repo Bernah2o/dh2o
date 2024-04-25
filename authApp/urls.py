@@ -24,6 +24,8 @@ from authApp.views.productoViewSet import ProductoViewSet, reporte_productos_vie
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from authApp.views.usuarioViewSet import UsuarioViewSet
+
 
 # Definimos nuestro router para manejar todas las vistas de la API
 router = DefaultRouter()
@@ -36,7 +38,7 @@ router.register(r"ordenesdetrabajo", OrdenDeTrabajoViewSet, "ordenesdetrabajo")
 router.register(r"reportes", ReporteViewSet, "reportes")
 router.register(r"producto", ProductoViewSet, "producto")
 router.register(r"activo", ActivoViewSet, "activo")
-
+router.register(r"usuarios", UsuarioViewSet, "usuarios")
 
 
 # Personalizacion del panel de admin
@@ -107,8 +109,10 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    # Api para login html
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LoginView.as_view(), name="logout"),
+    # Api para UsuarioLogin de angular
     # Api para Swagger
     path(
         "docs/",
@@ -129,6 +133,7 @@ urlpatterns = [
         ReporteViewSet.as_view({"post": "create"}),
         name="crear-reporte",
     ),
+    # path("login/",UsuarioViewSet.as_view({"post": "login"}),name="usuario-login",),
     # otras rutas ...
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

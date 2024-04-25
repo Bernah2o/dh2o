@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from authApp.models.mpago import Mpago
 from authApp.serializers.mpagoSerializer import MpagoSerializer

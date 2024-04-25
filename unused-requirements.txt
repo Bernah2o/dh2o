@@ -1,0 +1,4 @@
+django-autocomplete-light
+coreschema
+swapper
+dj-database-url

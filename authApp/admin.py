@@ -16,6 +16,8 @@ from django.db.models import Q
 from django.utils import timezone
 from authApp import models
 from authApp.models.activo import Activo, InventarioActivo
+from admin_confirm import AdminConfirmMixin
+from django.contrib.admin import ModelAdmin
 
 
 # from authApp.forms import ReporteForm
@@ -150,7 +152,8 @@ class ReporteAdmin(admin.ModelAdmin):
         "mostrar_orden_de_trabajo",
         "fecha",
         "total_servicio",
-        "total_producto" ,"ver_pdf",
+        "total_producto",
+        "ver_pdf",
     ]
     search_fields = [
         "orden_de_trabajo__numero_orden",
@@ -175,6 +178,7 @@ class ReporteAdmin(admin.ModelAdmin):
         url = reverse("generar_reporte_pdf", args=[obj.id_reporte])
         # Retornar un enlace HTML con el botón de descarga del PDF
         return format_html('<a class="button" href="{}">PDF</a>', url)
+
     # Cambiar el título de la columna en la página de admin
     ver_pdf.short_description = "Descargar"
 
@@ -187,6 +191,7 @@ class ReporteAdmin(admin.ModelAdmin):
             form.base_fields["cliente"].widget.attrs["readonly"] = True
             form.base_fields["cliente"].initial = obj.orden_de_trabajo.cliente
         return form
+
     # Logica para mostrar los servicios asociados a la orden de trabajo
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "orden_de_trabajo":
@@ -231,6 +236,7 @@ class ReporteAdmin(admin.ModelAdmin):
     mostrar_orden_de_trabajo.short_description = "Orden de trabajo"
 
     list_display_links = None  # Elimina los enlaces de la columna "orden_de_trabajo"
+
 
 class FacturaAdmin(admin.ModelAdmin):
     readonly_fields = ["creacion"]
@@ -398,7 +404,13 @@ def actualizar_estado_facturada(sender, instance, **kwargs):
 
 
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "formatted_precio", "formatted_precio_con_incremento","cantidad", "reporte_link")
+    list_display = (
+        "nombre",
+        "formatted_precio",
+        "formatted_precio_con_incremento",
+        "cantidad",
+        "reporte_link",
+    )
     readonly_fields = ("imagen_tag",)
 
     def formatted_precio(self, obj):
@@ -406,15 +418,15 @@ class ProductoAdmin(admin.ModelAdmin):
         return format_html(f"${precio_formatted}")
 
     formatted_precio.short_description = "Precio"
-    
+
     def formatted_precio_con_incremento(self, obj):
         precio_con_incremento = obj.calcular_precio_con_incremento()
-        precio_con_incremento_formatted = f"{precio_con_incremento:,.2f}".rstrip("0").rstrip(".")
+        precio_con_incremento_formatted = f"{precio_con_incremento:,.2f}".rstrip(
+            "0"
+        ).rstrip(".")
         return format_html(f"${precio_con_incremento_formatted}")
 
     formatted_precio_con_incremento.short_description = "Precio con incremento"
-
-
 
     @receiver(m2m_changed, sender=Producto.ordenes_trabajo.through)
     def actualizar_inventario(sender, instance, action, **kwargs):
@@ -463,7 +475,30 @@ class ServicioAdmin(admin.ModelAdmin):
 
 
 class OperadorAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "apellido", "telefono")
+    list_display = (
+        "nombre",
+        "apellido",
+        "telefono",
+        "banco",
+        "numero_cuenta",
+    )
+    readonly_fields = ("imagen_tag",)
+
+    def imagen_tag(self, obj):
+        if obj.foto:
+            return format_html(
+                '<img src="{}" alt="{}" style="max-width: 200px; max-height: 200px;" />',
+                obj.foto.url,
+                obj.nombre,
+            )
+        else:
+            return "(No hay imagen)"
+
+
+# AUN NO FUNCIONA ESTA FUNCIONALIDAD
+# class OperadorAdmin(AdminConfirmMixin, ModelAdmin):
+#    confirm_change = True
+#    confirmation_fields = ['nombre', 'apellido']
 
 
 class MpagoAdmin(admin.ModelAdmin):
@@ -483,8 +518,16 @@ class InventarioActivoInline(admin.TabularInline):
 
 
 class ActivoAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "fecha_adquisicion", "get_cantidad","formato_valor", "get_responsable")
-    search_fields = ["nombre", ]
+    list_display = (
+        "nombre",
+        "fecha_adquisicion",
+        "get_cantidad",
+        "formato_valor",
+        "get_responsable",
+    )
+    search_fields = [
+        "nombre",
+    ]
     list_filter = ["fecha_adquisicion"]
     inlines = [InventarioActivoInline]
 
@@ -493,18 +536,19 @@ class ActivoAdmin(admin.ModelAdmin):
         formatted = locale.format_string("%d", obj.valor, grouping=True)
         formatted = formatted[:]  # Eliminar los dos ceros adicionales al final
         return f"${formatted}"
+
     formato_valor.short_description = "Valor"
-    
+
     def get_responsable(self, obj):
         primer_inventario = obj.inventarioactivo_set.first()
         return primer_inventario.responsable if primer_inventario else None
 
     get_responsable.short_description = "Responsable"
-    
+
     def get_cantidad(self, obj):
         cantidad_inventario = obj.inventarioactivo_set.first()
         return cantidad_inventario.cantidad if cantidad_inventario else None
-    
+
     get_cantidad.short_description = "Cantidad"
 
 
